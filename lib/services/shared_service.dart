@@ -1,3 +1,4 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -13,23 +14,27 @@ class SharedService {
 
   static Future<void> setSharedLogOut() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    const storage = FlutterSecureStorage();
     await prefs.remove('name');
     await prefs.remove('email');
-    await prefs.remove('token');
+    //await prefs.remove('token');
+    await storage.delete(key: 'token');
     await prefs.remove('is_home_after_login');
   }
 
   static Future<void> setSharedLogin(dynamic data) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    const storage = FlutterSecureStorage();
     const keyName = 'name';
     final valueName = data['user']['name'];
     prefs.setString(keyName, valueName);
     const keyEmail = 'email';
     final valueEmail = data['user']['email'];
     prefs.setString(keyEmail, valueEmail);
-    const keyToken = 'token';
-    final valueToken = data['token'];
-    prefs.setString(keyToken, valueToken);
+    await storage.write(key: 'token', value: data['token']);
+    // const keyToken = 'token';
+    // final valueToken = data['token'];
+    // prefs.setString(keyToken, valueToken);
     setSharedUserToken(true);
     Map<String, dynamic> decodedToken = JwtDecoder.decode(data['token']);
     DateTime expiryTokenDate =

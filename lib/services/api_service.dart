@@ -3,9 +3,7 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:tripify/models/forgot_password_request_model.dart';
 import 'package:tripify/models/login_request_model.dart';
-import 'package:tripify/models/login_response_model.dart';
 import 'package:tripify/models/signup_request_model.dart';
-import 'package:tripify/models/signup_response_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:tripify/constants/config.dart';
 import 'shared_service.dart';
@@ -74,12 +72,12 @@ class APIService {
           .toString()
           .contains('E11000 duplicate key error collection')) {
         return 'This email is already taken. Please use a different email';
-      } else{
+      } else {
         return 'Sorry, we couldn\'t process your request due to a server error. Please try again later.';
       }
     }
   }
-
+  
   static Future<bool> forgotpassword(
     ForgotPasswordRequestModel model,
   ) async {
