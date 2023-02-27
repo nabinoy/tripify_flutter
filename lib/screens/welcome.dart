@@ -5,7 +5,6 @@ import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/router.dart';
 import 'package:tripify/screens/login.dart';
 import 'package:tripify/screens/signup.dart';
-import 'package:tripify/services/shared_service.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({super.key});

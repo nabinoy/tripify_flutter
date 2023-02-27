@@ -32,9 +32,6 @@ class SharedService {
     final valueEmail = data['user']['email'];
     prefs.setString(keyEmail, valueEmail);
     await storage.write(key: 'token', value: data['token']);
-    // const keyToken = 'token';
-    // final valueToken = data['token'];
-    // prefs.setString(keyToken, valueToken);
     setSharedUserToken(true);
     Map<String, dynamic> decodedToken = JwtDecoder.decode(data['token']);
     DateTime expiryTokenDate =

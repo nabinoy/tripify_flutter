@@ -7,11 +7,11 @@ import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripify/constants/global_variables.dart';
-import 'package:tripify/router.dart';
 import 'package:tripify/screens/onboard.dart';
 import 'package:tripify/screens/welcome.dart';
 import 'package:tripify/services/shared_service.dart';
 import '../screens/home.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -38,9 +38,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> readForUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    const key = 'token';
-    String userValue = prefs.getString(key) ?? 'NO_USER_FOUND';
+    const storage = FlutterSecureStorage();
+    String userValue = await storage.read(key: 'token') ?? 'NO_USER_FOUND';
     if (userValue == 'NO_USER_FOUND') {
       userToken = false;
       SharedService.setSharedUserToken(userToken);
