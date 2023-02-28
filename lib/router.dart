@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tripify/screens/category.dart';
+import 'package:tripify/screens/drawer/helpline.dart';
 import 'package:tripify/screens/forgot_password.dart';
 import 'package:tripify/screens/home.dart';
 import 'package:tripify/screens/island.dart';
@@ -49,6 +50,9 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     case OnBoardingScreen.routeName:
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const OnBoardingScreen(),);
+
+    case Helpline.routeName:
+      return MaterialPageRoute(settings : routeSettings,builder: (_) => const Helpline(),);
   
     default: 
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const Scaffold(

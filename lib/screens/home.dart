@@ -7,6 +7,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:random_avatar/random_avatar.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/router.dart';
+import 'package:tripify/screens/drawer/helpline.dart';
 import 'package:tripify/screens/home_pages/home_main.dart';
 import 'package:tripify/screens/home_pages/profile.dart';
 import 'package:tripify/screens/home_pages/wishlist.dart';
@@ -272,15 +273,21 @@ class _HomepageState extends State<Homepage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Icon(
-                        MdiIcons.arrowLeftRightBoldOutline,
+                        MdiIcons.callMade,
                         color: Colors.grey[800],
                         size: 30,
                       ),
                     ),
-                    const Text('Item2'),
+                    const Text('Helpline'),
                   ],
                 ),
-                onTap: () {},
+                onTap: () {
+                  HapticFeedback.mediumImpact();
+                  Navigator.pushNamed(
+                    context,
+                    Helpline.routeName,
+                  );
+                },
               ),
             ),
             Column(

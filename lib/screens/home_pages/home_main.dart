@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -215,11 +216,14 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                               borderRadius: BorderRadius.circular(10.0),
                               child:
                                   Stack(alignment: Alignment.center, children: [
-                                FadeInImage.memoryNetwork(
+                                CachedNetworkImage(
                                   height: containerHeight,
                                   width: containerWidth,
-                                  placeholder: kTransparentImage,
-                                  image: catImage[i],
+                                  imageUrl: catImage[i],
+                                  placeholder: (context, url) => Image.memory(
+                                    kTransparentImage,
+                                    fit: BoxFit.cover,
+                                  ),
                                   fadeInDuration:
                                       const Duration(milliseconds: 200),
                                   fit: BoxFit.cover,
@@ -247,11 +251,15 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                                   child: Stack(
                                       alignment: Alignment.center,
                                       children: [
-                                        FadeInImage.memoryNetwork(
+                                        CachedNetworkImage(
                                           height: containerHeight,
                                           width: containerWidth,
-                                          placeholder: kTransparentImage,
-                                          image: catImage[i + 1],
+                                          imageUrl: catImage[i + 1],
+                                          placeholder: (context, url) =>
+                                              Image.memory(
+                                            kTransparentImage,
+                                            fit: BoxFit.cover,
+                                          ),
                                           fadeInDuration:
                                               const Duration(milliseconds: 200),
                                           fit: BoxFit.cover,
@@ -316,11 +324,14 @@ Widget buildImage(
     child: ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
       child: Stack(children: [
-        FadeInImage.memoryNetwork(
+        CachedNetworkImage(
           height: 200,
           width: MediaQuery.of(context).size.width,
-          placeholder: kTransparentImage,
-          image: urlImage,
+          imageUrl: urlImage,
+          placeholder: (context, url) => Image.memory(
+            kTransparentImage,
+            fit: BoxFit.cover,
+          ),
           fadeInDuration: const Duration(milliseconds: 200),
           fit: BoxFit.cover,
         ),
