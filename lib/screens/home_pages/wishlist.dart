@@ -28,7 +28,7 @@ class _WishlistState extends State<Wishlist> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Details()),
+                  MaterialPageRoute(builder: (context) => Details()),
                 );
               },
               child: const Text('place 2')),

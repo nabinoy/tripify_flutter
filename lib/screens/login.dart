@@ -17,37 +17,27 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: appName,
-      theme: ThemeData(
-        fontFamily: fontRegular,
-        // ignore: deprecated_member_use
-        androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
-      ),
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: (settings) => generateRoute(settings),
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          // leading: IconButton(
-          //   onPressed: () {
-          //     HapticFeedback.mediumImpact();
-          //     Navigator.pop(context);
-          //     //SystemNavigator.pop();
-          //   },
-          //   icon: const Icon(
-          //     Icons.arrow_back_ios,
-          //     size: 20,
-          //     color: Colors.black,
-          //   ),
-          // ),
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
+        leading: IconButton(
+          onPressed: () {
+            HapticFeedback.mediumImpact();
+            Navigator.pop(context);
+            //SystemNavigator.pop();
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            size: 20,
+            color: Colors.black,
+          ),
         ),
-        body: const LoginPageScreen(),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
+      body: const LoginPageScreen(),
     );
   }
 }
