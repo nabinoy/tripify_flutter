@@ -16,30 +16,24 @@ class _WishlistState extends State<Wishlist> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Center(
-          child: TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, Place.routeName);
-              },
-              child: const Text('place')),
-        ),
-        Center(
-          child: TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Details()),
-                );
-              },
-              child: const Text('place 2')),
-        ),
-        Center(
-          child: TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, MapWebView.routeName);
-              },
-              child: const Text('Map Webview')),
-        ),
+        TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, Place.routeName);
+            },
+            child: const Text('place')),
+        TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Details()),
+              );
+            },
+            child: const Text('place 2')),
+        TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, MapWebView.routeName);
+            },
+            child: const Text('Map Webview')),
       ],
     );
   }

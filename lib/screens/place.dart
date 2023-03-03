@@ -1,17 +1,16 @@
 import 'dart:async';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
-import 'package:tripify/models/place_model.dart';
+import 'package:tripify/models/weather_model.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/shared_service.dart';
 import 'package:tripify/widget/direction_map.dart';
-
-import '../loader/loader_home_main.dart';
+import 'package:tripify/widget/hour_forecast.dart';
 
 class PlaceCategoryTop extends SliverPersistentHeaderDelegate {
   final ValueChanged<int> onChanged;
@@ -23,20 +22,18 @@ class PlaceCategoryTop extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      height: 52,
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+      height: 45,
       color: Colors.white,
-      child: PlaceCategory(
-        onChanged: onChanged,
-        selectedIndex: selectedIndex,
-      ),
+      child: const PlaceCategory(),
     );
   }
 
   @override
-  double get maxExtent => 52;
+  double get maxExtent => 45;
 
   @override
-  double get minExtent => 52;
+  double get minExtent => 45;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
@@ -53,7 +50,12 @@ class Place extends StatefulWidget {
 }
 
 class _PlaceState extends State<Place> {
-  ValueNotifier<double> distance = ValueNotifier<double>(0);
+  @override
+  void dispose() {
+    hourForecasts.clear();
+    dayForecasts.clear();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,9 @@ class _PlaceState extends State<Place> {
     return Scaffold(
       backgroundColor: bgColor,
       body: FutureBuilder(
-          future: Future.wait([]),
+          future: Future.wait([
+            getForcastInfo(),
+          ]),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return CustomScrollView(
@@ -97,15 +101,18 @@ class _PlaceState extends State<Place> {
                         ),
                       ),
                     ),
-                    actions: const [
-                      Padding(
-                        padding: EdgeInsets.only(right: 20),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          child: Icon(
-                            MdiIcons.heartOutline,
-                            color: Colors.black,
-                            size: 24,
+                    actions: [
+                      GestureDetector(
+                        onTap: () {},
+                        child: const Padding(
+                          padding: EdgeInsets.only(right: 20),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            child: Icon(
+                              MdiIcons.heartOutline,
+                              color: Colors.black,
+                              size: 24,
+                            ),
                           ),
                         ),
                       ),
@@ -127,10 +134,31 @@ class _PlaceState extends State<Place> {
                   ),
                   SliverToBoxAdapter(
                     child: Container(
-                      color: Colors.white,
-                      alignment: Alignment.center,
-                      height: 200,
-                      child: const Text('This is Container'),
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                      alignment: Alignment.bottomLeft,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Place name',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                            Row(
+                              children: const [
+                                Icon(
+                                  Icons.location_pin,
+                                  size: 18,
+                                ),
+                                Text(
+                                  'Location',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(color: Colors.black54),
+                                ),
+                              ],
+                            ),
+                          ]),
                     ),
                   ),
                   SliverPersistentHeader(
@@ -140,10 +168,116 @@ class _PlaceState extends State<Place> {
                   ),
                   SliverToBoxAdapter(
                     child: Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Description',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Radhanagar Beach is one of the most beautiful beaches in India, known for its stunning sunset and clear blue waters. It is located on the western coast of Havelock Island, one of the most popular tourist destinations in the Andaman and Nicobar Islands.',
+                            style: TextStyle(color: Colors.black54),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Activities',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'scuba diving',
+                            style: TextStyle(color: Colors.black54),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Timing',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            '09:00am to 05:00pm',
+                            style: TextStyle(color: Colors.black54),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Cost',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'No fees required',
+                            style: TextStyle(color: Colors.black54),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Direction',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      color: Colors.blue,
                       alignment: Alignment.center,
-                      height: 400,
                       child: SizedBox(
                         height: screenWidth * 0.8,
                         width: screenWidth,
@@ -169,68 +303,267 @@ class _PlaceState extends State<Place> {
                       ),
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      color: Colors.tealAccent,
-                      alignment: Alignment.center,
-                      height: 400,
-                      child: const Text('This is Container3'),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 5,
                     ),
                   ),
                   SliverToBoxAdapter(
                     child: Container(
-                      color: Colors.tealAccent,
-                      alignment: Alignment.center,
-                      height: 400,
-                      child: const Text('This is Container4'),
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Address',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'dsdsdsdsdsdsdsd\nsdsdsdsdsdsdsd\ndsdsdsdsdsdsdsd\nsdsdsdsdsd\nsdsdsdsd',
+                            style: TextStyle(color: Colors.black54),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text(
+                                'Weather Forecast',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              Text(
+                                'View more',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.lightBlue,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const HourForecast(),
+                      ],
                     ),
                   ),
                   SliverToBoxAdapter(
                     child: Container(
-                      color: const Color.fromARGB(255, 54, 243, 33),
-                      alignment: Alignment.center,
-                      height: 400,
-                      child: const Text('This is Container5'),
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Rate this place',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              RatingBar.builder(
+                                initialRating: 0,
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemCount: 5,
+                                itemPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                itemBuilder: (context, _) => const Icon(
+                                  Icons.star,
+                                  color: Colors.blue,
+                                ),
+                                onRatingUpdate: (rating) {},
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: MaterialButton(
+                              minWidth: MediaQuery.of(context).size.width - 200,
+                              height: 40,
+                              onPressed: () {},
+                              color: Colors.lightBlue[800],
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: const Text(
+                                'Write a review',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SliverToBoxAdapter(
                     child: Container(
-                      color: const Color.fromARGB(255, 165, 147, 9),
-                      alignment: Alignment.center,
-                      height: 400,
-                      child: const Text('This is Container6'),
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Ratings and reviews',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Column(
+                                children: [
+                                  const Text(
+                                    '4.5',
+                                    style: TextStyle(
+                                      fontSize: 50,
+                                    ),
+                                  ),
+                                  RatingBar.builder(
+                                    initialRating: 4.5,
+                                    minRating: 1,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    itemCount: 5,
+                                    itemSize: 14.0,
+                                    itemPadding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0),
+                                    itemBuilder: (context, _) => const Icon(
+                                      Icons.star,
+                                      color: Colors.blue,
+                                    ),
+                                    onRatingUpdate: (rating) {},
+                                  ),
+                                  const Text(
+                                    '345',
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: <Widget>[
+                                      const Text('5'),
+                                      LinearPercentIndicator(
+                                        width: 160.0,
+                                        lineHeight: 10.0,
+                                        percent: 0.9,
+                                        barRadius: const Radius.circular(16),
+                                        progressColor: Colors.blue,
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      const Text('4'),
+                                      LinearPercentIndicator(
+                                        width: 160.0,
+                                        lineHeight: 10.0,
+                                        percent: 0.1,
+                                        barRadius: const Radius.circular(16),
+                                        progressColor: Colors.blue,
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      const Text('3'),
+                                      LinearPercentIndicator(
+                                        width: 160.0,
+                                        lineHeight: 10.0,
+                                        percent: 0.2,
+                                        barRadius: const Radius.circular(16),
+                                        progressColor: Colors.blue,
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      const Text('2'),
+                                      LinearPercentIndicator(
+                                        width: 160.0,
+                                        lineHeight: 10.0,
+                                        percent: 0,
+                                        barRadius: const Radius.circular(16),
+                                        progressColor: Colors.blue,
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      const Text('1 '),
+                                      LinearPercentIndicator(
+                                        width: 160.0,
+                                        lineHeight: 10.0,
+                                        percent: 0.3,
+                                        barRadius: const Radius.circular(16),
+                                        progressColor: Colors.blue,
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SliverToBoxAdapter(
                     child: Container(
-                      color: const Color.fromARGB(255, 202, 24, 98),
-                      alignment: Alignment.center,
-                      height: 400,
-                      child: const Text('This is Container7'),
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'External links',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'https://www.example.com',
+                            style: TextStyle(color: Colors.black54),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],
               );
-
-              // return SingleChildScrollView(
-              //   child: Padding(
-              //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              //     child: Column(
-              //       children: [
-              //         ValueListenableBuilder(
-              //           valueListenable: distance,
-              //           builder: (context, value, child) {
-              //             return Text(
-              //                 'Distance ${distance.value.toStringAsFixed(2)}km');
-              //           },
-              //         ),
-
-              //       ],
-              //     ),
-              //   ),
-              // );
             } else {
-              return const LoaderHomeMain();
+              return const LoadingScreen();
             }
           }),
     );
@@ -238,63 +571,59 @@ class _PlaceState extends State<Place> {
 }
 
 class PlaceCategory extends StatefulWidget {
-  const PlaceCategory({
-    Key? key,
-    required this.onChanged,
-    required this.selectedIndex,
-  }) : super(key: key);
-
-  final ValueChanged<int> onChanged;
-  final int selectedIndex;
+  const PlaceCategory({super.key});
 
   @override
   State<PlaceCategory> createState() => _PlaceCategoryState();
 }
 
 class _PlaceCategoryState extends State<PlaceCategory> {
-  late ScrollController controller;
-
+  ValueNotifier<double> distance = ValueNotifier<double>(0);
   @override
   void initState() {
-    controller = ScrollController();
+    Timer.periodic(const Duration(seconds: 3), (timer) {
+      SharedService.getSharedDistance();
+      distance.value = SharedService.distance;
+    });
     super.initState();
   }
 
   @override
-  void didUpdateWidget(covariant PlaceCategory oldWidget) {
-    controller.animateTo(80.0 * widget.selectedIndex,
-        duration: const Duration(milliseconds: 200), curve: Curves.ease);
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      controller: controller,
-      scrollDirection: Axis.horizontal,
-      child: Row(
-          children: List.generate(
-              PlaceModel.placeCategory.length,
-              (index) => Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                          foregroundColor: widget.selectedIndex == index
-                              ? Colors.black
-                              : Colors.black45),
-                      child: Text(
-                        PlaceModel.placeCategory[index],
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ))),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Icon(
+                MdiIcons.mapMarkerDistance,
+                size: 30,
+              ),
+            ),
+            Column(
+              children: [
+                const Text(
+                  'Distance',
+                  style: TextStyle(fontSize: 12),
+                ),
+                ValueListenableBuilder(
+                  valueListenable: distance,
+                  builder: (context, value, child) {
+                    return Text(
+                      '${distance.value.toStringAsFixed(2)}km',
+                      style: const TextStyle(fontSize: 16),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+        const Text("dat2a"),
+        const Text("dat3a"),
+      ],
     );
   }
 }

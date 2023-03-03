@@ -124,9 +124,25 @@ class _WeatherScreenState extends State<WeatherScreen> {
               child: MainWeather(),
             ),
             FadeAnimation(
-                1.7,
-                SizedBox(
-                    height: screenHeight * 0.2, child: const HourForecast())),
+              1.7,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 20),
+                    child: Text(
+                      'Hour forecast',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                      height: screenHeight * 0.2, child: const HourForecast())
+                ],
+              ),
+            ),
             FadeAnimation(
                 1.8,
                 SizedBox(

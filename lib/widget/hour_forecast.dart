@@ -10,16 +10,7 @@ class HourForecast extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(left: 20),
-          child: Text(
-            'Hour forecast',
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        
         SizedBox(
           height: MediaQuery.of(context).size.height / 2 * 0.33,
           width: MediaQuery.of(context).size.width,
