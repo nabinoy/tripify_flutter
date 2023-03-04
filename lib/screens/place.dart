@@ -6,11 +6,15 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
+import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/models/weather_model.dart';
+import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/shared_service.dart';
 import 'package:tripify/widget/direction_map.dart';
 import 'package:tripify/widget/hour_forecast.dart';
+
+late PlaceDetails placeDetails;
 
 class PlaceCategoryTop extends SliverPersistentHeaderDelegate {
   final ValueChanged<int> onChanged;
@@ -41,9 +45,15 @@ class PlaceCategoryTop extends SliverPersistentHeaderDelegate {
   }
 }
 
+class PlaceData {
+  final List<String> placeList;
+  PlaceData({required this.placeList});
+}
+
 class Place extends StatefulWidget {
-  const Place({super.key});
   static const String routeName = '/place';
+
+  const Place({super.key});
 
   @override
   State<Place> createState() => _PlaceState();
@@ -51,20 +61,30 @@ class Place extends StatefulWidget {
 
 class _PlaceState extends State<Place> {
   @override
+  void initState() {
+    super.initState();
+    getCurrentLocation();
+    weatherLatAPI = getlat().toString();
+    weatherLongAPI = getlong().toString();
+  }
+
+  @override
   void dispose() {
     hourForecasts.clear();
-    dayForecasts.clear();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final placeList =
+        ModalRoute.of(context)!.settings.arguments as List<PlaceDetails>;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: bgColor,
       body: FutureBuilder(
           future: Future.wait([
             getForcastInfo(),
+            getWeatherInfo(),
           ]),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
@@ -80,8 +100,7 @@ class _PlaceState extends State<Place> {
                         fadeInDuration: const Duration(milliseconds: 200),
                         fit: BoxFit.cover,
                         placeholder: kTransparentImage,
-                        image:
-                            'https://images.unsplash.com/photo-1473116763249-2faaef81ccda?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1196&q=80',
+                        image: placeList.first.images.first.secureUrl,
                       ),
                     ),
                     leading: GestureDetector(
@@ -102,6 +121,20 @@ class _PlaceState extends State<Place> {
                       ),
                     ),
                     actions: [
+                      GestureDetector(
+                        onTap: () {},
+                        child: const Padding(
+                          padding: EdgeInsets.only(right: 20),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            child: Icon(
+                              MdiIcons.share,
+                              color: Colors.black,
+                              size: 24,
+                            ),
+                          ),
+                        ),
+                      ),
                       GestureDetector(
                         onTap: () {},
                         child: const Padding(
@@ -139,22 +172,22 @@ class _PlaceState extends State<Place> {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Place name',
-                              style: TextStyle(
+                            Text(
+                              placeList.first.name,
+                              style: const TextStyle(
                                 fontSize: 20,
                               ),
                             ),
                             Row(
-                              children: const [
-                                Icon(
+                              children: [
+                                const Icon(
                                   Icons.location_pin,
                                   size: 18,
                                 ),
                                 Text(
-                                  'Location',
+                                  placeList.first.address.city,
                                   textAlign: TextAlign.left,
-                                  style: TextStyle(color: Colors.black54),
+                                  style: const TextStyle(color: Colors.black54),
                                 ),
                               ],
                             ),
@@ -171,19 +204,19 @@ class _PlaceState extends State<Place> {
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Description',
                             style: TextStyle(
                               fontSize: 18,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Text(
-                            'Radhanagar Beach is one of the most beautiful beaches in India, known for its stunning sunset and clear blue waters. It is located on the western coast of Havelock Island, one of the most popular tourist destinations in the Andaman and Nicobar Islands.',
-                            style: TextStyle(color: Colors.black54),
+                            placeList.first.description,
+                            style: const TextStyle(color: Colors.black54),
                           )
                         ],
                       ),
@@ -382,7 +415,7 @@ class _PlaceState extends State<Place> {
                                 initialRating: 0,
                                 minRating: 1,
                                 direction: Axis.horizontal,
-                                allowHalfRating: true,
+                                allowHalfRating: false,
                                 itemCount: 5,
                                 itemPadding: const EdgeInsets.symmetric(
                                     horizontal: 16.0),
@@ -590,6 +623,8 @@ class _PlaceCategoryState extends State<PlaceCategory> {
 
   @override
   Widget build(BuildContext context) {
+    final placeList =
+        ModalRoute.of(context)!.settings.arguments as List<PlaceDetails>;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -621,8 +656,62 @@ class _PlaceCategoryState extends State<PlaceCategory> {
             ),
           ],
         ),
-        const Text("dat2a"),
-        const Text("dat3a"),
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Icon(
+                MdiIcons.star,
+                size: 30,
+              ),
+            ),
+            Column(
+              children: [
+                const Text(
+                  'Rating',
+                  style: TextStyle(fontSize: 12),
+                ),
+                ValueListenableBuilder(
+                  valueListenable: distance,
+                  builder: (context, value, child) {
+                    return Text(
+                      placeList.first.ratings.toString(),
+                      style: const TextStyle(fontSize: 16),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Icon(
+                MdiIcons.weatherCloudy,
+                size: 30,
+              ),
+            ),
+            Column(
+              children: [
+                const Text(
+                  'Weather',
+                  style: TextStyle(fontSize: 12),
+                ),
+                ValueListenableBuilder(
+                  valueListenable: distance,
+                  builder: (context, value, child) {
+                    return Text(
+                      '$temperature°c',
+                      style: const TextStyle(fontSize: 16),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
       ],
     );
   }

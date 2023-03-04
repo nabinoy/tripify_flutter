@@ -258,10 +258,6 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                                       Home.routeName,
                                       (route) => false,
                                     );
-                                    // Navigator.popUntil(context,
-                                    //     (Route<dynamic> route) => false);
-                                    // Navigator.pushReplacementNamed(
-                                    //     context, Home.routeName);
                                   } else {
                                     isLoading = false;
                                     final snackBar = SnackBar(

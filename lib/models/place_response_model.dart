@@ -1,52 +1,216 @@
-class Place {
-  final String id;
-  final String name;
-  final String description;
-  final bool entry;
-  final List<Map<String, dynamic>> entryCost;
-  final String island;
-  final Map<String, dynamic> address;
-  final Map<String, dynamic> location;
-  final List<String> activities;
-  final List<String> categories;
-  final List<Map<String, dynamic>> images;
-  final List<Map<String, dynamic>> externalLinks;
-  final List<Map<String, dynamic>> timings;
-  final double ratings;
+class PlaceDetails {
+  Location location;
+  Address address;
+  String sId;
+  String name;
+  String description;
+  bool entry;
+  List<EntryCost> entryCost;
+  String island;
+  List<String> activities;
+  List<String> categories;
+  List<Images> images;
+  List<ExternalLinks> externalLinks;
+  List<Timings> timings;
+  double ratings;
+  int numberOfReviews;
+  List<String> doS;
+  List<String> dontS;
+  List<Reviews> reviews;
+  String createdAt;
+  int iV;
 
-  Place({
-    required this.id,
+  PlaceDetails(
+      {required this.location,
+      required this.address,
+      required this.sId,
+      required this.name,
+      required this.description,
+      required this.entry,
+      required this.entryCost,
+      required this.island,
+      required this.activities,
+      required this.categories,
+      required this.images,
+      required this.externalLinks,
+      required this.timings,
+      required this.ratings,
+      required this.numberOfReviews,
+      required this.doS,
+      required this.dontS,
+      required this.reviews,
+      required this.createdAt,
+      required this.iV});
+
+  factory PlaceDetails.fromJson(Map<String, dynamic> data) {
+    return PlaceDetails(
+      location: Location.fromJson(data['location']),
+        address: Address.fromJson(data['address']),
+        sId: data['_id'],
+        name: data['name'],
+        description: data['description'],
+        entry: data['entry'],
+        entryCost: (data['entry_cost'] as List<dynamic>)
+            .map((e) => EntryCost.fromJson(e))
+            .toList(),
+        island: data['island'],
+        activities: (data['activities'] as List<dynamic>)
+            .map((e) => e.toString())
+            .toList(),
+        categories: (data['categories'] as List<dynamic>)
+            .map((e) => e.toString())
+            .toList(),
+        images: (data['images'] as List<dynamic>)
+            .map((e) => Images.fromJson(e))
+            .toList(),
+        externalLinks: (data['external_links'] as List<dynamic>)
+            .map((e) => ExternalLinks.fromJson(e))
+            .toList(),
+        timings: (data['timings'] as List<dynamic>)
+            .map((e) => Timings.fromJson(e))
+            .toList(),
+        ratings: data['ratings'].toDouble(),
+        numberOfReviews: data['numberOfReviews'],
+        doS: (data['do_s'] as List<dynamic>).map((e) => e.toString()).toList(),
+        dontS:
+            (data['dont_s'] as List<dynamic>).map((e) => e.toString()).toList(),
+        reviews: (data['reviews'] as List<dynamic>)
+            .map((e) => Reviews.fromJson(e))
+            .toList(),
+        createdAt: data['createdAt'].toString(),
+        iV: data['__v'],
+    );
+  }
+}
+
+class Location {
+  String type;
+  List<double> coordinates;
+
+  Location({required this.type, required this.coordinates});
+
+  factory Location.fromJson(Map<String, dynamic> json) {
+    return Location(
+        type: json['type'], coordinates: json['coordinates'].cast<double>());
+  }
+}
+
+class Address {
+  String street;
+  String landmark;
+  String city;
+  String state;
+  String zip;
+  String country;
+
+  Address(
+      {required this.street,
+      required this.landmark,
+      required this.city,
+      required this.state,
+      required this.zip,
+      required this.country});
+
+  factory Address.fromJson(Map<String, dynamic> json) {
+    return Address(
+      street: json['street'],
+      landmark: json['landmark'],
+      city: json['city'],
+      state: json['state'],
+      zip: json['zip'],
+      country: json['country'],
+    );
+  }
+}
+
+class EntryCost {
+  String category;
+  int cost;
+  String sId;
+
+  EntryCost({required this.category, required this.cost, required this.sId});
+
+  factory EntryCost.fromJson(Map<String, dynamic> json) {
+    return EntryCost(
+        category: json['category'], cost: json['cost'], sId: json['_id']);
+  }
+}
+
+class Images {
+  String id;
+  String secureUrl;
+  String sId;
+
+  Images({required this.id, required this.secureUrl, required this.sId});
+
+  factory Images.fromJson(Map<String, dynamic> json) {
+    return Images(
+        id: json['id'], secureUrl: json['secure_url'], sId: json['_id']);
+  }
+}
+
+class ExternalLinks {
+  String title;
+  String link;
+  String sId;
+
+  ExternalLinks({required this.title, required this.link, required this.sId});
+
+  factory ExternalLinks.fromJson(Map<String, dynamic> json) {
+    return ExternalLinks(
+        title: json['title'], link: json['link'], sId: json['_id']);
+  }
+}
+
+class Timings {
+  String day;
+  String openTime;
+  String closeTime;
+  String sId;
+
+  Timings(
+      {required this.day,
+      required this.openTime,
+      required this.closeTime,
+      required this.sId});
+
+  factory Timings.fromJson(Map<String, dynamic> json) {
+    return Timings(
+        day: json['day'],
+        openTime: json['open_time'],
+        closeTime: json['close_time'],
+        sId: json['_id']);
+  }
+}
+
+class Reviews {
+  String user;
+  String name;
+  int rating;
+  String comment;
+  String date;
+  String sentiment;
+  String sId;
+
+  Reviews({
+    required this.user,
     required this.name,
-    required this.description,
-    required this.entry,
-    required this.entryCost,
-    required this.island,
-    required this.address,
-    required this.location,
-    required this.activities,
-    required this.categories,
-    required this.images,
-    required this.externalLinks,
-    required this.timings,
-    required this.ratings,
+    required this.rating,
+    required this.comment,
+    required this.date,
+    required this.sId,
+    required this.sentiment,
   });
 
-  factory Place.fromJson(Map<String, dynamic> json) {
-    return Place(
-      id: json['_id'],
+  factory Reviews.fromJson(Map<String, dynamic> json) {
+    return Reviews(
+      user: json['user'],
       name: json['name'],
-      description: json['description'],
-      entry: json['entry'],
-      entryCost: List<Map<String, dynamic>>.from(json['entry_cost']),
-      island: json['island'],
-      address: Map<String, dynamic>.from(json['address']),
-      location: Map<String, dynamic>.from(json['location']),
-      activities: List<String>.from(json['activities']),
-      categories: List<String>.from(json['categories']),
-      images: List<Map<String, dynamic>>.from(json['images']),
-      externalLinks: List<Map<String, dynamic>>.from(json['external_links']),
-      timings: List<Map<String, dynamic>>.from(json['timings']),
-      ratings: json['ratings'].toDouble(),
+      rating: json['rating'],
+      comment: json['comment'],
+      date: json['date'],
+      sId: json['_id'],
+      sentiment: json['sentiment'],
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:tripify/models/forgot_password_request_model.dart';
 import 'package:tripify/models/login_request_model.dart';
+import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/models/signup_request_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:tripify/constants/config.dart';
@@ -77,7 +78,7 @@ class APIService {
       }
     }
   }
-  
+
   static Future<bool> forgotpassword(
     ForgotPasswordRequestModel model,
   ) async {
@@ -110,6 +111,45 @@ class APIService {
       final errorMessage = match!.group(1);
       print(errorMessage);
       return false;
+    }
+  }
+
+  static Future<List<PlaceDetails>> placeAll() async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+    };
+
+    var url = Uri.https(
+      Config.apiURL,
+      Config.placeAllAPI,
+    );
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['places'];
+      List<PlaceDetails> pd = [];
+
+      for (var i = 0; i < data.length; i++) {
+        print(data.length);
+        PlaceDetails pdd = PlaceDetails.fromJson(data[i]);
+        pd.add(pdd);
+      }
+      return pd;
+    } else {
+      throw Exception('Failed to load person details');
     }
   }
 }

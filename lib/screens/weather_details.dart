@@ -112,12 +112,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           children: [
-            // Container(
-            //   height: screenWidth * 0.40,
-            //   width: screenWidth / 2 + 16,
-            //   padding: const EdgeInsets.all(10),
-            //   child: MainWeather(),
-            // ),
             Container(
               height: screenHeight / 2 * 0.8,
               padding: const EdgeInsets.fromLTRB(10, 2, 10, 10),

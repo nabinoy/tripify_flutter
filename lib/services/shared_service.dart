@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:tripify/models/place_response_model.dart';
 
 class SharedService {
   static Future<void> shareInit() async {
@@ -37,7 +40,6 @@ class SharedService {
     DateTime expiryTokenDate =
         DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] * 1000);
     print(expiryTokenDate);
-    print(decodedToken);
   }
 
   static String name = '';
@@ -49,6 +51,12 @@ class SharedService {
     name = prefs.getString(keyName) ?? 'Developer';
     const keyEmail = 'email';
     email = prefs.getString(keyEmail) ?? 'Login with your email';
+  }
+
+  static Future<String?> getSecureUserToken() async {
+    const storage = FlutterSecureStorage();
+    String? userToken = await storage.read(key: 'token');
+    return userToken;
   }
 
   static Future<void> setSharedHomeAfter(bool value) async {
