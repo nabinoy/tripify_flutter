@@ -63,9 +63,9 @@ class _PlaceState extends State<Place> {
   @override
   void initState() {
     super.initState();
-    getCurrentLocation();
-    weatherLatAPI = getlat().toString();
-    weatherLongAPI = getlong().toString();
+    // getCurrentLocation();
+    // weatherLatAPI = getlat().toString();
+    // weatherLongAPI = getlong().toString();
   }
 
   @override
@@ -78,6 +78,8 @@ class _PlaceState extends State<Place> {
   Widget build(BuildContext context) {
     final placeList =
         ModalRoute.of(context)!.settings.arguments as List<PlaceDetails>;
+    weatherLatAPI = placeList.first.location.coordinates[1].toString();
+    weatherLongAPI = placeList.first.location.coordinates[0].toString();
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: bgColor,
