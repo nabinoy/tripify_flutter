@@ -9,6 +9,7 @@ import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/place_model.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/models/weather_model.dart';
+import 'package:tripify/screens/weather_details.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/shared_service.dart';
@@ -375,18 +376,28 @@ class _PlaceState extends State<Place> {
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
+                            children: [
+                              const Text(
                                 'Weather Forecast',
                                 style: TextStyle(
                                   fontSize: 18,
                                 ),
                               ),
-                              Text(
-                                'View more',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.lightBlue,
+                              GestureDetector(
+                                onTap: () {
+                                  HapticFeedback.mediumImpact();
+                                  Navigator.pushNamed(
+                                    context,
+                                    WeatherDetails.routeName,
+                                    arguments: [weatherLatAPI, weatherLongAPI],
+                                  );
+                                },
+                                child: const Text(
+                                  'View more',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.lightBlue,
+                                  ),
                                 ),
                               ),
                             ],
@@ -599,7 +610,7 @@ class _PlaceState extends State<Place> {
                 ],
               );
             } else {
-              return const LoadingScreen();
+              return const Center(child: CircularProgressIndicator());
             }
           }),
     );

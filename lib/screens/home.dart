@@ -86,6 +86,7 @@ class _HomepageState extends State<Homepage> {
             ),
           ),
         );
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
           ..showSnackBar(snackBar);
@@ -261,6 +262,7 @@ class _HomepageState extends State<Homepage> {
                   Navigator.pushNamed(
                     context,
                     WeatherDetails.routeName,
+                    arguments: ['Current','Location'],
                   );
                 },
               ),

@@ -25,10 +25,18 @@ class _WeatherDetailsState extends State<WeatherDetails> {
     getCurrentLocation();
     weatherLatAPI = getlat().toString();
     weatherLongAPI = getlong().toString();
+    stopListeningForLocationUpdates();
   }
 
   @override
   Widget build(BuildContext context) {
+    final placeList =
+        ModalRoute.of(context)!.settings.arguments as List<String>;
+    if (placeList[0] != 'Current') {
+      weatherLatAPI = placeList[0];
+      weatherLongAPI = placeList[1];
+    }
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
