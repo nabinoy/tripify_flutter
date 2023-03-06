@@ -10,6 +10,7 @@ import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/screens/category.dart';
 import 'package:tripify/screens/island.dart';
 import 'package:tripify/screens/location_weather.dart';
+import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/geocoding.dart';
 import 'package:tripify/services/shared_service.dart';
@@ -19,6 +20,8 @@ String greet = '';
 int activeIndex = 0;
 String currentPlace = '';
 final controller = CarouselController();
+List<CategoryAll> c = [];
+List<IslandAll> ia = [];
 
 Future<void> delayMain(int milliseconds) {
   return Future.delayed(Duration(milliseconds: milliseconds), () {
@@ -45,7 +48,9 @@ class _HomeMainState extends State<HomeMain> {
     }
     return FutureBuilder(
       future: Future.wait([
-        delayMain(3000),
+        //delayMain(3000),
+        APIService.categoryAll().then((value) => {c = value}),
+        APIService.islandAll().then((value) => {ia = value}),
         getCurrentLocation(),
         SharedService.getSharedLogin(),
       ]),
@@ -140,7 +145,8 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                       style: const TextStyle(fontSize: 16.0),
                     ),
                     Text(
-                      ' ${SharedService.name}',
+                      ' ${SharedService.name.split(' ').firstWhere((name) => name.length > 2)}',
+                      //' ${SharedService.name}',
                       style: const TextStyle(fontSize: 16.0),
                     ),
                   ],
@@ -166,10 +172,10 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
               1.3,
               CarouselSlider.builder(
                   carouselController: controller,
-                  itemCount: urlImages.length,
+                  itemCount: ia.length,
                   itemBuilder: (context, index, realIndex) {
-                    final urlImage = urlImages[index];
-                    final urlImageText = urlImagesText[index];
+                    final urlImage = ia[index].image.secureUrl;
+                    final urlImageText = ia[index].name;
                     return buildImage(context, urlImage, urlImageText, index);
                   },
                   options: CarouselOptions(
@@ -202,7 +208,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
               1.6,
               Column(
                 children: [
-                  for (int i = 0; i < categories.length; i += 2)
+                  for (int i = 0; i < c.length; i += 2)
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0),
                       child: Row(
@@ -219,7 +225,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                                 CachedNetworkImage(
                                   height: containerHeight,
                                   width: containerWidth,
-                                  imageUrl: catImage[i],
+                                  imageUrl: c[i].image.secureUrl,
                                   placeholder: (context, url) => Image.memory(
                                     kTransparentImage,
                                     fit: BoxFit.cover,
@@ -230,14 +236,14 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                                 ),
                                 Center(
                                   child: Text(
-                                    categories[i],
+                                    c[i].name,
                                     style: const TextStyle(color: Colors.white),
                                   ),
                                 ),
                               ]),
                             ),
                           ),
-                          if (i + 1 < categories.length)
+                          if (i + 1 < c.length)
                             GestureDetector(
                               onTap: () {
                                 HapticFeedback.mediumImpact();
@@ -254,7 +260,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                                         CachedNetworkImage(
                                           height: containerHeight,
                                           width: containerWidth,
-                                          imageUrl: catImage[i + 1],
+                                          imageUrl: c[i + 1].image.secureUrl,
                                           placeholder: (context, url) =>
                                               Image.memory(
                                             kTransparentImage,
@@ -266,7 +272,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                                         ),
                                         Center(
                                           child: Text(
-                                            categories[i + 1],
+                                            c[i + 1].name,
                                             style: const TextStyle(
                                                 color: Colors.white),
                                           ),

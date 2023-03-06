@@ -6,6 +6,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
+import 'package:tripify/models/place_model.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/models/weather_model.dart';
 import 'package:tripify/services/api_service.dart';
@@ -348,19 +349,19 @@ class _PlaceState extends State<Place> {
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Address',
                             style: TextStyle(
                               fontSize: 18,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Text(
-                            'dsdsdsdsdsdsdsd\nsdsdsdsdsdsdsd\ndsdsdsdsdsdsdsd\nsdsdsdsdsd\nsdsdsdsd',
-                            style: TextStyle(color: Colors.black54),
+                            '${placeList.first.address.street}\n${placeList.first.address.landmark}\n${placeList.first.address.zip}\n${placeList.first.address.city}\n${placeList.first.address.state}\n${placeList.first.address.country}',
+                            style: const TextStyle(color: Colors.black54),
                           )
                         ],
                       ),

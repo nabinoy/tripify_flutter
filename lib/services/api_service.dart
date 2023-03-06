@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:tripify/models/forgot_password_request_model.dart';
+import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/login_request_model.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/models/signup_request_model.dart';
@@ -98,11 +99,8 @@ class APIService {
     );
 
     if (response.statusCode == 200) {
-      print(response.body);
       return true;
     } else {
-      print(response.statusCode);
-      print(response.body);
       Document document = parse(response.body);
       Element? errorElement = document.querySelector('pre');
       String errorString = errorElement!.text;
@@ -136,18 +134,90 @@ class APIService {
       headers: requestHeaders,
     );
 
-    print(response.statusCode);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       data = data['places'];
       List<PlaceDetails> pd = [];
 
       for (var i = 0; i < data.length; i++) {
-        print(data.length);
         PlaceDetails pdd = PlaceDetails.fromJson(data[i]);
         pd.add(pdd);
       }
       return pd;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<List<CategoryAll>> categoryAll() async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+    };
+
+    var url = Uri.https(
+      Config.apiURL,
+      Config.categoryAllAPI,
+    );
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['categories'];
+      List<CategoryAll> c = [];
+
+      for (var i = 0; i < data.length; i++) {
+        CategoryAll ca = CategoryAll.fromJson(data[i]);
+        c.add(ca);
+      }
+      return c;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<List<IslandAll>> islandAll() async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+    };
+
+    var url = Uri.https(
+      Config.apiURL,
+      Config.islandAllAPI,
+    );
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['islands'];
+      List<IslandAll> ia = [];
+
+      for (var i = 0; i < data.length; i++) {
+        IslandAll iaa = IslandAll.fromJson(data[i]);
+        ia.add(iaa);
+      }
+      return ia;
     } else {
       throw Exception('Failed to load person details');
     }

@@ -340,12 +340,12 @@ class DrawerItem extends StatelessWidget {
             alignment: Alignment.centerLeft,
             margin: const EdgeInsets.only(bottom: 10),
             padding: const EdgeInsets.only(left: 8),
-            height: 70,
             child: randomAvatar(SharedService.name, height: 70, width: 70)),
         Container(
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(left: 8),
           child: Text(
+            overflow: TextOverflow.ellipsis,
             SharedService.name,
             style: const TextStyle(color: Colors.black, fontSize: 18),
           ),
@@ -354,6 +354,7 @@ class DrawerItem extends StatelessWidget {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(left: 8),
           child: Text(
+            overflow: TextOverflow.ellipsis,
             SharedService.email,
             style: TextStyle(
               color: Colors.grey[700],
