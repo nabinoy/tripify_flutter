@@ -5,6 +5,7 @@ import 'package:tripify/models/forgot_password_request_model.dart';
 import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/login_request_model.dart';
 import 'package:tripify/models/place_response_model.dart';
+import 'package:tripify/models/review_rating_model.dart';
 import 'package:tripify/models/signup_request_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:tripify/constants/config.dart';
@@ -143,6 +144,7 @@ class APIService {
         PlaceDetails pdd = PlaceDetails.fromJson(data[i]);
         pd.add(pdd);
       }
+
       return pd;
     } else {
       throw Exception('Failed to load person details');
@@ -218,6 +220,37 @@ class APIService {
         ia.add(iaa);
       }
       return ia;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<ReviewRatings> reviewRatingAll(String id) async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+    };
+    final queryParameters = {'id': id};
+    var url = Uri.https(
+      Config.apiURL,
+      Config.ratingAllAPI,
+      queryParameters,
+    );
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+
+      ReviewRatings rr = ReviewRatings.fromJson(data);
+      return rr;
     } else {
       throw Exception('Failed to load person details');
     }

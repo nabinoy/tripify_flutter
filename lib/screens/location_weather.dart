@@ -85,6 +85,7 @@ class _LocationWeatherState extends State<LocationWeather> {
                       Navigator.pushNamed(
                         context,
                         WeatherDetails.routeName,
+                        arguments: ['Current','Location'],
                       );
                     },
                     child: SizedBox(

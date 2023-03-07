@@ -6,8 +6,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
-import 'package:tripify/models/place_model.dart';
 import 'package:tripify/models/place_response_model.dart';
+import 'package:tripify/models/review_rating_model.dart';
 import 'package:tripify/models/weather_model.dart';
 import 'package:tripify/screens/weather_details.dart';
 import 'package:tripify/services/api_service.dart';
@@ -83,10 +83,13 @@ class _PlaceState extends State<Place> {
     weatherLatAPI = placeList.first.location.coordinates[1].toString();
     weatherLongAPI = placeList.first.location.coordinates[0].toString();
     double screenWidth = MediaQuery.of(context).size.width;
+    dynamic r;
     return Scaffold(
       backgroundColor: bgColor,
       body: FutureBuilder(
           future: Future.wait([
+            APIService.reviewRatingAll(placeList.first.sId)
+                .then((value) => {r = value}),
             getForcastInfo(),
             getWeatherInfo(),
           ]),

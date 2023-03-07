@@ -314,7 +314,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
             dotColor: Color.fromARGB(255, 155, 155, 155),
             activeDotColor: Colors.blue),
         activeIndex: activeIndex,
-        count: urlImages.length,
+        count: ia.length,
       );
 
   void animateToSlide(int index) => controller.animateToPage(index);

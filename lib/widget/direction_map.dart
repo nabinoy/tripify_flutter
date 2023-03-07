@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:tripify/models/place_model.dart';
 import 'package:tripify/models/weather_model.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:http/http.dart' as http;
