@@ -113,7 +113,7 @@ class APIService {
     }
   }
 
-  static Future<List<PlaceDetails>> placeAll() async {
+  static Future<PlaceDetails> placeAll() async {
     var userToken = '';
     await SharedService.getSecureUserToken().then((String? data) {
       String? token = data.toString();
@@ -137,14 +137,7 @@ class APIService {
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
-      data = data['places'];
-      List<PlaceDetails> pd = [];
-
-      for (var i = 0; i < data.length; i++) {
-        PlaceDetails pdd = PlaceDetails.fromJson(data[i]);
-        pd.add(pdd);
-      }
-
+      PlaceDetails pd = PlaceDetails.fromJson(data);
       return pd;
     } else {
       throw Exception('Failed to load person details');
@@ -246,6 +239,7 @@ class APIService {
       url,
       headers: requestHeaders,
     );
+
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
 

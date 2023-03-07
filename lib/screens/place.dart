@@ -78,12 +78,12 @@ class _PlaceState extends State<Place> {
 
   @override
   Widget build(BuildContext context) {
-    final placeList =
-        ModalRoute.of(context)!.settings.arguments as List<PlaceDetails>;
+    List<Places2> placeList =
+        ModalRoute.of(context)!.settings.arguments as List<Places2>;
     weatherLatAPI = placeList.first.location.coordinates[1].toString();
     weatherLongAPI = placeList.first.location.coordinates[0].toString();
     double screenWidth = MediaQuery.of(context).size.width;
-    dynamic r;
+    late ReviewRatings r;
     return Scaffold(
       backgroundColor: bgColor,
       body: FutureBuilder(
@@ -303,9 +303,9 @@ class _PlaceState extends State<Place> {
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
-                            'Direction',
+                            r.numberOfReviews.toString(),
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -640,8 +640,8 @@ class _PlaceCategoryState extends State<PlaceCategory> {
 
   @override
   Widget build(BuildContext context) {
-    final placeList =
-        ModalRoute.of(context)!.settings.arguments as List<PlaceDetails>;
+    List<Places2> placeList =
+        ModalRoute.of(context)!.settings.arguments as List<Places2>;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

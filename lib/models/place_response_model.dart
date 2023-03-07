@@ -1,4 +1,24 @@
 class PlaceDetails {
+  List<Places2> places;
+  int filteredPlaceNumber;
+  int totalPlaceCount;
+
+  PlaceDetails(
+      {required this.places,
+      required this.filteredPlaceNumber,
+      required this.totalPlaceCount});
+
+  factory PlaceDetails.fromJson(Map<String, dynamic> json) {
+    return PlaceDetails(
+        places: (json['places'] as List<dynamic>)
+            .map((e) => Places2.fromJson(e))
+            .toList(),
+        filteredPlaceNumber: json['filteredPlaceNumber'],
+        totalPlaceCount: json['totalPlaceCount']);
+  }
+}
+
+class Places2 {
   Location location;
   Address address;
   String sId;
@@ -20,7 +40,7 @@ class PlaceDetails {
   String createdAt;
   int iV;
 
-  PlaceDetails(
+  Places2(
       {required this.location,
       required this.address,
       required this.sId,
@@ -42,43 +62,43 @@ class PlaceDetails {
       required this.createdAt,
       required this.iV});
 
-  factory PlaceDetails.fromJson(Map<String, dynamic> data) {
-    return PlaceDetails(
+  factory Places2.fromJson(Map<String, dynamic> data) {
+    return Places2(
       location: Location.fromJson(data['location']),
-        address: Address.fromJson(data['address']),
-        sId: data['_id'],
-        name: data['name'],
-        description: data['description'],
-        entry: data['entry'],
-        entryCost: (data['entry_cost'] as List<dynamic>)
-            .map((e) => EntryCost.fromJson(e))
-            .toList(),
-        island: data['island'],
-        activities: (data['activities'] as List<dynamic>)
-            .map((e) => e.toString())
-            .toList(),
-        categories: (data['categories'] as List<dynamic>)
-            .map((e) => e.toString())
-            .toList(),
-        images: (data['images'] as List<dynamic>)
-            .map((e) => Images.fromJson(e))
-            .toList(),
-        externalLinks: (data['external_links'] as List<dynamic>)
-            .map((e) => ExternalLinks.fromJson(e))
-            .toList(),
-        timings: (data['timings'] as List<dynamic>)
-            .map((e) => Timings.fromJson(e))
-            .toList(),
-        ratings: data['ratings'].toDouble(),
-        numberOfReviews: data['numberOfReviews'],
-        doS: (data['do_s'] as List<dynamic>).map((e) => e.toString()).toList(),
-        dontS:
-            (data['dont_s'] as List<dynamic>).map((e) => e.toString()).toList(),
-        reviews: (data['reviews'] as List<dynamic>)
-            .map((e) => Reviews.fromJson(e))
-            .toList(),
-        createdAt: data['createdAt'].toString(),
-        iV: data['__v'],
+      address: Address.fromJson(data['address']),
+      sId: data['_id'],
+      name: data['name'],
+      description: data['description'],
+      entry: data['entry'],
+      entryCost: (data['entry_cost'] as List<dynamic>)
+          .map((e) => EntryCost.fromJson(e))
+          .toList(),
+      island: data['island'],
+      activities: (data['activities'] as List<dynamic>)
+          .map((e) => e.toString())
+          .toList(),
+      categories: (data['categories'] as List<dynamic>)
+          .map((e) => e.toString())
+          .toList(),
+      images: (data['images'] as List<dynamic>)
+          .map((e) => Images.fromJson(e))
+          .toList(),
+      externalLinks: (data['external_links'] as List<dynamic>)
+          .map((e) => ExternalLinks.fromJson(e))
+          .toList(),
+      timings: (data['timings'] as List<dynamic>)
+          .map((e) => Timings.fromJson(e))
+          .toList(),
+      ratings: data['ratings'].toDouble(),
+      numberOfReviews: data['numberOfReviews'],
+      doS: (data['do_s'] as List<dynamic>).map((e) => e.toString()).toList(),
+      dontS:
+          (data['dont_s'] as List<dynamic>).map((e) => e.toString()).toList(),
+      reviews: (data['reviews'] as List<dynamic>)
+          .map((e) => Reviews.fromJson(e))
+          .toList(),
+      createdAt: data['createdAt'].toString(),
+      iV: data['__v'],
     );
   }
 }

@@ -16,7 +16,7 @@ class Wishlist extends StatefulWidget {
 class _WishlistState extends State<Wishlist> {
   @override
   Widget build(BuildContext context) {
-    List<PlaceDetails> pd = [];
+    late PlaceDetails pd;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -30,7 +30,6 @@ class _WishlistState extends State<Wishlist> {
               future: APIService.placeAll().then((value) => {pd = value}),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  //return Text(pd[1].name);
                   return SizedBox(
                     height: MediaQuery.of(context).size.height / 2 * 0.75,
                     width: MediaQuery.of(context).size.width,
@@ -38,15 +37,16 @@ class _WishlistState extends State<Wishlist> {
                       physics: const NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                      itemCount: pd.length,
+                      itemCount: pd.filteredPlaceNumber,
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, Place.routeName, arguments: [pd[index]]);
+                            Navigator.pushNamed(context, Place.routeName,
+                                arguments: [pd.places[index]]);
                           },
                           child: SizedBox(
                             width: 100.0,
-                            child: Text(pd[index].name),
+                            child: Text(pd.places[index].name),
                           ),
                         );
                       },
