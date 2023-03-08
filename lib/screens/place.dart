@@ -17,6 +17,7 @@ import 'package:tripify/widget/direction_map.dart';
 import 'package:tripify/widget/hour_forecast.dart';
 
 late PlaceDetails placeDetails;
+late ReviewRatings r;
 
 class PlaceCategoryTop extends SliverPersistentHeaderDelegate {
   final ValueChanged<int> onChanged;
@@ -83,13 +84,17 @@ class _PlaceState extends State<Place> {
     weatherLatAPI = placeList.first.location.coordinates[1].toString();
     weatherLongAPI = placeList.first.location.coordinates[0].toString();
     double screenWidth = MediaQuery.of(context).size.width;
-    late ReviewRatings r;
+
+    late ReviewUser ru;
+
     return Scaffold(
       backgroundColor: bgColor,
       body: FutureBuilder(
           future: Future.wait([
             APIService.reviewRatingAll(placeList.first.sId)
                 .then((value) => {r = value}),
+            APIService.reviewRatingUser(placeList.first.sId)
+                .then((value) => {ru = value}),
             getForcastInfo(),
             getWeatherInfo(),
           ]),
@@ -303,9 +308,9 @@ class _PlaceState extends State<Place> {
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
                           Text(
-                            r.numberOfReviews.toString(),
+                            'Direction',
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -429,7 +434,7 @@ class _PlaceState extends State<Place> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               RatingBar.builder(
-                                initialRating: 0,
+                                initialRating: ru.rating.toDouble(),
                                 minRating: 1,
                                 direction: Axis.horizontal,
                                 allowHalfRating: false,
@@ -490,14 +495,15 @@ class _PlaceState extends State<Place> {
                             children: [
                               Column(
                                 children: [
-                                  const Text(
-                                    '4.5',
-                                    style: TextStyle(
+                                  Text(
+                                    r.ratingsAverage.toStringAsFixed(1),
+                                    style: const TextStyle(
                                       fontSize: 50,
                                     ),
                                   ),
                                   RatingBar.builder(
-                                    initialRating: 4.5,
+                                    initialRating: r.ratingsAverage.toDouble(),
+                                    ignoreGestures: true,
                                     minRating: 1,
                                     direction: Axis.horizontal,
                                     allowHalfRating: true,
@@ -511,9 +517,9 @@ class _PlaceState extends State<Place> {
                                     ),
                                     onRatingUpdate: (rating) {},
                                   ),
-                                  const Text(
-                                    '345',
-                                    style: TextStyle(fontSize: 12),
+                                  Text(
+                                    r.numberOfReviews.toString(),
+                                    style: const TextStyle(fontSize: 12),
                                   ),
                                 ],
                               ),
@@ -525,7 +531,9 @@ class _PlaceState extends State<Place> {
                                       LinearPercentIndicator(
                                         width: 160.0,
                                         lineHeight: 10.0,
-                                        percent: 0.9,
+                                        percent: (r.numberOfReviews == 0)
+                                            ? 0
+                                            : (r.fiveCount / r.numberOfReviews),
                                         barRadius: const Radius.circular(16),
                                         progressColor: Colors.blue,
                                       )
@@ -537,7 +545,9 @@ class _PlaceState extends State<Place> {
                                       LinearPercentIndicator(
                                         width: 160.0,
                                         lineHeight: 10.0,
-                                        percent: 0.1,
+                                        percent: (r.numberOfReviews == 0)
+                                            ? 0
+                                            : (r.fourCount / r.numberOfReviews),
                                         barRadius: const Radius.circular(16),
                                         progressColor: Colors.blue,
                                       )
@@ -549,7 +559,10 @@ class _PlaceState extends State<Place> {
                                       LinearPercentIndicator(
                                         width: 160.0,
                                         lineHeight: 10.0,
-                                        percent: 0.2,
+                                        percent: (r.numberOfReviews == 0)
+                                            ? 0
+                                            : (r.threeCount /
+                                                r.numberOfReviews),
                                         barRadius: const Radius.circular(16),
                                         progressColor: Colors.blue,
                                       )
@@ -561,7 +574,9 @@ class _PlaceState extends State<Place> {
                                       LinearPercentIndicator(
                                         width: 160.0,
                                         lineHeight: 10.0,
-                                        percent: 0,
+                                        percent: (r.numberOfReviews == 0)
+                                            ? 0
+                                            : (r.twoCount / r.numberOfReviews),
                                         barRadius: const Radius.circular(16),
                                         progressColor: Colors.blue,
                                       )
@@ -573,7 +588,9 @@ class _PlaceState extends State<Place> {
                                       LinearPercentIndicator(
                                         width: 160.0,
                                         lineHeight: 10.0,
-                                        percent: 0.3,
+                                        percent: (r.numberOfReviews == 0)
+                                            ? 0
+                                            : (r.oneCount / r.numberOfReviews),
                                         barRadius: const Radius.circular(16),
                                         progressColor: Colors.blue,
                                       )
@@ -692,7 +709,7 @@ class _PlaceCategoryState extends State<PlaceCategory> {
                   valueListenable: distance,
                   builder: (context, value, child) {
                     return Text(
-                      placeList.first.ratings.toString(),
+                      r.ratingsAverage.toStringAsFixed(1),
                       style: const TextStyle(fontSize: 16),
                     );
                   },

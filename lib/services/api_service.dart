@@ -239,12 +239,54 @@ class APIService {
       url,
       headers: requestHeaders,
     );
-
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
-
       ReviewRatings rr = ReviewRatings.fromJson(data);
       return rr;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<ReviewUser> reviewRatingUser(String id) async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+    };
+    final queryParameters = {'id': id};
+    var url = Uri.https(
+      Config.apiURL,
+      Config.userReviewAPI,
+      queryParameters,
+    );
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['review'];
+      ReviewUser ru = ReviewUser.fromJson(data);
+      return ru;
+    } else if (response.statusCode == 500 &&
+        json.decode(response.body)['message'] == 'No review found.') {
+      var emptyJson = {
+        "user": "",
+        "name": "",
+        "rating": 0,
+        "comment": "",
+        "sentiment": "",
+        "_id": "",
+        "date": ""
+      };
+      ReviewUser ru = ReviewUser.fromJson(emptyJson);
+      return ru;
     } else {
       throw Exception('Failed to load person details');
     }

@@ -7,6 +7,7 @@ class Config {
   static const categoryAllAPI = "/api/v1/category/all";
   static const islandAllAPI = "/api/v1/island/all";
   static const ratingAllAPI = "/api/v1/reviews";
+  static const userReviewAPI = "/api/v1/userreview";
   static const forgotPasswordAPI = '/api/v1/forgotPassword';
   static const String gmapAPI = 'AIzaSyBqJ1Tw86J77TZamEAl2crSnXCSJX_xde0';
   static const String weatherAPI = 'ebe059455ee33a095b1e6f4dfe7f964b';

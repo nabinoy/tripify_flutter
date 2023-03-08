@@ -20,7 +20,7 @@ class SharedService {
     const storage = FlutterSecureStorage();
     await prefs.remove('name');
     await prefs.remove('email');
-    //await prefs.remove('token');
+    await prefs.remove('id');
     await storage.delete(key: 'token');
     await prefs.remove('is_home_after_login');
   }
@@ -34,6 +34,9 @@ class SharedService {
     const keyEmail = 'email';
     final valueEmail = data['user']['email'];
     prefs.setString(keyEmail, valueEmail);
+    const keyId = 'id';
+    final valueId = data['user']['_id'];
+    prefs.setString(keyId, valueId);
     await storage.write(key: 'token', value: data['token']);
     setSharedUserToken(true);
     Map<String, dynamic> decodedToken = JwtDecoder.decode(data['token']);
@@ -44,6 +47,7 @@ class SharedService {
 
   static String name = '';
   static String email = '';
+  static String id = '';
 
   static Future<void> getSharedLogin() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -51,6 +55,8 @@ class SharedService {
     name = prefs.getString(keyName) ?? 'Developer';
     const keyEmail = 'email';
     email = prefs.getString(keyEmail) ?? 'Login with your email';
+    const keyId = 'id';
+    id = prefs.getString(keyId)!;
   }
 
   static Future<String?> getSecureUserToken() async {
@@ -74,6 +80,7 @@ class SharedService {
 
   static Future<void> setSharedDistance(double distance) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('distance');
     const key = 'distance';
     final value = distance;
     prefs.setDouble(key, value);
@@ -120,5 +127,4 @@ class SharedService {
   //   const keyLong = 'last_known_long';
   //   long =  prefs.getDouble(keyLong)!;
   // }
-
 }
