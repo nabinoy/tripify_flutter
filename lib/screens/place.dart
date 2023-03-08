@@ -101,6 +101,7 @@ class _PlaceState extends State<Place> {
           ]),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
+              print(placeList.first.sId);
               return CustomScrollView(
                 slivers: [
                   SliverAppBar(
@@ -530,6 +531,8 @@ class _PlaceState extends State<Place> {
                                     children: <Widget>[
                                       const Text('5'),
                                       LinearPercentIndicator(
+                                        animation: true,
+                                        animationDuration: 3000,
                                         width: 160.0,
                                         lineHeight: 10.0,
                                         percent: (r.numberOfReviews == 0)
@@ -544,6 +547,8 @@ class _PlaceState extends State<Place> {
                                     children: <Widget>[
                                       const Text('4'),
                                       LinearPercentIndicator(
+                                        animation: true,
+                                        animationDuration: 3000,
                                         width: 160.0,
                                         lineHeight: 10.0,
                                         percent: (r.numberOfReviews == 0)
@@ -558,6 +563,8 @@ class _PlaceState extends State<Place> {
                                     children: <Widget>[
                                       const Text('3'),
                                       LinearPercentIndicator(
+                                        animation: true,
+                                        animationDuration: 3000,
                                         width: 160.0,
                                         lineHeight: 10.0,
                                         percent: (r.numberOfReviews == 0)
@@ -573,6 +580,8 @@ class _PlaceState extends State<Place> {
                                     children: <Widget>[
                                       const Text('2'),
                                       LinearPercentIndicator(
+                                        animation: true,
+                                        animationDuration: 3000,
                                         width: 160.0,
                                         lineHeight: 10.0,
                                         percent: (r.numberOfReviews == 0)
@@ -587,6 +596,8 @@ class _PlaceState extends State<Place> {
                                     children: <Widget>[
                                       const Text('1 '),
                                       LinearPercentIndicator(
+                                        animation: true,
+                                        animationDuration: 3000,
                                         width: 160.0,
                                         lineHeight: 10.0,
                                         percent: (r.numberOfReviews == 0)
@@ -610,6 +621,14 @@ class _PlaceState extends State<Place> {
                               return ReviewWidget(review: review);
                             },
                           ),
+                          Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'View more',
+                              style: TextStyle(
+                                  color: Colors.lightBlue[700] as Color),
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -667,94 +686,107 @@ class _PlaceCategoryState extends State<PlaceCategory> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Icon(
-                MdiIcons.mapMarkerDistance,
-                size: 30,
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.only(right: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Container(
+                alignment: Alignment.topCenter,
+                padding: const EdgeInsets.fromLTRB(0, 4, 8, 0),
+                child: const Icon(
+                  Icons.location_pin,
+                  size: 30,
+                  color: Color.fromARGB(255, 195, 19, 16),
+                ),
               ),
-            ),
-            Column(
-              children: [
-                const Text(
-                  'Distance',
-                  style: TextStyle(fontSize: 12),
-                ),
-                ValueListenableBuilder(
-                  valueListenable: distance,
-                  builder: (context, value, child) {
-                    return Text(
-                      '${distance.value.toStringAsFixed(2)}km',
-                      style: const TextStyle(fontSize: 16),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Icon(
-                MdiIcons.star,
-                size: 30,
+              Column(
+                children: [
+                  Text(
+                    'Distance',
+                    style: TextStyle(
+                        fontSize: 12, color: Colors.grey[700] as Color),
+                  ),
+                  ValueListenableBuilder(
+                    valueListenable: distance,
+                    builder: (context, value, child) {
+                      return Text(
+                        '${distance.value.toStringAsFixed(2)}km',
+                        style: const TextStyle(fontSize: 14),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ),
-            Column(
-              children: [
-                const Text(
-                  'Rating',
-                  style: TextStyle(fontSize: 12),
+            ],
+          ),
+          Row(
+            children: [
+              Container(
+                alignment: Alignment.topCenter,
+                padding: const EdgeInsets.fromLTRB(0, 4, 8, 0),
+                child: const Icon(
+                  MdiIcons.star,
+                  size: 30,
+                  color: Color.fromARGB(255, 255, 231, 13),
                 ),
-                ValueListenableBuilder(
-                  valueListenable: distance,
-                  builder: (context, value, child) {
-                    return Text(
-                      r.ratingsAverage.toStringAsFixed(1),
-                      style: const TextStyle(fontSize: 16),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Icon(
-                MdiIcons.weatherCloudy,
-                size: 30,
               ),
-            ),
-            Column(
-              children: [
-                const Text(
-                  'Weather',
-                  style: TextStyle(fontSize: 12),
+              Column(
+                children: [
+                  Text(
+                    'Rating',
+                    style: TextStyle(
+                        fontSize: 12, color: Colors.grey[700] as Color),
+                  ),
+                  ValueListenableBuilder(
+                    valueListenable: distance,
+                    builder: (context, value, child) {
+                      return Text(
+                        r.ratingsAverage.toStringAsFixed(1),
+                        style: const TextStyle(fontSize: 14),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Container(
+                alignment: Alignment.topCenter,
+                padding: const EdgeInsets.fromLTRB(0, 4, 8, 0),
+                child: const Icon(
+                  Icons.sunny,
+                  size: 30,
+                  color: Colors.orange,
                 ),
-                ValueListenableBuilder(
-                  valueListenable: distance,
-                  builder: (context, value, child) {
-                    return Text(
-                      '$temperature°c',
-                      style: const TextStyle(fontSize: 16),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
-      ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    'Weather',
+                    style: TextStyle(
+                        fontSize: 12, color: Colors.grey[700] as Color),
+                  ),
+                  ValueListenableBuilder(
+                    valueListenable: distance,
+                    builder: (context, value, child) {
+                      return Text(
+                        '$temperature°c',
+                        style: const TextStyle(fontSize: 14),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -768,54 +800,72 @@ class ReviewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     DateTime dateTime = DateTime.parse(review.date);
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            CircleAvatar(
-              radius: 17,
-              backgroundColor:
-                  Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
-                      .withOpacity(1.0),
-              child: Text(
-                review.name[0],
-                style: const TextStyle(fontSize: 20, color: Colors.white),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(
+              color: Colors.grey[300] as Color,
+              width: 1.0,
+            ),
+          ),
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 17,
+                    backgroundColor:
+                        Color((math.Random().nextDouble() * 0x333333).toInt())
+                            .withOpacity(1.0),
+                    child: Text(
+                      review.name[0],
+                      style: const TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    review.name,
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              review.name,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            RatingBar.builder(
-              initialRating: review.rating.toDouble(),
-              ignoreGestures: true,
-              minRating: 1,
-              direction: Axis.horizontal,
-              allowHalfRating: true,
-              itemCount: 5,
-              itemSize: 16,
-              itemBuilder: (context, _) => const Icon(
-                Icons.star,
-                color: Colors.blue,
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  RatingBar.builder(
+                    initialRating: review.rating.toDouble(),
+                    ignoreGestures: true,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemSize: 16,
+                    itemBuilder: (context, _) => const Icon(
+                      Icons.star,
+                      color: Colors.blue,
+                    ),
+                    onRatingUpdate: (rating) {},
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    "${dateTime.day}/${dateTime.month}/${dateTime.year}",
+                    style: const TextStyle(color: Colors.black54, fontSize: 12),
+                  ),
+                ],
               ),
-              onRatingUpdate: (rating) {},
-            ),
-            const SizedBox(width: 8),
-            Text(
-              "${dateTime.day}/${dateTime.month}/${dateTime.year}",
-              style: const TextStyle(color: Colors.black54, fontSize: 12),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                review.comment,
+                style: TextStyle(color: Colors.grey[700] as Color),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 8),
-        Text(review.comment),
-        const SizedBox(height: 16),
+        const SizedBox(
+          height: 12,
+        ),
       ],
     );
   }

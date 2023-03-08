@@ -6,6 +6,9 @@ getPlaceNameFromCoordinate(double lat, double long) async {
   List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
   currentLocationName =
       '${placemarks[0].subLocality!}, ${placemarks[0].locality!}';
-  // getPlaceNameFromCoordinate(currentLocation.latitude!, currentLocation.longitude!);
-  // print('Hello $currentLocationName');
+}
+
+Future<String?> getNameFromCoordinate(double lat, double long) async {
+  List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+  return placemarks[0].locality;
 }
