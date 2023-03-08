@@ -15,6 +15,7 @@ import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/shared_service.dart';
 import 'package:tripify/widget/direction_map.dart';
 import 'package:tripify/widget/hour_forecast.dart';
+import 'dart:math' as math;
 
 late PlaceDetails placeDetails;
 late ReviewRatings r;
@@ -600,6 +601,15 @@ class _PlaceState extends State<Place> {
                               )
                             ],
                           ),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: 3,
+                            itemBuilder: (context, index) {
+                              final review = r.reviews[index];
+                              return ReviewWidget(review: review);
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -657,8 +667,6 @@ class _PlaceCategoryState extends State<PlaceCategory> {
 
   @override
   Widget build(BuildContext context) {
-    List<Places2> placeList =
-        ModalRoute.of(context)!.settings.arguments as List<Places2>;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -746,6 +754,68 @@ class _PlaceCategoryState extends State<PlaceCategory> {
             ),
           ],
         ),
+      ],
+    );
+  }
+}
+
+class ReviewWidget extends StatelessWidget {
+  final Reviews2 review;
+
+  const ReviewWidget({Key? key, required this.review}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    DateTime dateTime = DateTime.parse(review.date);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            CircleAvatar(
+              radius: 17,
+              backgroundColor:
+                  Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+                      .withOpacity(1.0),
+              child: Text(
+                review.name[0],
+                style: const TextStyle(fontSize: 20, color: Colors.white),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              review.name,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            RatingBar.builder(
+              initialRating: review.rating.toDouble(),
+              ignoreGestures: true,
+              minRating: 1,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemSize: 16,
+              itemBuilder: (context, _) => const Icon(
+                Icons.star,
+                color: Colors.blue,
+              ),
+              onRatingUpdate: (rating) {},
+            ),
+            const SizedBox(width: 8),
+            Text(
+              "${dateTime.day}/${dateTime.month}/${dateTime.year}",
+              style: const TextStyle(color: Colors.black54, fontSize: 12),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Text(review.comment),
+        const SizedBox(height: 16),
       ],
     );
   }
