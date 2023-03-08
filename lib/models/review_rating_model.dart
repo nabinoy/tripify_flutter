@@ -39,7 +39,7 @@ class ReviewRatings {
       negativeResponse: json['negativeResponse'],
       neutralResponse: json['neutralResponse'],
       numberOfReviews: json['numberOfReviews'],
-      ratingsAverage: json['ratingsAverage'],
+      ratingsAverage: json['ratingsAverage'].toDouble(),
     );
   }
 }

@@ -18,14 +18,10 @@ import 'package:tripify/widget/hour_forecast.dart';
 import 'dart:math' as math;
 
 late PlaceDetails placeDetails;
-late ReviewRatings r;
 
 class PlaceCategoryTop extends SliverPersistentHeaderDelegate {
-  final ValueChanged<int> onChanged;
-  final int selectedIndex;
-
-  PlaceCategoryTop({required this.onChanged, required this.selectedIndex});
-
+  double ratingsAverage;
+  PlaceCategoryTop(this.ratingsAverage);
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -33,7 +29,7 @@ class PlaceCategoryTop extends SliverPersistentHeaderDelegate {
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
       height: 45,
       color: Colors.white,
-      child: const PlaceCategory(),
+      child: PlaceCategory(ratingsAverage),
     );
   }
 
@@ -87,6 +83,7 @@ class _PlaceState extends State<Place> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     late ReviewUser ru;
+    late ReviewRatings r;
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -101,7 +98,6 @@ class _PlaceState extends State<Place> {
           ]),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              print(placeList.first.sId);
               return CustomScrollView(
                 slivers: [
                   SliverAppBar(
@@ -209,8 +205,7 @@ class _PlaceState extends State<Place> {
                     ),
                   ),
                   SliverPersistentHeader(
-                    delegate: PlaceCategoryTop(
-                        onChanged: ((value) {}), selectedIndex: 0),
+                    delegate: PlaceCategoryTop(r.ratingsAverage),
                     pinned: true,
                   ),
                   SliverToBoxAdapter(
@@ -612,13 +607,32 @@ class _PlaceState extends State<Place> {
                               )
                             ],
                           ),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 3,
-                            itemBuilder: (context, index) {
-                              final review = r.reviews[index];
-                              return ReviewWidget(review: review);
+                          FutureBuilder(
+                            future:
+                                APIService.reviewRatingAll(placeList.first.sId)
+                                    .then((value) => {r = value}),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                if (r.numberOfReviews == 0) {
+                                  return const Text('No data');
+                                } else {
+                                  return ListView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: 3,
+                                    itemBuilder: (context, index) {
+                                      final review = r.reviews[index];
+                                      return ReviewWidget(review: review);
+                                    },
+                                  );
+                                }
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
                             },
                           ),
                           Container(
@@ -667,7 +681,8 @@ class _PlaceState extends State<Place> {
 }
 
 class PlaceCategory extends StatefulWidget {
-  const PlaceCategory({super.key});
+  final ratingsAverage;
+  const PlaceCategory(this.ratingsAverage, {super.key});
 
   @override
   State<PlaceCategory> createState() => _PlaceCategoryState();
@@ -745,7 +760,7 @@ class _PlaceCategoryState extends State<PlaceCategory> {
                     valueListenable: distance,
                     builder: (context, value, child) {
                       return Text(
-                        r.ratingsAverage.toStringAsFixed(1),
+                        widget.ratingsAverage.toStringAsFixed(1),
                         style: const TextStyle(fontSize: 14),
                       );
                     },
