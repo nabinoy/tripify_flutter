@@ -35,7 +35,18 @@ class _ReviewAllState extends State<ReviewAll> {
 
     ReviewRatings reviewAll =
         ModalRoute.of(context)!.settings.arguments as ReviewRatings;
+    List<int> reviewTypeCount = [
+      reviewAll.numberOfReviews,
+      reviewAll.positiveResponse,
+      reviewAll.neutralResponse,
+      reviewAll.negativeResponse
+    ];
 
+    allData.clear();
+    positiveData.clear();
+    neutralData.clear();
+    negativeData.clear();
+    allData.clear();
     for (int i = 0; i < reviewAll.reviews.length; i++) {
       allData.add(reviewAll.reviews[i]);
       if (reviewAll.reviews[i].sentiment == 'Positive') {
@@ -48,6 +59,12 @@ class _ReviewAllState extends State<ReviewAll> {
         neutralData.add(reviewAll.reviews[i]);
       }
     }
+    List<List<Reviews2>> reviewTypeAll = [
+      allData,
+      positiveData,
+      neutralData,
+      negativeData
+    ];
 
     return Scaffold(
       body: CustomScrollView(
@@ -215,7 +232,7 @@ class _ReviewAllState extends State<ReviewAll> {
                           style: TextStyle(fontSize: 18),
                         ),
                         Text(
-                          '(${reviewAll.numberOfReviews.toString()})',
+                          '(${reviewTypeCount[selectedIndex]})',
                           style: const TextStyle(
                               color: Color.fromARGB(255, 111, 111, 111),
                               fontSize: 11),
@@ -238,15 +255,19 @@ class _ReviewAllState extends State<ReviewAll> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: (reviewAll.numberOfReviews == 0)
                   ? const Text('No data')
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        final review = reviewAll.reviews[index];
-                        return AllReviewWidget(review: review);
-                      },
-                    ),
+                  : (reviewTypeAll[selectedIndex].isEmpty)
+                      ? const Text('No data')
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: reviewTypeAll[selectedIndex].length,
+                          itemBuilder: (context, index) {
+                            //final review = reviewAll.reviews[index];
+                            return AllReviewWidget(
+                                review: reviewTypeAll[selectedIndex],
+                                index: index);
+                          },
+                        ),
             ),
           ),
         ],
@@ -372,81 +393,89 @@ class ReviewCategories extends SliverPersistentHeaderDelegate {
 }
 
 class AllReviewWidget extends StatelessWidget {
-  final Reviews2 review;
+  final List<Reviews2> review;
+  final index;
 
-  const AllReviewWidget({Key? key, required this.review}) : super(key: key);
+  const AllReviewWidget({Key? key, required this.review, required this.index})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    DateTime dateTime = DateTime.parse(review.date);
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(
-              color: Colors.grey[300] as Color,
-              width: 1.0,
+    DateTime dateTime = DateTime.parse(review[index].date);
+    if (review.isEmpty) {
+      return (const Text('data'));
+    } else {
+      return Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(
+                color: Colors.grey[300] as Color,
+                width: 1.0,
+              ),
+            ),
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 17,
+                      backgroundColor:
+                          Color((math.Random().nextDouble() * 0x333333).toInt())
+                              .withOpacity(1.0),
+                      child: Text(
+                        review[index].name[0],
+                        style:
+                            const TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      review[index].name,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    RatingBar.builder(
+                      initialRating: review.first.rating.toDouble(),
+                      ignoreGestures: true,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemSize: 16,
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Colors.blue,
+                      ),
+                      onRatingUpdate: (rating) {},
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      "${dateTime.day}/${dateTime.month}/${dateTime.year}",
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 12),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  review[index].comment,
+                  style: TextStyle(color: Colors.grey[700] as Color),
+                ),
+              ],
             ),
           ),
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 17,
-                    backgroundColor:
-                        Color((math.Random().nextDouble() * 0x333333).toInt())
-                            .withOpacity(1.0),
-                    child: Text(
-                      review.name[0],
-                      style: const TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    review.name,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  RatingBar.builder(
-                    initialRating: review.rating.toDouble(),
-                    ignoreGestures: true,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemSize: 16,
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: Colors.blue,
-                    ),
-                    onRatingUpdate: (rating) {},
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    "${dateTime.day}/${dateTime.month}/${dateTime.year}",
-                    style: const TextStyle(color: Colors.black54, fontSize: 12),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Text(
-                review.comment,
-                style: TextStyle(color: Colors.grey[700] as Color),
-              ),
-            ],
+          const SizedBox(
+            height: 12,
           ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-      ],
-    );
+        ],
+      );
+    }
   }
 }

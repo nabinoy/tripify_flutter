@@ -1,145 +1,392 @@
-import 'package:flutter/material.dart';
+// import 'dart:async';
+// import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+// import 'package:connectivity_plus/connectivity_plus.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
+// import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+// import 'package:random_avatar/random_avatar.dart';
+// import 'package:tripify/constants/global_variables.dart';
+// import 'package:tripify/router.dart';
+// import 'package:tripify/screens/drawer/helpline.dart';
+// import 'package:tripify/screens/home_pages/home_main.dart';
+// import 'package:tripify/screens/home_pages/profile.dart';
+// import 'package:tripify/screens/home_pages/wishlist.dart';
+// import 'package:tripify/screens/weather_details.dart';
+// import 'package:tripify/screens/welcome.dart';
+// import 'package:tripify/services/shared_service.dart';
 
+// class Home extends StatelessWidget {
+//   static const String routeName = '/home';
+//   const Home({super.key});
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: const Homepage(),
+//       title: appName,
+//       debugShowCheckedModeBanner: false,
+//       theme: ThemeData(
+//         // ignore: deprecated_member_use
+//         androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
+//         fontFamily: fontRegular,
+//         primarySwatch: Colors.lightBlue,
+//         scaffoldBackgroundColor: bgColor,
+//       ),
+//       onGenerateRoute: (settings) => generateRoute(settings),
+//     );
+//   }
+// }
 
-class _MyAppState extends State<MyApp> {
-  int _selectedIndex = 0;
+// class Homepage extends StatefulWidget {
+//   const Homepage({super.key});
 
-  void _onButtonPressed(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+//   @override
+//   State<Homepage> createState() => _HomepageState();
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverPersistentHeader(
-              delegate: MySliverPersistentHeader(
-                _selectedIndex,
-                _onButtonPressed,
-              ),
-            ),
-            SliverFillRemaining(
-              child: Center(
-                child: Text(
-                  "Body Data ${_selectedIndex + 1}",
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// class _HomepageState extends State<Homepage> {
+//   late StreamSubscription subscription;
+//   final PageController pageController = PageController();
 
-class MySliverPersistentHeader extends SliverPersistentHeaderDelegate {
-  final List<String> _bodyData = [    "This is Body Data 1",    "This is Body Data 2",    "This is Body Data 3",    "This is Body Data 4"  ];
+//   int _selectedIndex = 0;
 
-  final Function(int) _onButtonPressed;
-  final int _selectedIndex;
+//   @override
+//   void initState() {
+//     super.initState();
+//     setState(() {});
+//     bool flag = false;
+//     WidgetsBinding.instance.addPostFrameCallback((_) async {
+//       if (await SharedService.getSharedHomeAfter() == true) {
+//         SharedService.setSharedHomeAfter(false);
+//         final snackBar = SnackBar(
+//           width: double.infinity,
+//           dismissDirection: DismissDirection.down,
+//           elevation: 0,
+//           behavior: SnackBarBehavior.floating,
+//           backgroundColor: Colors.transparent,
+//           content: DefaultTextStyle(
+//             style: const TextStyle(
+//               fontFamily: fontRegular,
+//             ),
+//             child: AwesomeSnackbarContent(
+//               title: 'Successful!',
+//               message:
+//                   'Welcome ${SharedService.name}, you have successfully logged in! Have a nice day!',
+//               contentType: ContentType.success,
+//             ),
+//           ),
+//         );
+//         // ignore: use_build_context_synchronously
+//         ScaffoldMessenger.of(context)
+//           ..hideCurrentSnackBar()
+//           ..showSnackBar(snackBar);
+//       }
+//     });
 
-  MySliverPersistentHeader(this._selectedIndex, this._onButtonPressed);
+//     Connectivity().checkConnectivity().then((result) {
+//       setState(() {
+//         if (result == ConnectivityResult.none && flag == false) {
+//           flag = true;
+//           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+//             content: Text(
+//               "No internet",
+//               style: TextStyle(fontFamily: fontRegular, fontSize: 12),
+//               textAlign: TextAlign.center,
+//             ),
+//             padding: EdgeInsets.symmetric(
+//               vertical: 3,
+//             ),
+//             duration: Duration(days: 1),
+//             backgroundColor: Colors.grey,
+//           ));
+//         }
+//       });
+//     });
 
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              MaterialButton(
-                onPressed: () => _onButtonPressed(0),
-                child: Text('Button 1'),
-                color:
-                    _selectedIndex == 0 ? Colors.blue : Colors.white,
-                textColor: _selectedIndex == 0 ? Colors.white : Colors.black,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color:
-                        _selectedIndex == 0 ? Colors.blue : Colors.white,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              MaterialButton(
-                onPressed: () => _onButtonPressed(1),
-                child: Text('Button 2'),
-                color:
-                    _selectedIndex == 1 ? Colors.blue : Colors.white,
-                textColor: _selectedIndex == 1 ? Colors.white : Colors.black,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color:
-                        _selectedIndex == 1 ? Colors.blue : Colors.white,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              MaterialButton(
-                onPressed: () => _onButtonPressed(2),
-                child: Text('Button 3'),
-                color:
-                    _selectedIndex == 2 ? Colors.blue : Colors.white,
-                textColor: _selectedIndex == 2 ? Colors.white : Colors.black,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color:
-                        _selectedIndex == 2 ? Colors.blue : Colors.white,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              MaterialButton(
-                onPressed: () => _onButtonPressed(3),
-                child: Text('Button 4'),
-                color:
-                    _selectedIndex == 3 ? Colors.blue : Colors.white,
-                textColor: _selectedIndex == 3 ? Colors.white : Colors.black,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color:
-                        _selectedIndex == 3 ? Colors.blue : Colors.white,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-          ),
-              ),
-        ],
-      ),
-      SizedBox(height: 20),
-      Text(
-        _bodyData[_selectedIndex],
-        style: TextStyle(fontSize: 20),
-      ),
-    ],
-  ),
-);
+//     subscription = Connectivity()
+//         .onConnectivityChanged
+//         .listen((ConnectivityResult result) {
+//       if (result == ConnectivityResult.none && flag == false) {
+//         flag = true;
+//         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+//           content: Text(
+//             "No internet",
+//             style: TextStyle(fontFamily: fontRegular, fontSize: 12),
+//             textAlign: TextAlign.center,
+//           ),
+//           padding: EdgeInsets.symmetric(
+//             vertical: 3,
+//           ),
+//           duration: Duration(days: 1),
+//           backgroundColor: Colors.grey,
+//         ));
+//       } else if ((result == ConnectivityResult.mobile ||
+//               result == ConnectivityResult.wifi ||
+//               result == ConnectivityResult.bluetooth ||
+//               result == ConnectivityResult.ethernet ||
+//               result == ConnectivityResult.vpn) &&
+//           flag == true) {
+//         flag = false;
+//         ScaffoldMessenger.of(context).hideCurrentSnackBar();
+//         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+//           content: Text(
+//             "Connected",
+//             style: TextStyle(fontFamily: fontRegular, fontSize: 12),
+//             textAlign: TextAlign.center,
+//           ),
+//           padding: EdgeInsets.symmetric(
+//             vertical: 3,
+//           ),
+//           backgroundColor: Colors.green,
+//         ));
+//       }
+//     });
+//   }
 
-}
+//   @override
+//   void dispose() {
+//     super.dispose();
+//     subscription.cancel();
+//   }
 
-@override
-double get maxExtent => 120;
+//   @override
+//   Widget build(BuildContext context) {
+//     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+//       statusBarColor: Colors.transparent,
+//       statusBarIconBrightness: Brightness.dark,
+//       statusBarBrightness: Brightness.light,
+//     ));
+//     final List<Widget> widgetOptions = <Widget>[
+//       const HomeMain(),
+//       const Wishlist(),
+//       const Profile(),
+//     ];
+//     return Scaffold(
+//       backgroundColor: bgColor,
+//       appBar: AppBar(
+//         backgroundColor: bgColor,
+//         centerTitle: true,
+//         elevation: 0,
+//         title: const Text(
+//           'Tripify',
+//           style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+//         ),
+//         actions: [
+//           randomAvatar('saytoonz', height: 35, width: 35),
+//           const Padding(padding: EdgeInsets.only(right: 16))
+//         ],
+//       ),
+//       body: PageView(
+//         controller: pageController,
+//         onPageChanged: (index) {
+//           setState(() {
+//             _selectedIndex = index;
+//           });
+//         },
+//         children: widgetOptions,
+//       ),
+//       bottomNavigationBar: BottomNavigationBar(
+//         backgroundColor: Colors.white,
+//         elevation: 0,
+//         type: BottomNavigationBarType.fixed,
+//         items: const <BottomNavigationBarItem>[
+//           BottomNavigationBarItem(
+//             activeIcon: Icon(
+//               MdiIcons.home,
+//               size: 30,
+//             ),
+//             icon: Icon(
+//               MdiIcons.homeOutline,
+//               size: 30,
+//             ),
+//             label: 'Home',
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(
+//               MdiIcons.heartOutline,
+//               size: 30,
+//             ),
+//             activeIcon: Icon(
+//               MdiIcons.heart,
+//               size: 30,
+//             ),
+//             label: 'Wishlist',
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(
+//               Icons.person_outline,
+//               size: 30,
+//             ),
+//             activeIcon: Icon(
+//               Icons.person,
+//               size: 30,
+//             ),
+//             label: 'Profile',
+//           ),
+//         ],
+//         currentIndex: _selectedIndex,
+//         selectedItemColor: Colors.lightBlue[800],
+//         onTap: (index) {
+//           setState(() {
+//             _selectedIndex = index;
+//             pageController.jumpToPage(index);
+//           });
+//         },
+//       ),
+//       drawer: Drawer(
+//         child: ListView(
+//           padding: EdgeInsets.zero,
+//           children: [
+//             DrawerHeader(
+//               child: FutureBuilder(
+//                 future: SharedService.getSharedLogin(),
+//                 builder: (context, snapshot) {
+//                   if (snapshot.connectionState == ConnectionState.done) {
+//                     return const DrawerItem();
+//                   } else {
+//                     return const LoadingScreen();
+//                   }
+//                 },
+//               ),
+//             ),
+//             Container(
+//               padding: const EdgeInsets.only(left: 8.0),
+//               child: ListTile(
+//                 title: Row(
+//                   children: [
+//                     Padding(
+//                       padding: const EdgeInsets.only(right: 8.0),
+//                       child: Icon(
+//                         MdiIcons.weatherPartlyCloudy,
+//                         color: Colors.grey[800],
+//                         size: 30,
+//                       ),
+//                     ),
+//                     const Text('Weather'),
+//                   ],
+//                 ),
+//                 onTap: () {
+//                   HapticFeedback.mediumImpact();
+//                   Navigator.pushNamed(
+//                     context,
+//                     WeatherDetails.routeName,
+//                     arguments: ['Current', 'Location'],
+//                   );
+//                 },
+//               ),
+//             ),
+//             Container(
+//               padding: const EdgeInsets.only(left: 8.0),
+//               child: ListTile(
+//                 title: Row(
+//                   children: [
+//                     Padding(
+//                       padding: const EdgeInsets.only(right: 8.0),
+//                       child: Icon(
+//                         MdiIcons.callMade,
+//                         color: Colors.grey[800],
+//                         size: 30,
+//                       ),
+//                     ),
+//                     const Text('Helpline'),
+//                   ],
+//                 ),
+//                 onTap: () {
+//                   HapticFeedback.mediumImpact();
+//                   Navigator.pushNamed(
+//                     context,
+//                     Helpline.routeName,
+//                   );
+//                 },
+//               ),
+//             ),
+//             Column(
+//               children: [
+//                 const Divider(),
+//                 Container(
+//                   padding: const EdgeInsets.only(left: 8.0),
+//                   child: ListTile(
+//                     title: Row(
+//                       children: [
+//                         Padding(
+//                           padding: const EdgeInsets.only(right: 8.0),
+//                           child: Icon(
+//                             MdiIcons.logout,
+//                             color: Colors.grey[800],
+//                             size: 30,
+//                           ),
+//                         ),
+//                         const Text('Log out'),
+//                       ],
+//                     ),
+//                     onTap: () {
+//                       HapticFeedback.mediumImpact();
+//                       SharedService.setSharedLogOut();
+//                       Navigator.pushReplacementNamed(
+//                         context,
+//                         Welcome.routeName,
+//                       );
+//                     },
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-@override
-double get minExtent => 120;
+// class DrawerItem extends StatelessWidget {
+//   const DrawerItem({super.key});
 
-@override
-bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       mainAxisAlignment: MainAxisAlignment.center,
+//       children: [
+//         Container(
+//             alignment: Alignment.centerLeft,
+//             margin: const EdgeInsets.only(bottom: 10),
+//             padding: const EdgeInsets.only(left: 8),
+//             child: randomAvatar(SharedService.name, height: 70, width: 70)),
+//         Container(
+//           alignment: Alignment.centerLeft,
+//           padding: const EdgeInsets.only(left: 8),
+//           child: Text(
+//             overflow: TextOverflow.ellipsis,
+//             SharedService.name,
+//             style: const TextStyle(color: Colors.black, fontSize: 18),
+//           ),
+//         ),
+//         Container(
+//           alignment: Alignment.centerLeft,
+//           padding: const EdgeInsets.only(left: 8),
+//           child: Text(
+//             overflow: TextOverflow.ellipsis,
+//             SharedService.email,
+//             style: TextStyle(
+//               color: Colors.grey[700],
+//               fontSize: 14,
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+// class LoadingScreen extends StatelessWidget {
+//   const LoadingScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       color: Colors.white,
+//       child: const Center(
+//         child: CircularProgressIndicator(),
+//       ),
+//     );
+//   }
+// }
