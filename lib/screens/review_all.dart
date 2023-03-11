@@ -6,12 +6,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:tripify/models/review_rating_model.dart';
 import 'dart:math' as math;
 
-List<String> bodyData = [
-  "This is Body Data 1",
-  "This is Body Data 2",
-  "This is Body Data 3",
-  "This is Body Data 4"
-];
+int numberOfReviews = 0;
 
 class ReviewAll extends StatefulWidget {
   static const String routeName = '/reviewAll';
@@ -23,6 +18,10 @@ class ReviewAll extends StatefulWidget {
 
 class _ReviewAllState extends State<ReviewAll> {
   int selectedIndex = 0;
+  List<Reviews2> allData = [];
+  List<Reviews2> positiveData = [];
+  List<Reviews2> negativeData = [];
+  List<Reviews2> neutralData = [];
   void onButtonPressed(int index) {
     setState(() {
       selectedIndex = index;
@@ -33,8 +32,23 @@ class _ReviewAllState extends State<ReviewAll> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
     ReviewRatings reviewAll =
         ModalRoute.of(context)!.settings.arguments as ReviewRatings;
+
+    for (int i = 0; i < reviewAll.reviews.length; i++) {
+      allData.add(reviewAll.reviews[i]);
+      if (reviewAll.reviews[i].sentiment == 'Positive') {
+        positiveData.add(reviewAll.reviews[i]);
+      }
+      if (reviewAll.reviews[i].sentiment == 'Negative') {
+        negativeData.add(reviewAll.reviews[i]);
+      }
+      if (reviewAll.reviews[i].sentiment == 'Neutral') {
+        neutralData.add(reviewAll.reviews[i]);
+      }
+    }
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -190,13 +204,23 @@ class _ReviewAllState extends State<ReviewAll> {
           ),
           SliverToBoxAdapter(
             child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Showing All',
-                      style: TextStyle(fontSize: 16),
+                    Row(
+                      children: [
+                        const Text(
+                          'All ',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Text(
+                          '(${reviewAll.numberOfReviews.toString()})',
+                          style: const TextStyle(
+                              color: Color.fromARGB(255, 111, 111, 111),
+                              fontSize: 11),
+                        ),
+                      ],
                     ),
                     Row(
                       children: const [
@@ -211,12 +235,7 @@ class _ReviewAllState extends State<ReviewAll> {
           ),
           SliverToBoxAdapter(
             child: Container(
-              color: Colors.black12,
-              height: 300,
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: (reviewAll.numberOfReviews == 0)
                   ? const Text('No data')
                   : ListView.builder(
@@ -225,7 +244,7 @@ class _ReviewAllState extends State<ReviewAll> {
                       itemCount: 3,
                       itemBuilder: (context, index) {
                         final review = reviewAll.reviews[index];
-                        AllReviewWidget(review: review);
+                        return AllReviewWidget(review: review);
                       },
                     ),
             ),
@@ -363,13 +382,13 @@ class AllReviewWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          // decoration: BoxDecoration(
-          //   borderRadius: BorderRadius.circular(10.0),
-          //   border: Border.all(
-          //     color: Colors.grey[300] as Color,
-          //     width: 1.0,
-          //   ),
-          // ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(
+              color: Colors.grey[300] as Color,
+              width: 1.0,
+            ),
+          ),
           padding: const EdgeInsets.all(12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
