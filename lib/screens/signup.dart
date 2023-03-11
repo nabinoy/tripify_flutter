@@ -6,7 +6,6 @@ import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/signup_request_model.dart';
-import 'package:tripify/router.dart';
 import 'package:tripify/screens/home.dart';
 import 'package:tripify/screens/login.dart';
 import 'package:tripify/services/api_service.dart';

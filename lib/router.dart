@@ -9,6 +9,7 @@ import 'package:tripify/screens/login.dart';
 import 'package:tripify/screens/onboard.dart';
 import 'package:tripify/screens/place.dart';
 import 'package:tripify/screens/map_webview.dart';
+import 'package:tripify/screens/review_all.dart';
 import 'package:tripify/screens/signup.dart';
 import 'package:tripify/screens/weather_details.dart';
 import 'package:tripify/screens/welcome.dart';
@@ -53,6 +54,9 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     case Helpline.routeName:
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const Helpline(),);
+
+    case ReviewAll.routeName:
+      return MaterialPageRoute(settings : routeSettings,builder: (_) => const ReviewAll(),);
   
     default: 
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const Scaffold(

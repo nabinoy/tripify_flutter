@@ -242,7 +242,6 @@ class APIService {
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       ReviewRatings rr = ReviewRatings.fromJson(data);
-      print(data);
       return rr;
     } else {
       throw Exception('Failed to load person details');

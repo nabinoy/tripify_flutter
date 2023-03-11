@@ -19,7 +19,6 @@ class DirectionMap extends StatefulWidget {
 }
 
 class _DirectionMapState extends State<DirectionMap> {
-  
   final Set<Marker> _markers = {};
   final Set<Polyline> _polylines = {};
   bool flag = false;

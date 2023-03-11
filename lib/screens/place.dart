@@ -9,6 +9,7 @@ import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/models/review_rating_model.dart';
 import 'package:tripify/models/weather_model.dart';
+import 'package:tripify/screens/review_all.dart';
 import 'package:tripify/screens/weather_details.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
@@ -635,12 +636,17 @@ class _PlaceState extends State<Place> {
                               }
                             },
                           ),
-                          Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'View more',
-                              style: TextStyle(
-                                  color: Colors.lightBlue[700] as Color),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, ReviewAll.routeName);
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'View more',
+                                style: TextStyle(
+                                    color: Colors.lightBlue[700] as Color),
+                              ),
                             ),
                           )
                         ],
@@ -681,6 +687,7 @@ class _PlaceState extends State<Place> {
 }
 
 class PlaceCategory extends StatefulWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final ratingsAverage;
   const PlaceCategory(this.ratingsAverage, {super.key});
 

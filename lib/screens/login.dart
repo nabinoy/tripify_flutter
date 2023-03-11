@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/login_request_model.dart';
-import 'package:tripify/router.dart';
 import 'package:tripify/screens/forgot_password.dart';
 import 'package:tripify/screens/home.dart';
 import 'package:tripify/screens/signup.dart';

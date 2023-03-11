@@ -2,15 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tripify/models/weather_model.dart';
 
-class HourForecast extends StatelessWidget {
+class HourForecast extends StatefulWidget {
   const HourForecast({super.key});
+
+  @override
+  State<HourForecast> createState() => _HourForecastState();
+}
+
+class _HourForecastState extends State<HourForecast> {
+  @override
+  void dispose() {
+    hourForecasts.clear();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        
         SizedBox(
           height: MediaQuery.of(context).size.height / 2 * 0.33,
           width: MediaQuery.of(context).size.width,
