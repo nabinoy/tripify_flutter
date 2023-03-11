@@ -638,7 +638,7 @@ class _PlaceState extends State<Place> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, ReviewAll.routeName);
+                              Navigator.pushNamed(context, ReviewAll.routeName,arguments: r);
                             },
                             child: Container(
                               alignment: Alignment.center,
