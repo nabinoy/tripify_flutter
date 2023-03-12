@@ -7,6 +7,7 @@ import 'package:tripify/models/review_rating_model.dart';
 import 'dart:math' as math;
 
 int numberOfReviews = 0;
+
 List<Reviews2> allData = [];
 List<Reviews2> positiveData = [];
 List<Reviews2> negativeData = [];
@@ -14,6 +15,8 @@ List<Reviews2> neutralData = [];
 
 class ReviewAll extends StatefulWidget {
   static const String routeName = '/reviewAll';
+
+  //static bool isRecent = false;
   const ReviewAll({super.key});
 
   @override
@@ -22,11 +25,23 @@ class ReviewAll extends StatefulWidget {
 
 class _ReviewAllState extends State<ReviewAll> {
   int selectedIndex = 0;
-
+  bool isRecent = false;
   void onButtonPressed(int index) {
     setState(() {
       selectedIndex = index;
     });
+  }
+
+  void setSortBool(String value) {
+    if (value == 'Most recent') {
+      setState(() {
+        isRecent = true;
+      });
+    } else {
+      setState(() {
+        isRecent = false;
+      });
+    }
   }
 
   @override
@@ -69,6 +84,13 @@ class _ReviewAllState extends State<ReviewAll> {
       neutralData,
       negativeData
     ];
+
+    List<Reviews2> sortedReviews =
+        List.from(reviewTypeAll[selectedIndex]); // create a copy of the list
+    if (isRecent) {
+      sortedReviews.sort(
+          (a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
+    }
 
     return Scaffold(
       body: CustomScrollView(
@@ -237,13 +259,15 @@ class _ReviewAllState extends State<ReviewAll> {
                       onTap: () {
                         showDialog(
                           context: context,
-                          builder: (context) => const FilterDialog(),
+                          builder: (context) => FilterDialog(setSortBool),
                         );
                       },
                       child: Row(
-                        children: const [
-                          Text('Most recent'),
-                          Icon(
+                        children: [
+                          (isRecent)
+                              ? const Text('Most recent')
+                              : const Text('Most relevant'),
+                          const Icon(
                             Icons.filter_alt_outlined,
                           ),
                         ],
@@ -266,7 +290,9 @@ class _ReviewAllState extends State<ReviewAll> {
                           itemBuilder: (context, index) {
                             //final review = reviewAll.reviews[index];
                             return AllReviewWidget(
-                                review: reviewTypeAll[selectedIndex],
+                                review: (isRecent)
+                                    ? sortedReviews
+                                    : reviewTypeAll[selectedIndex],
                                 index: index);
                           },
                         ),
@@ -493,16 +519,27 @@ void sortByDate() {
       .sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
 }
 
-class FilterDialog extends StatefulWidget {
-  const FilterDialog({Key? key}) : super(key: key);
-
-  @override
-  FilterDialogState createState() => FilterDialogState();
+void unSort() {
+  allData.sort((a, b) => 0);
+  positiveData.sort((a, b) => 0);
+  neutralData.sort((a, b) => 0);
+  negativeData.sort((a, b) => 0);
 }
 
-class FilterDialogState extends State<FilterDialog> {
+class FilterDialog extends StatefulWidget {
+  final Function(String) setSortBool;
+  const FilterDialog(this.setSortBool, {Key? key}) : super(key: key);
+
+  @override
+  // ignore: no_logic_in_create_state
+  State<FilterDialog> createState() => _FilterDialogState(setSortBool);
+}
+
+class _FilterDialogState extends State<FilterDialog> {
   String _selectedOption = 'Most relevant';
   final List<String> _selectedChips = [];
+  final Function(String) setSortBool;
+  _FilterDialogState(this.setSortBool);
 
   void _handleOptionChange(String? value) {
     setState(() {
@@ -615,6 +652,7 @@ class FilterDialogState extends State<FilterDialog> {
         ),
         MaterialButton(
           onPressed: () {
+            setSortBool(_selectedOption);
             Navigator.of(context).pop();
           },
           color: Colors.lightBlue[800],
