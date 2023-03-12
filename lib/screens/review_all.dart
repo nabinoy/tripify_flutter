@@ -7,6 +7,10 @@ import 'package:tripify/models/review_rating_model.dart';
 import 'dart:math' as math;
 
 int numberOfReviews = 0;
+List<Reviews2> allData = [];
+List<Reviews2> positiveData = [];
+List<Reviews2> negativeData = [];
+List<Reviews2> neutralData = [];
 
 class ReviewAll extends StatefulWidget {
   static const String routeName = '/reviewAll';
@@ -18,10 +22,7 @@ class ReviewAll extends StatefulWidget {
 
 class _ReviewAllState extends State<ReviewAll> {
   int selectedIndex = 0;
-  List<Reviews2> allData = [];
-  List<Reviews2> positiveData = [];
-  List<Reviews2> negativeData = [];
-  List<Reviews2> neutralData = [];
+
   void onButtonPressed(int index) {
     setState(() {
       selectedIndex = index;
@@ -42,6 +43,8 @@ class _ReviewAllState extends State<ReviewAll> {
       reviewAll.negativeResponse
     ];
 
+    List<String> sentimentName = ['All', 'Positive', 'Neutral', 'Negative'];
+
     allData.clear();
     positiveData.clear();
     neutralData.clear();
@@ -59,6 +62,7 @@ class _ReviewAllState extends State<ReviewAll> {
         neutralData.add(reviewAll.reviews[i]);
       }
     }
+
     List<List<Reviews2>> reviewTypeAll = [
       allData,
       positiveData,
@@ -70,6 +74,10 @@ class _ReviewAllState extends State<ReviewAll> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            title: const Text('Reviews',
+                style: TextStyle(
+                  fontSize: 18,
+                )),
             backgroundColor: Colors.white,
             expandedHeight: 0,
             pinned: true,
@@ -100,20 +108,6 @@ class _ReviewAllState extends State<ReviewAll> {
                     backgroundColor: Colors.white,
                     child: Icon(
                       MdiIcons.share,
-                      color: Colors.black,
-                      size: 24,
-                    ),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: const Padding(
-                  padding: EdgeInsets.only(right: 20),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      MdiIcons.heartOutline,
                       color: Colors.black,
                       size: 24,
                     ),
@@ -227,9 +221,9 @@ class _ReviewAllState extends State<ReviewAll> {
                   children: [
                     Row(
                       children: [
-                        const Text(
-                          'All ',
-                          style: TextStyle(fontSize: 18),
+                        Text(
+                          '${sentimentName[selectedIndex]} ',
+                          style: const TextStyle(fontSize: 18),
                         ),
                         Text(
                           '(${reviewTypeCount[selectedIndex]})',
@@ -394,7 +388,7 @@ class ReviewCategories extends SliverPersistentHeaderDelegate {
 
 class AllReviewWidget extends StatelessWidget {
   final List<Reviews2> review;
-  final index;
+  final int index;
 
   const AllReviewWidget({Key? key, required this.review, required this.index})
       : super(key: key);
@@ -442,7 +436,7 @@ class AllReviewWidget extends StatelessWidget {
                 Row(
                   children: [
                     RatingBar.builder(
-                      initialRating: review.first.rating.toDouble(),
+                      initialRating: review[index].rating.toDouble(),
                       ignoreGestures: true,
                       minRating: 1,
                       direction: Axis.horizontal,
@@ -478,4 +472,11 @@ class AllReviewWidget extends StatelessWidget {
       );
     }
   }
+}
+
+void sortByDate(){
+  allData.sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
+  positiveData.sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
+  neutralData.sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
+  negativeData.sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
 }
