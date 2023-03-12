@@ -233,13 +233,21 @@ class _ReviewAllState extends State<ReviewAll> {
                         ),
                       ],
                     ),
-                    Row(
-                      children: const [
-                        Text('Most recent'),
-                        Icon(
-                          Icons.filter_alt_outlined,
-                        ),
-                      ],
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const FilterDialog(),
+                        );
+                      },
+                      child: Row(
+                        children: const [
+                          Text('Most recent'),
+                          Icon(
+                            Icons.filter_alt_outlined,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 )),
@@ -474,9 +482,151 @@ class AllReviewWidget extends StatelessWidget {
   }
 }
 
-void sortByDate(){
-  allData.sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
-  positiveData.sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
-  neutralData.sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
-  negativeData.sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
+void sortByDate() {
+  allData
+      .sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
+  positiveData
+      .sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
+  neutralData
+      .sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
+  negativeData
+      .sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
+}
+
+class FilterDialog extends StatefulWidget {
+  const FilterDialog({Key? key}) : super(key: key);
+
+  @override
+  FilterDialogState createState() => FilterDialogState();
+}
+
+class FilterDialogState extends State<FilterDialog> {
+  String _selectedOption = 'Most relevant';
+  final List<String> _selectedChips = [];
+
+  void _handleOptionChange(String? value) {
+    setState(() {
+      _selectedOption = value!;
+    });
+  }
+
+  void _handleChipSelection(String value) {
+    setState(() {
+      if (_selectedChips.contains(value)) {
+        _selectedChips.remove(value);
+      } else {
+        _selectedChips.add(value);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Filter'),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Text('Sort by:'),
+                const SizedBox(
+                  width: 30,
+                ),
+                DropdownButton<String>(
+                  value: _selectedOption,
+                  onChanged: _handleOptionChange,
+                  items: const [
+                    DropdownMenuItem<String>(
+                      value: 'Most relevant',
+                      child: Text('Most relevant'),
+                    ),
+                    DropdownMenuItem<String>(
+                      value: 'Most recent',
+                      child: Text('Most recent'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const Text('Filter by:'),
+            const SizedBox(
+              height: 6,
+            ),
+            Wrap(
+              spacing: 8.0,
+              children: [
+                FilterChip(
+                  selectedColor: Colors.lightBlue[300],
+                  label: const Text('1 star'),
+                  selected: _selectedChips.contains('1 star'),
+                  onSelected: (_) => _handleChipSelection('1 star'),
+                ),
+                FilterChip(
+                  selectedColor: Colors.lightBlue[300],
+                  label: const Text('2 star'),
+                  selected: _selectedChips.contains('2 star'),
+                  onSelected: (_) => _handleChipSelection('2 star'),
+                ),
+                FilterChip(
+                  selectedColor: Colors.lightBlue[300],
+                  label: const Text('3 star'),
+                  selected: _selectedChips.contains('3 star'),
+                  onSelected: (_) => _handleChipSelection('3 star'),
+                ),
+                FilterChip(
+                  selectedColor: Colors.lightBlue[300],
+                  label: const Text('4 star'),
+                  selected: _selectedChips.contains('4 star'),
+                  onSelected: (_) => _handleChipSelection('4 star'),
+                ),
+                FilterChip(
+                  selectedColor: Colors.lightBlue[300],
+                  label: const Text('5 star'),
+                  selected: _selectedChips.contains('5 star'),
+                  onSelected: (_) => _handleChipSelection('5 star'),
+                ),
+                // FilterChip(
+                //   selectedColor: Colors.lightBlue[300],
+                //   label: const Text('All'),
+                //   selected: _selectedChips.contains('All'),
+                //   onSelected: (_) => _handleChipSelection('All'),
+                // ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(
+            'Cancel',
+            style: TextStyle(color: Colors.lightBlue[800]),
+          ),
+        ),
+        MaterialButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          color: Colors.lightBlue[800],
+          elevation: 0,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          child: const Text(
+            'Apply',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
 }
