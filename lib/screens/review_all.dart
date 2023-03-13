@@ -7,6 +7,7 @@ import 'package:tripify/models/review_rating_model.dart';
 import 'dart:math' as math;
 
 int numberOfReviews = 0;
+final List<String> _selectedChips = [];
 
 List<Reviews2> allData = [];
 List<Reviews2> positiveData = [];
@@ -16,7 +17,6 @@ List<Reviews2> neutralData = [];
 class ReviewAll extends StatefulWidget {
   static const String routeName = '/reviewAll';
 
-  //static bool isRecent = false;
   const ReviewAll({super.key});
 
   @override
@@ -26,13 +26,14 @@ class ReviewAll extends StatefulWidget {
 class _ReviewAllState extends State<ReviewAll> {
   int selectedIndex = 0;
   bool isRecent = false;
+  List<String> chipDataList = [];
   void onButtonPressed(int index) {
     setState(() {
       selectedIndex = index;
     });
   }
 
-  void setSortBool(String value) {
+  void setSortBool(String value, List<String> chipValue) {
     if (value == 'Most recent') {
       setState(() {
         isRecent = true;
@@ -42,6 +43,7 @@ class _ReviewAllState extends State<ReviewAll> {
         isRecent = false;
       });
     }
+    chipDataList = chipValue;
   }
 
   @override
@@ -59,22 +61,36 @@ class _ReviewAllState extends State<ReviewAll> {
     ];
 
     List<String> sentimentName = ['All', 'Positive', 'Neutral', 'Negative'];
+    List<Reviews2> filteredReviews = [];
 
     allData.clear();
     positiveData.clear();
     neutralData.clear();
     negativeData.clear();
     allData.clear();
-    for (int i = 0; i < reviewAll.reviews.length; i++) {
-      allData.add(reviewAll.reviews[i]);
-      if (reviewAll.reviews[i].sentiment == 'Positive') {
-        positiveData.add(reviewAll.reviews[i]);
+
+    if (chipDataList.isNotEmpty) {
+      for (var i = 0; i < reviewAll.reviews.length; i++) {
+        if (chipDataList.contains(reviewAll.reviews[i].rating.toString())) {
+          filteredReviews.add(reviewAll.reviews[i]);
+        }
       }
-      if (reviewAll.reviews[i].sentiment == 'Negative') {
-        negativeData.add(reviewAll.reviews[i]);
+    } else {
+      for (var i = 0; i < reviewAll.reviews.length; i++) {
+        filteredReviews.add(reviewAll.reviews[i]);
       }
-      if (reviewAll.reviews[i].sentiment == 'Neutral') {
-        neutralData.add(reviewAll.reviews[i]);
+    }
+
+    for (int i = 0; i < filteredReviews.length; i++) {
+      allData.add(filteredReviews[i]);
+      if (filteredReviews[i].sentiment == 'Positive') {
+        positiveData.add(filteredReviews[i]);
+      }
+      if (filteredReviews[i].sentiment == 'Negative') {
+        negativeData.add(filteredReviews[i]);
+      }
+      if (filteredReviews[i].sentiment == 'Neutral') {
+        neutralData.add(filteredReviews[i]);
       }
     }
 
@@ -85,8 +101,7 @@ class _ReviewAllState extends State<ReviewAll> {
       negativeData
     ];
 
-    List<Reviews2> sortedReviews =
-        List.from(reviewTypeAll[selectedIndex]); // create a copy of the list
+    List<Reviews2> sortedReviews = List.from(reviewTypeAll[selectedIndex]);
     if (isRecent) {
       sortedReviews.sort(
           (a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
@@ -527,7 +542,7 @@ void unSort() {
 }
 
 class FilterDialog extends StatefulWidget {
-  final Function(String) setSortBool;
+  final Function(String, List<String>) setSortBool;
   const FilterDialog(this.setSortBool, {Key? key}) : super(key: key);
 
   @override
@@ -537,8 +552,8 @@ class FilterDialog extends StatefulWidget {
 
 class _FilterDialogState extends State<FilterDialog> {
   String _selectedOption = 'Most relevant';
-  final List<String> _selectedChips = [];
-  final Function(String) setSortBool;
+  // final List<String> _selectedChips = [];
+  final Function(String, List<String>) setSortBool;
   _FilterDialogState(this.setSortBool);
 
   void _handleOptionChange(String? value) {
@@ -604,39 +619,33 @@ class _FilterDialogState extends State<FilterDialog> {
                 FilterChip(
                   selectedColor: Colors.lightBlue[300],
                   label: const Text('1 star'),
-                  selected: _selectedChips.contains('1 star'),
-                  onSelected: (_) => _handleChipSelection('1 star'),
+                  selected: _selectedChips.contains('1'),
+                  onSelected: (_) => _handleChipSelection('1'),
                 ),
                 FilterChip(
                   selectedColor: Colors.lightBlue[300],
                   label: const Text('2 star'),
-                  selected: _selectedChips.contains('2 star'),
-                  onSelected: (_) => _handleChipSelection('2 star'),
+                  selected: _selectedChips.contains('2'),
+                  onSelected: (_) => _handleChipSelection('2'),
                 ),
                 FilterChip(
                   selectedColor: Colors.lightBlue[300],
                   label: const Text('3 star'),
-                  selected: _selectedChips.contains('3 star'),
-                  onSelected: (_) => _handleChipSelection('3 star'),
+                  selected: _selectedChips.contains('3'),
+                  onSelected: (_) => _handleChipSelection('3'),
                 ),
                 FilterChip(
                   selectedColor: Colors.lightBlue[300],
                   label: const Text('4 star'),
-                  selected: _selectedChips.contains('4 star'),
-                  onSelected: (_) => _handleChipSelection('4 star'),
+                  selected: _selectedChips.contains('4'),
+                  onSelected: (_) => _handleChipSelection('4'),
                 ),
                 FilterChip(
                   selectedColor: Colors.lightBlue[300],
                   label: const Text('5 star'),
-                  selected: _selectedChips.contains('5 star'),
-                  onSelected: (_) => _handleChipSelection('5 star'),
+                  selected: _selectedChips.contains('5'),
+                  onSelected: (_) => _handleChipSelection('5'),
                 ),
-                // FilterChip(
-                //   selectedColor: Colors.lightBlue[300],
-                //   label: const Text('All'),
-                //   selected: _selectedChips.contains('All'),
-                //   onSelected: (_) => _handleChipSelection('All'),
-                // ),
               ],
             ),
           ],
@@ -652,7 +661,7 @@ class _FilterDialogState extends State<FilterDialog> {
         ),
         MaterialButton(
           onPressed: () {
-            setSortBool(_selectedOption);
+            setSortBool(_selectedOption, _selectedChips);
             Navigator.of(context).pop();
           },
           color: Colors.lightBlue[800],
