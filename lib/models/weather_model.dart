@@ -61,6 +61,7 @@ Future<void> getForcastInfo() async {
   var response = await http.get(uri);
   if (response.statusCode == 200) {
     var forecastData = json.decode(response.body);
+    hourForecasts.clear();
     for (var i = 2; i < 10; i++) {
       Map<String, String> hourForecast = {};
       hourForecast['ico'] =

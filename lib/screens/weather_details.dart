@@ -60,6 +60,8 @@ class _WeatherDetailsState extends State<WeatherDetails> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
+              hourForecasts.clear();
+              getForcastInfo();
               HapticFeedback.mediumImpact();
               Navigator.pop(context);
             },

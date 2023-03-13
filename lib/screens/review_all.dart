@@ -7,7 +7,8 @@ import 'package:tripify/models/review_rating_model.dart';
 import 'dart:math' as math;
 
 int numberOfReviews = 0;
-final List<String> _selectedChips = [];
+late List<String> _selectedChips;
+bool isRecent = false;
 
 List<Reviews2> allData = [];
 List<Reviews2> positiveData = [];
@@ -25,7 +26,7 @@ class ReviewAll extends StatefulWidget {
 
 class _ReviewAllState extends State<ReviewAll> {
   int selectedIndex = 0;
-  bool isRecent = false;
+
   List<String> chipDataList = [];
   void onButtonPressed(int index) {
     setState(() {
@@ -47,18 +48,24 @@ class _ReviewAllState extends State<ReviewAll> {
   }
 
   @override
+  void initState() {
+    _selectedChips = [];
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _selectedChips.clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     ReviewRatings reviewAll =
         ModalRoute.of(context)!.settings.arguments as ReviewRatings;
-    List<int> reviewTypeCount = [
-      reviewAll.numberOfReviews,
-      reviewAll.positiveResponse,
-      reviewAll.neutralResponse,
-      reviewAll.negativeResponse
-    ];
 
     List<String> sentimentName = ['All', 'Positive', 'Neutral', 'Negative'];
     List<Reviews2> filteredReviews = [];
@@ -93,6 +100,12 @@ class _ReviewAllState extends State<ReviewAll> {
         neutralData.add(filteredReviews[i]);
       }
     }
+    List<int> reviewTypeCount = [
+      allData.length,
+      positiveData.length,
+      neutralData.length,
+      negativeData.length
+    ];
 
     List<List<Reviews2>> reviewTypeAll = [
       allData,
@@ -250,72 +263,123 @@ class _ReviewAllState extends State<ReviewAll> {
             ),
             pinned: true,
           ),
-          SliverToBoxAdapter(
-            child: Container(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          '${sentimentName[selectedIndex]} ',
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                        Text(
-                          '(${reviewTypeCount[selectedIndex]})',
-                          style: const TextStyle(
-                              color: Color.fromARGB(255, 111, 111, 111),
-                              fontSize: 11),
-                        ),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => FilterDialog(setSortBool),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          (isRecent)
-                              ? const Text('Most recent')
-                              : const Text('Most relevant'),
-                          const Icon(
-                            Icons.filter_alt_outlined,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                )),
+          SliverPersistentHeader(
+            delegate: SelectFilter(
+              sentimentName[selectedIndex],
+              reviewTypeCount[selectedIndex].toString(),
+              isRecent,
+              setSortBool,
+            ),
+            pinned: true,
           ),
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: (reviewAll.numberOfReviews == 0)
-                  ? const Text('No data')
-                  : (reviewTypeAll[selectedIndex].isEmpty)
-                      ? const Text('No data')
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: reviewTypeAll[selectedIndex].length,
-                          itemBuilder: (context, index) {
-                            //final review = reviewAll.reviews[index];
-                            return AllReviewWidget(
-                                review: (isRecent)
-                                    ? sortedReviews
-                                    : reviewTypeAll[selectedIndex],
-                                index: index);
-                          },
-                        ),
+              child: (reviewTypeAll[selectedIndex].isEmpty)
+                  ? Container(
+                      padding: const EdgeInsets.only(top: 60),
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            MdiIcons.emoticonSadOutline,
+                            size: 58,
+                            color: Theme.of(context).disabledColor,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'No data available',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).disabledColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: reviewTypeAll[selectedIndex].length,
+                      itemBuilder: (context, index) {
+                        return AllReviewWidget(
+                            review: (isRecent)
+                                ? sortedReviews
+                                : reviewTypeAll[selectedIndex],
+                            index: index);
+                      },
+                    ),
             ),
           ),
         ],
       ),
     );
+  }
+}
+
+class SelectFilter extends SliverPersistentHeaderDelegate {
+  final String sentimentName;
+  final String reviewTypeName;
+  final bool isRecent;
+  final Function(String, List<String>) setSortBool;
+  SelectFilter(
+      this.sentimentName, this.reviewTypeName, this.isRecent, this.setSortBool);
+
+  @override
+  Widget build(context, shrinkOffset, overlapsContent) {
+    return Container(
+        height: 45,
+        color: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 18),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Text(
+                  '$sentimentName ',
+                  style: const TextStyle(fontSize: 18),
+                ),
+                Text(
+                  '($reviewTypeName)',
+                  style: const TextStyle(
+                      color: Color.fromARGB(255, 111, 111, 111), fontSize: 11),
+                ),
+              ],
+            ),
+            GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => FilterDialog(setSortBool),
+                );
+              },
+              child: Row(
+                children: [
+                  (isRecent)
+                      ? const Text('Most recent')
+                      : const Text('Most relevant'),
+                  const Icon(
+                    MdiIcons.filterVariant,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ));
+  }
+
+  @override
+  double get maxExtent => 45;
+
+  @override
+  double get minExtent => 45;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return true;
   }
 }
 
@@ -331,7 +395,7 @@ class ReviewCategories extends SliverPersistentHeaderDelegate {
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-      height: 55,
+      height: 45,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -424,10 +488,10 @@ class ReviewCategories extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 55;
+  double get maxExtent => 45;
 
   @override
-  double get minExtent => 55;
+  double get minExtent => 45;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
@@ -523,24 +587,6 @@ class AllReviewWidget extends StatelessWidget {
   }
 }
 
-void sortByDate() {
-  allData
-      .sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
-  positiveData
-      .sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
-  neutralData
-      .sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
-  negativeData
-      .sort((a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
-}
-
-void unSort() {
-  allData.sort((a, b) => 0);
-  positiveData.sort((a, b) => 0);
-  neutralData.sort((a, b) => 0);
-  negativeData.sort((a, b) => 0);
-}
-
 class FilterDialog extends StatefulWidget {
   final Function(String, List<String>) setSortBool;
   const FilterDialog(this.setSortBool, {Key? key}) : super(key: key);
@@ -551,8 +597,7 @@ class FilterDialog extends StatefulWidget {
 }
 
 class _FilterDialogState extends State<FilterDialog> {
-  String _selectedOption = 'Most relevant';
-  // final List<String> _selectedChips = [];
+  String _selectedOption = (isRecent) ? 'Most recent' : 'Most relevant';
   final Function(String, List<String>) setSortBool;
   _FilterDialogState(this.setSortBool);
 

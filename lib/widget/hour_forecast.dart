@@ -13,6 +13,7 @@ class _HourForecastState extends State<HourForecast> {
   @override
   void dispose() {
     hourForecasts.clear();
+    getForcastInfo();
     super.dispose();
   }
 

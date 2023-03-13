@@ -64,9 +64,6 @@ class _PlaceState extends State<Place> {
   @override
   void initState() {
     super.initState();
-    // getCurrentLocation();
-    // weatherLatAPI = getlat().toString();
-    // weatherLongAPI = getlong().toString();
   }
 
   @override
@@ -488,126 +485,6 @@ class _PlaceState extends State<Place> {
                           const SizedBox(
                             height: 5,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    r.ratingsAverage.toStringAsFixed(1),
-                                    style: const TextStyle(
-                                      fontSize: 50,
-                                    ),
-                                  ),
-                                  RatingBar.builder(
-                                    initialRating: r.ratingsAverage.toDouble(),
-                                    ignoreGestures: true,
-                                    minRating: 1,
-                                    direction: Axis.horizontal,
-                                    allowHalfRating: true,
-                                    itemCount: 5,
-                                    itemSize: 14.0,
-                                    itemPadding: const EdgeInsets.symmetric(
-                                        horizontal: 4.0),
-                                    itemBuilder: (context, _) => const Icon(
-                                      Icons.star,
-                                      color: Colors.blue,
-                                    ),
-                                    onRatingUpdate: (rating) {},
-                                  ),
-                                  Text(
-                                    r.numberOfReviews.toString(),
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: <Widget>[
-                                      const Text('5'),
-                                      LinearPercentIndicator(
-                                        animation: true,
-                                        animationDuration: 3000,
-                                        width: 160.0,
-                                        lineHeight: 10.0,
-                                        percent: (r.numberOfReviews == 0)
-                                            ? 0
-                                            : (r.fiveCount / r.numberOfReviews),
-                                        barRadius: const Radius.circular(16),
-                                        progressColor: Colors.blue,
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      const Text('4'),
-                                      LinearPercentIndicator(
-                                        animation: true,
-                                        animationDuration: 3000,
-                                        width: 160.0,
-                                        lineHeight: 10.0,
-                                        percent: (r.numberOfReviews == 0)
-                                            ? 0
-                                            : (r.fourCount / r.numberOfReviews),
-                                        barRadius: const Radius.circular(16),
-                                        progressColor: Colors.blue,
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      const Text('3'),
-                                      LinearPercentIndicator(
-                                        animation: true,
-                                        animationDuration: 3000,
-                                        width: 160.0,
-                                        lineHeight: 10.0,
-                                        percent: (r.numberOfReviews == 0)
-                                            ? 0
-                                            : (r.threeCount /
-                                                r.numberOfReviews),
-                                        barRadius: const Radius.circular(16),
-                                        progressColor: Colors.blue,
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      const Text('2'),
-                                      LinearPercentIndicator(
-                                        animation: true,
-                                        animationDuration: 3000,
-                                        width: 160.0,
-                                        lineHeight: 10.0,
-                                        percent: (r.numberOfReviews == 0)
-                                            ? 0
-                                            : (r.twoCount / r.numberOfReviews),
-                                        barRadius: const Radius.circular(16),
-                                        progressColor: Colors.blue,
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      const Text('1 '),
-                                      LinearPercentIndicator(
-                                        animation: true,
-                                        animationDuration: 3000,
-                                        width: 160.0,
-                                        lineHeight: 10.0,
-                                        percent: (r.numberOfReviews == 0)
-                                            ? 0
-                                            : (r.oneCount / r.numberOfReviews),
-                                        barRadius: const Radius.circular(16),
-                                        progressColor: Colors.blue,
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
                           FutureBuilder(
                             future:
                                 APIService.reviewRatingAll(placeList.first.sId)
@@ -616,17 +493,208 @@ class _PlaceState extends State<Place> {
                               if (snapshot.connectionState ==
                                   ConnectionState.done) {
                                 if (r.numberOfReviews == 0) {
-                                  return const Text('No data');
+                                  return Container(
+                                    padding: const EdgeInsets.only(top: 30),
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          MdiIcons.emoticonSadOutline,
+                                          size: 58,
+                                          color:
+                                              Theme.of(context).disabledColor,
+                                        ),
+                                        const SizedBox(height: 16),
+                                        Text(
+                                          'No data available',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color:
+                                                Theme.of(context).disabledColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 } else {
-                                  return ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: 3,
-                                    itemBuilder: (context, index) {
-                                      final review = r.reviews[index];
-                                      return ReviewWidget(review: review);
-                                    },
+                                  return Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Text(
+                                                r.ratingsAverage
+                                                    .toStringAsFixed(1),
+                                                style: const TextStyle(
+                                                  fontSize: 50,
+                                                ),
+                                              ),
+                                              RatingBar.builder(
+                                                initialRating:
+                                                    r.ratingsAverage.toDouble(),
+                                                ignoreGestures: true,
+                                                minRating: 1,
+                                                direction: Axis.horizontal,
+                                                allowHalfRating: true,
+                                                itemCount: 5,
+                                                itemSize: 14.0,
+                                                itemPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 4.0),
+                                                itemBuilder: (context, _) =>
+                                                    const Icon(
+                                                  Icons.star,
+                                                  color: Colors.blue,
+                                                ),
+                                                onRatingUpdate: (rating) {},
+                                              ),
+                                              Text(
+                                                r.numberOfReviews.toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            children: [
+                                              Row(
+                                                children: <Widget>[
+                                                  const Text('5'),
+                                                  LinearPercentIndicator(
+                                                    animation: true,
+                                                    animationDuration: 3000,
+                                                    width: 160.0,
+                                                    lineHeight: 10.0,
+                                                    percent: (r.numberOfReviews ==
+                                                            0)
+                                                        ? 0
+                                                        : (r.fiveCount /
+                                                            r.numberOfReviews),
+                                                    barRadius:
+                                                        const Radius.circular(
+                                                            16),
+                                                    progressColor: Colors.blue,
+                                                  )
+                                                ],
+                                              ),
+                                              Row(
+                                                children: <Widget>[
+                                                  const Text('4'),
+                                                  LinearPercentIndicator(
+                                                    animation: true,
+                                                    animationDuration: 3000,
+                                                    width: 160.0,
+                                                    lineHeight: 10.0,
+                                                    percent: (r.numberOfReviews ==
+                                                            0)
+                                                        ? 0
+                                                        : (r.fourCount /
+                                                            r.numberOfReviews),
+                                                    barRadius:
+                                                        const Radius.circular(
+                                                            16),
+                                                    progressColor: Colors.blue,
+                                                  )
+                                                ],
+                                              ),
+                                              Row(
+                                                children: <Widget>[
+                                                  const Text('3'),
+                                                  LinearPercentIndicator(
+                                                    animation: true,
+                                                    animationDuration: 3000,
+                                                    width: 160.0,
+                                                    lineHeight: 10.0,
+                                                    percent: (r.numberOfReviews ==
+                                                            0)
+                                                        ? 0
+                                                        : (r.threeCount /
+                                                            r.numberOfReviews),
+                                                    barRadius:
+                                                        const Radius.circular(
+                                                            16),
+                                                    progressColor: Colors.blue,
+                                                  )
+                                                ],
+                                              ),
+                                              Row(
+                                                children: <Widget>[
+                                                  const Text('2'),
+                                                  LinearPercentIndicator(
+                                                    animation: true,
+                                                    animationDuration: 3000,
+                                                    width: 160.0,
+                                                    lineHeight: 10.0,
+                                                    percent: (r.numberOfReviews ==
+                                                            0)
+                                                        ? 0
+                                                        : (r.twoCount /
+                                                            r.numberOfReviews),
+                                                    barRadius:
+                                                        const Radius.circular(
+                                                            16),
+                                                    progressColor: Colors.blue,
+                                                  )
+                                                ],
+                                              ),
+                                              Row(
+                                                children: <Widget>[
+                                                  const Text('1 '),
+                                                  LinearPercentIndicator(
+                                                    animation: true,
+                                                    animationDuration: 3000,
+                                                    width: 160.0,
+                                                    lineHeight: 10.0,
+                                                    percent: (r.numberOfReviews ==
+                                                            0)
+                                                        ? 0
+                                                        : (r.oneCount /
+                                                            r.numberOfReviews),
+                                                    barRadius:
+                                                        const Radius.circular(
+                                                            16),
+                                                    progressColor: Colors.blue,
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount: 3,
+                                        itemBuilder: (context, index) {
+                                          final review = r.reviews[index];
+                                          return ReviewWidget(review: review);
+                                        },
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, ReviewAll.routeName,
+                                              arguments: r);
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            'View more',
+                                            style: TextStyle(
+                                                color: Colors.lightBlue[700]
+                                                    as Color),
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   );
                                 }
                               } else {
@@ -636,19 +704,6 @@ class _PlaceState extends State<Place> {
                               }
                             },
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, ReviewAll.routeName,arguments: r);
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'View more',
-                                style: TextStyle(
-                                    color: Colors.lightBlue[700] as Color),
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ),
