@@ -45,53 +45,60 @@ class _WeatherDetailsState extends State<WeatherDetails> {
       statusBarIconBrightness: Brightness.dark,
       statusBarBrightness: Brightness.light,
     ));
-    return MaterialApp(
-      title: appName,
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        // ignore: deprecated_member_use
-        androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
-        fontFamily: fontRegular,
-        primarySwatch: Colors.lightBlue,
-        scaffoldBackgroundColor: bgColor,
-      ),
-      onGenerateRoute: (settings) => generateRoute(settings),
-      home: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              hourForecasts.clear();
-              getForcastInfo();
-              HapticFeedback.mediumImpact();
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              size: 20,
-              color: Colors.black,
+    return WillPopScope(
+      onWillPop: () async {
+        hourForecasts.clear();
+        getForcastInfo();
+        return true;
+      },
+      child: MaterialApp(
+        title: appName,
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          // ignore: deprecated_member_use
+          androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
+          fontFamily: fontRegular,
+          primarySwatch: Colors.lightBlue,
+          scaffoldBackgroundColor: bgColor,
+        ),
+        onGenerateRoute: (settings) => generateRoute(settings),
+        home: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                hourForecasts.clear();
+                getForcastInfo();
+                HapticFeedback.mediumImpact();
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                size: 20,
+                color: Colors.black,
+              ),
+            ),
+            elevation: 0,
+            backgroundColor: bgColor,
+            centerTitle: true,
+            title: const Text(
+              "Weather",
+              style: TextStyle(color: Colors.black, fontSize: 16),
             ),
           ),
-          elevation: 0,
-          backgroundColor: bgColor,
-          centerTitle: true,
-          title: const Text(
-            "Weather",
-            style: TextStyle(color: Colors.black, fontSize: 16),
+          body: FutureBuilder(
+            future: Future.wait([
+              getWeatherInfo(),
+              getForcastInfo(),
+              getDayForcastInfo(),
+            ]),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return const WeatherScreen();
+              } else {
+                return const LoadingScreen();
+              }
+            },
           ),
-        ),
-        body: FutureBuilder(
-          future: Future.wait([
-            getWeatherInfo(),
-            getForcastInfo(),
-            getDayForcastInfo(),
-          ]),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return const WeatherScreen();
-            } else {
-              return const LoadingScreen();
-            }
-          },
         ),
       ),
     );
