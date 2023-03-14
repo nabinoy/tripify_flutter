@@ -61,11 +61,7 @@ class Place extends StatefulWidget {
 }
 
 class _PlaceState extends State<Place> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+  bool _showDos = true;
   @override
   void dispose() {
     hourForecasts.clear();
@@ -223,6 +219,7 @@ class _PlaceState extends State<Place> {
                           ),
                           Text(
                             placeList.first.description,
+                            textAlign: TextAlign.justify,
                             style: const TextStyle(color: Colors.black54),
                           )
                         ],
@@ -257,20 +254,151 @@ class _PlaceState extends State<Place> {
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Timing',
                             style: TextStyle(
                               fontSize: 18,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Table(
+                            border: TableBorder.all(),
+                            columnWidths: const {
+                              0: FractionColumnWidth(0.3),
+                              1: FractionColumnWidth(0.3),
+                              2: FractionColumnWidth(0.4),
+                            },
+                            children: [
+                              TableRow(
+                                decoration: BoxDecoration(
+                                  color: Colors.lightBlue[200],
+                                ),
+                                children: const [
+                                  Center(child: Text('Day')),
+                                  Center(child: Text('Open Time')),
+                                  Center(child: Text('Close Time')),
+                                ],
+                              ),
+                              ...List.generate(
+                                placeList.first.timings.length,
+                                (rowIndex) => TableRow(
+                                  children: [
+                                    Text(
+                                      placeList.first.timings[rowIndex].day,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      placeList
+                                          .first.timings[rowIndex].openTime,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      placeList
+                                          .first.timings[rowIndex].closeTime,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Dos and Don\'ts',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
-                            '09:00am to 05:00pm',
-                            style: TextStyle(color: Colors.black54),
-                          )
+                          Column(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Dos:',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  ...placeList.first.doS.map((d) => Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            MdiIcons.checkCircleOutline,
+                                            color: Colors.green,
+                                            size: 18,
+                                          ),
+                                          const SizedBox(
+                                            width: 2,
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              d,
+                                              style:
+                                                  const TextStyle(fontSize: 14),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Don\'ts:',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  ...placeList.first.dontS.map((d) => Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            MdiIcons.checkCircleOutline,
+                                            color: Colors.green,
+                                            size: 18,
+                                          ),
+                                          const SizedBox(
+                                            width: 2,
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              d,
+                                              style:
+                                                  const TextStyle(fontSize: 14),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -790,10 +918,12 @@ class _PlaceCategoryState extends State<PlaceCategory> {
                   ValueListenableBuilder(
                     valueListenable: distance,
                     builder: (context, value, child) {
-                      return Text(
-                        '${distance.value.toStringAsFixed(2)}km',
-                        style: const TextStyle(fontSize: 14),
-                      );
+                      return (distance.value == 0.0)
+                          ? const Text('-')
+                          : Text(
+                              '${distance.value.toStringAsFixed(2)}km',
+                              style: const TextStyle(fontSize: 14),
+                            );
                     },
                   ),
                 ],
