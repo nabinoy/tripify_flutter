@@ -54,6 +54,11 @@ Future<void> getWeatherInfo() async {
 }
 
 List<Map<String, String>> hourForecasts = [];
+List<Map<String, String>> tempHourForecast = [];
+
+void getPreviousForecastData() {
+  hourForecasts = tempHourForecast;
+}
 
 Future<void> getForcastInfo() async {
   final uri = Uri.parse(
@@ -71,6 +76,7 @@ Future<void> getForcastInfo() async {
       hourForecast['date'] = forecastData['list'][i]['dt_txt'].toString();
       hourForecasts.add(hourForecast);
     }
+    tempHourForecast = hourForecasts;
   }
 }
 

@@ -48,7 +48,7 @@ class _WeatherDetailsState extends State<WeatherDetails> {
     return WillPopScope(
       onWillPop: () async {
         hourForecasts.clear();
-        getForcastInfo();
+        getPreviousForecastData();
         return true;
       },
       child: MaterialApp(
@@ -67,7 +67,7 @@ class _WeatherDetailsState extends State<WeatherDetails> {
             leading: IconButton(
               onPressed: () {
                 hourForecasts.clear();
-                getForcastInfo();
+                getPreviousForecastData();
                 HapticFeedback.mediumImpact();
                 Navigator.pop(context);
               },
@@ -140,7 +140,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Padding(
-                    padding: EdgeInsets.only(left: 20),
+                    padding: EdgeInsets.only(left: 8),
                     child: Text(
                       'Hour forecast',
                       style: TextStyle(

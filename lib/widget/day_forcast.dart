@@ -11,7 +11,7 @@ class DayForecast extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
-          padding: EdgeInsets.only(left: 20),
+          padding: EdgeInsets.only(left: 8),
           child: Text(
             '5 day forecast',
             style: TextStyle(
