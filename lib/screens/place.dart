@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -61,7 +63,6 @@ class Place extends StatefulWidget {
 }
 
 class _PlaceState extends State<Place> {
-  bool _showDos = true;
   @override
   void dispose() {
     hourForecasts.clear();
@@ -78,6 +79,7 @@ class _PlaceState extends State<Place> {
 
     late ReviewUser ru;
     late ReviewRatings r;
+    final controller = CarouselController();
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -100,13 +102,23 @@ class _PlaceState extends State<Place> {
                     pinned: true,
                     elevation: 0,
                     flexibleSpace: FlexibleSpaceBar(
-                      background: FadeInImage.memoryNetwork(
-                        fadeInDuration: const Duration(milliseconds: 200),
-                        fit: BoxFit.cover,
-                        placeholder: kTransparentImage,
-                        image: placeList.first.images.first.secureUrl,
-                      ),
-                    ),
+                        background: CarouselSlider.builder(
+                            carouselController: controller,
+                            itemCount: placeList.first.images.length,
+                            itemBuilder: (context, index, realIndex) {
+                              final urlImage =
+                                  placeList.first.images[index].secureUrl;
+                              return buildImage(context, urlImage, index);
+                            },
+                            options: CarouselOptions(
+                              height: 400,
+                              viewportFraction: 1,
+                              autoPlay: true,
+                              enableInfiniteScroll: true,
+                              autoPlayAnimationDuration:
+                                  const Duration(seconds: 1),
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                            ))),
                     leading: GestureDetector(
                       onTap: () {
                         HapticFeedback.mediumImpact();
@@ -154,20 +166,6 @@ class _PlaceState extends State<Place> {
                         ),
                       ),
                     ],
-                    // bottom: PreferredSize(
-                    //   preferredSize: const Size.fromHeight(0.0),
-                    //   child: Container(
-                    //     height: 32.0,
-                    //     alignment: Alignment.center,
-                    //     decoration: const BoxDecoration(
-                    //       color: Colors.white,
-                    //       borderRadius: BorderRadius.only(
-                    //         topLeft: Radius.circular(20.0),
-                    //         topRight: Radius.circular(20.0),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   ),
                   SliverToBoxAdapter(
                     child: Container(
@@ -379,8 +377,8 @@ class _PlaceState extends State<Place> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           const Icon(
-                                            MdiIcons.checkCircleOutline,
-                                            color: Colors.green,
+                                            MdiIcons.closeCircleOutline,
+                                            color: Colors.red,
                                             size: 18,
                                           ),
                                           const SizedBox(
@@ -696,6 +694,8 @@ class _PlaceState extends State<Place> {
                                                 children: <Widget>[
                                                   const Text('5'),
                                                   LinearPercentIndicator(
+                                                    backgroundColor: Colors
+                                                        .grey[300] as Color,
                                                     animation: true,
                                                     animationDuration: 3000,
                                                     width: 160.0,
@@ -716,6 +716,8 @@ class _PlaceState extends State<Place> {
                                                 children: <Widget>[
                                                   const Text('4'),
                                                   LinearPercentIndicator(
+                                                    backgroundColor: Colors
+                                                        .grey[300] as Color,
                                                     animation: true,
                                                     animationDuration: 3000,
                                                     width: 160.0,
@@ -736,6 +738,8 @@ class _PlaceState extends State<Place> {
                                                 children: <Widget>[
                                                   const Text('3'),
                                                   LinearPercentIndicator(
+                                                    backgroundColor: Colors
+                                                        .grey[300] as Color,
                                                     animation: true,
                                                     animationDuration: 3000,
                                                     width: 160.0,
@@ -756,6 +760,8 @@ class _PlaceState extends State<Place> {
                                                 children: <Widget>[
                                                   const Text('2'),
                                                   LinearPercentIndicator(
+                                                    backgroundColor: Colors
+                                                        .grey[300] as Color,
                                                     animation: true,
                                                     animationDuration: 3000,
                                                     width: 160.0,
@@ -776,6 +782,8 @@ class _PlaceState extends State<Place> {
                                                 children: <Widget>[
                                                   const Text('1 '),
                                                   LinearPercentIndicator(
+                                                    backgroundColor: Colors
+                                                        .grey[300] as Color,
                                                     animation: true,
                                                     animationDuration: 3000,
                                                     width: 160.0,
@@ -1076,4 +1084,21 @@ class ReviewWidget extends StatelessWidget {
       ],
     );
   }
+}
+
+Widget buildImage(BuildContext context, String urlImage, int index) {
+  return ClipRRect(
+    child: CachedNetworkImage(
+      height: 600,
+      width: MediaQuery.of(context).size.width,
+      alignment: Alignment.bottomCenter,
+      imageUrl: urlImage,
+      placeholder: (context, url) => Image.memory(
+        kTransparentImage,
+        fit: BoxFit.cover,
+      ),
+      fadeInDuration: const Duration(milliseconds: 200),
+      fit: BoxFit.cover,
+    ),
+  );
 }
