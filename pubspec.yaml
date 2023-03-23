@@ -55,7 +55,7 @@ dependencies:
   html: ^0.15.1
   random_avatar: ^0.0.7
   flutter_polyline_points: ^1.0.0
-  google_maps_flutter: ^2.2.3
+  google_maps_flutter: ^2.2.5
   location: ^4.4.0
   webview_flutter: ^4.0.2
   carousel_slider: ^4.2.1
