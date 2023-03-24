@@ -350,12 +350,12 @@ class SelectFilter extends SliverPersistentHeaderDelegate {
               ],
             ),
             GestureDetector(
-              // onTap: () {
-              //   showDialog(
-              //     context: context,
-              //     builder: (context) => FilterDialog(setSortBool),
-              //   );
-              // },
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => FilterDialog(setSortBool),
+                );
+              },
               child: Row(
                 children: [
                   (isRecent)

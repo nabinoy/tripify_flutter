@@ -80,6 +80,7 @@ class _PlaceState extends State<Place> {
     late ReviewUser ru;
     late ReviewRatings r;
     final controller = CarouselController();
+    double userRating = 0;
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -566,7 +567,9 @@ class _PlaceState extends State<Place> {
                                   Icons.star,
                                   color: Colors.blue,
                                 ),
-                                onRatingUpdate: (rating) {},
+                                onRatingUpdate: (rating) {
+                                  userRating = rating;
+                                },
                               ),
                             ],
                           ),
@@ -588,7 +591,11 @@ class _PlaceState extends State<Place> {
                                   borderRadius: BorderRadius.circular(50)),
                               child: GestureDetector(
                                 onTap: () {
-                                  
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        WriteReviewDialog(userRating),
+                                  );
                                 },
                                 child: const Text(
                                   'Write a review',
@@ -1106,4 +1113,115 @@ Widget buildImage(BuildContext context, String urlImage, int index) {
       fit: BoxFit.cover,
     ),
   );
+}
+
+class WriteReviewDialog extends StatefulWidget {
+  final double rating;
+  const WriteReviewDialog(this.rating, {Key? key}) : super(key: key);
+
+  @override
+  // ignore: no_logic_in_create_state
+  State<WriteReviewDialog> createState() => _WriteReviewDialogState(rating);
+}
+
+class _WriteReviewDialogState extends State<WriteReviewDialog> {
+  final double rating;
+  _WriteReviewDialogState(this.rating);
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Write a review'),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Text(
+                  'Your rating: ',
+                  style: TextStyle(fontSize: 14),
+                ),
+                const SizedBox(
+                  width: 30,
+                ),
+                Row(
+                  //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    RatingBar.builder(
+                      initialRating: rating,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: false,
+                      itemCount: 5,
+                      itemSize: 18.0,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 6.0),
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Colors.blue,
+                      ),
+                      onRatingUpdate: (rating) {},
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              controller: _controller,
+              maxLines: null,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                hintText: 'Write a review..',
+                hintStyle: const TextStyle(fontSize: 14),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    width: 3,
+                    color: Colors.black,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+                filled: true,
+                contentPadding: const EdgeInsets.all(16),
+                fillColor: Colors.white,
+              ),
+              onChanged: (value) => setState(() {
+                //email = value;
+              }),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(
+            'Cancel',
+            style: TextStyle(color: Colors.lightBlue[800]),
+          ),
+        ),
+        MaterialButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          color: Colors.lightBlue[800],
+          elevation: 0,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          child: const Text(
+            'Save',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
 }
