@@ -591,11 +591,19 @@ class _PlaceState extends State<Place> {
                                   borderRadius: BorderRadius.circular(50)),
                               child: GestureDetector(
                                 onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) =>
-                                        WriteReviewDialog(userRating),
-                                  );
+                                  if (userRating == 0) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          const RatingErrorDialog(),
+                                    );
+                                  } else {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          WriteReviewDialog(userRating),
+                                    );
+                                  }
                                 },
                                 child: const Text(
                                   'Write a review',
@@ -1172,7 +1180,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
               ],
             ),
             const SizedBox(
-              height: 10,
+              height: 14,
             ),
             TextFormField(
               controller: _controller,
@@ -1219,6 +1227,41 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
           child: const Text(
             'Save',
             style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class RatingErrorDialog extends StatefulWidget {
+  const RatingErrorDialog({super.key});
+
+  @override
+  State<RatingErrorDialog> createState() => _RatingErrorDialogState();
+}
+
+class _RatingErrorDialogState extends State<RatingErrorDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Alert'),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      content: const Text("Please rate this place first!"),
+      actions: <Widget>[
+        MaterialButton(
+          minWidth: double.infinity,
+          elevation: 0,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text(
+            'OK',
+            style: TextStyle(color: Colors.lightBlue[800]),
           ),
         ),
       ],
