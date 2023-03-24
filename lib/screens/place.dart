@@ -586,9 +586,14 @@ class _PlaceState extends State<Place> {
                               elevation: 0,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50)),
-                              child: const Text(
-                                'Write a review',
-                                style: TextStyle(color: Colors.white),
+                              child: GestureDetector(
+                                onTap: () {
+                                  
+                                },
+                                child: const Text(
+                                  'Write a review',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ),
                           ),

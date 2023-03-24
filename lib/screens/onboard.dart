@@ -35,6 +35,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       title: appName,
       theme: ThemeData(
         fontFamily: fontRegular,
+        // ignore: deprecated_member_use
+        androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
       ),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: (settings) => generateRoute(settings),
