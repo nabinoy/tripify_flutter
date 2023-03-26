@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/models/review_rating_model.dart';
+import 'package:tripify/models/user_review_model.dart';
 import 'package:tripify/models/weather_model.dart';
 import 'package:tripify/screens/review_all.dart';
 import 'package:tripify/screens/weather_details.dart';
@@ -21,6 +23,7 @@ import 'package:tripify/widget/hour_forecast.dart';
 import 'dart:math' as math;
 
 late PlaceDetails placeDetails;
+late List<Places2> currentPlace;
 
 class PlaceCategoryTop extends SliverPersistentHeaderDelegate {
   double ratingsAverage;
@@ -73,6 +76,7 @@ class _PlaceState extends State<Place> {
   Widget build(BuildContext context) {
     List<Places2> placeList =
         ModalRoute.of(context)!.settings.arguments as List<Places2>;
+    currentPlace = placeList;
     weatherLatAPI = placeList.first.location.coordinates[1].toString();
     weatherLongAPI = placeList.first.location.coordinates[0].toString();
     double screenWidth = MediaQuery.of(context).size.width;
@@ -631,7 +635,7 @@ class _PlaceState extends State<Place> {
                                   const SizedBox(
                                     height: 12,
                                   ),
-                                  UserReviewWidget(review: r.reviews[2])
+                                  UserReviewWidget(review: r.reviews[0])
                                 ],
                               ),
                             )),
@@ -849,16 +853,14 @@ class _PlaceState extends State<Place> {
                                         shrinkWrap: true,
                                         physics:
                                             const NeverScrollableScrollPhysics(),
-                                        itemCount: 3,
+                                        itemCount: (r.numberOfReviews == 1)
+                                            ? 1
+                                            : (r.numberOfReviews == 2)
+                                                ? 2
+                                                : 3,
                                         itemBuilder: (context, index) {
-                                          if (r.reviews[index].name !=
-                                              SharedService.name) {
-                                            final review = r.reviews[index];
-                                            return ReviewWidget(review: review);
-                                          } else {
-                                            return ReviewWidget(
-                                                review: r.reviews[index + 1]);
-                                          }
+                                          final review = r.reviews[index];
+                                          return ReviewWidget(review: review);
                                         },
                                       ),
                                       GestureDetector(
@@ -1278,77 +1280,87 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
   final double rating;
   _WriteReviewDialogState(this.rating);
   final TextEditingController _controller = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    List<Places2> placeList =
+        ModalRoute.of(context)!.settings.arguments as List<Places2>;
     return AlertDialog(
       title: const Text('Write a review'),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
       ),
       content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                const Text(
-                  'Your rating: ',
-                  style: TextStyle(fontSize: 14),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                Row(
-                  //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    RatingBar.builder(
-                      initialRating: rating,
-                      minRating: 1,
-                      direction: Axis.horizontal,
-                      allowHalfRating: false,
-                      itemCount: 5,
-                      itemSize: 18.0,
-                      itemPadding: const EdgeInsets.symmetric(horizontal: 6.0),
-                      itemBuilder: (context, _) => const Icon(
-                        Icons.star,
-                        color: Colors.blue,
-                      ),
-                      onRatingUpdate: (rating) {},
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 14,
-            ),
-            TextFormField(
-              controller: _controller,
-              maxLines: null,
-              style: const TextStyle(fontSize: 14),
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                hintText: 'Write a review..',
-                hintStyle: const TextStyle(fontSize: 14),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                    width: 3,
-                    color: Colors.black,
-                    style: BorderStyle.solid,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Text(
+                    'Your rating: ',
+                    style: TextStyle(fontSize: 14),
                   ),
-                ),
-                filled: true,
-                contentPadding: const EdgeInsets.all(16),
-                fillColor: Colors.white,
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  Row(
+                    //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      RatingBar.builder(
+                        initialRating: rating,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: false,
+                        itemCount: 5,
+                        itemSize: 18.0,
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 6.0),
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: Colors.blue,
+                        ),
+                        onRatingUpdate: (rating) {},
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              onChanged: (value) => setState(() {
-                //email = value;
-              }),
-            ),
-          ],
+              const SizedBox(
+                height: 14,
+              ),
+              TextFormField(
+                controller: _controller,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please write review!';
+                  }
+                  return null;
+                },
+                maxLines: null,
+                style: const TextStyle(fontSize: 14),
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  hintText: 'Write a review..',
+                  hintStyle: const TextStyle(fontSize: 14),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(
+                      width: 3,
+                      color: Colors.black,
+                      style: BorderStyle.solid,
+                    ),
+                  ),
+                  filled: true,
+                  contentPadding: const EdgeInsets.all(16),
+                  fillColor: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       actions: [
@@ -1361,7 +1373,44 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
         ),
         MaterialButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            //Navigator.of(context).pop();
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+            if (_formKey.currentState!.validate()) {
+              UserReviewModel model = UserReviewModel(
+                  placeId: currentPlace.first.sId,
+                  rating: rating.toInt(),
+                  comment: _controller.text);
+              APIService.userReview(model).then(
+                (response) {
+                  if (response.contains('Done')) {
+                  } else {
+                    final snackBar = SnackBar(
+                      width: double.infinity,
+                      dismissDirection: DismissDirection.down,
+                      elevation: 0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      content: DefaultTextStyle(
+                        style: const TextStyle(
+                          fontFamily: fontRegular,
+                        ),
+                        child: AwesomeSnackbarContent(
+                          title: 'Error 500',
+                          message: response,
+                          contentType: ContentType.warning,
+                        ),
+                      ),
+                    );
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(snackBar);
+                  }
+                },
+              );
+            }
           },
           color: Colors.lightBlue[800],
           elevation: 0,

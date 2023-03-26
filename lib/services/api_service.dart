@@ -9,6 +9,7 @@ import 'package:tripify/models/review_rating_model.dart';
 import 'package:tripify/models/signup_request_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:tripify/constants/config.dart';
+import 'package:tripify/models/user_review_model.dart';
 import 'shared_service.dart';
 
 class APIService {
@@ -78,6 +79,40 @@ class APIService {
       } else {
         return 'Sorry, we couldn\'t process your request due to a server error. Please try again later.';
       }
+    }
+  }
+
+  static Future<String> userReview(
+    UserReviewModel model,
+  ) async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    var url = Uri.https(
+      Config.apiURL,
+      Config.reviewAPI,
+    );
+    print(jsonEncode(model.toJson()));
+    var response = await client.put(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      return 'Done';
+    } else {
+      return 'Error, please try again!';
     }
   }
 
