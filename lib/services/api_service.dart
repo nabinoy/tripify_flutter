@@ -82,9 +82,7 @@ class APIService {
     }
   }
 
-  static Future<String> userReview(
-    UserReviewModel model,
-  ) async {
+  static Future<String> userReview(UserReviewModel model) async {
     var userToken = '';
     await SharedService.getSecureUserToken().then((String? data) {
       String? token = data.toString();
@@ -101,14 +99,11 @@ class APIService {
       Config.apiURL,
       Config.reviewAPI,
     );
-    print(jsonEncode(model.toJson()));
     var response = await client.put(
       url,
       headers: requestHeaders,
       body: jsonEncode(model.toJson()),
     );
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       return 'Done';
     } else {
@@ -280,6 +275,62 @@ class APIService {
       return rr;
     } else {
       throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<String> deleteUserReview(String id) async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+    };
+    final queryParameters = {'id': id};
+    var url = Uri.https(
+      Config.apiURL,
+      Config.reviewAPI,
+      queryParameters,
+    );
+    var response = await client.delete(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      return 'Successfully deleted!';
+    } else {
+      throw Exception('Error, please try again!');
+    }
+  }
+
+  static Future<String> updateUserReview(UserReviewModel model) async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+    var url = Uri.https(
+      Config.apiURL,
+      Config.reviewAPI,
+    );
+    var response = await client.put(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+    if (response.statusCode == 200) {
+      return 'Successfully updated!';
+    } else {
+      throw Exception('Error, please try again!');
     }
   }
 

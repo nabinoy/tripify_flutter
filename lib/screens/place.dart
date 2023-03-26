@@ -24,6 +24,7 @@ import 'dart:math' as math;
 
 late PlaceDetails placeDetails;
 late List<Places2> currentPlace;
+late ReviewUser ru;
 
 class PlaceCategoryTop extends SliverPersistentHeaderDelegate {
   double ratingsAverage;
@@ -81,7 +82,6 @@ class _PlaceState extends State<Place> {
     weatherLongAPI = placeList.first.location.coordinates[0].toString();
     double screenWidth = MediaQuery.of(context).size.width;
 
-    late ReviewUser ru;
     late ReviewRatings r;
     final controller = CarouselController();
     double userRating = 0;
@@ -625,17 +625,17 @@ class _PlaceState extends State<Place> {
                               padding: const EdgeInsets.all(16),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
+                                children: const [
+                                  Text(
                                     'Your review',
                                     style: TextStyle(
                                       fontSize: 18,
                                     ),
                                   ),
-                                  const SizedBox(
+                                  SizedBox(
                                     height: 12,
                                   ),
-                                  UserReviewWidget(review: r.reviews[0])
+                                  UserReviewWidget()
                                 ],
                               ),
                             )),
@@ -1122,6 +1122,8 @@ class ReviewWidget extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 review.comment,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: Colors.grey[700] as Color),
               ),
             ],
@@ -1136,13 +1138,11 @@ class ReviewWidget extends StatelessWidget {
 }
 
 class UserReviewWidget extends StatelessWidget {
-  final Reviews2 review;
-
-  const UserReviewWidget({Key? key, required this.review}) : super(key: key);
+  const UserReviewWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    DateTime dateTime = DateTime.parse(review.date);
+    DateTime dateTime = DateTime.parse(ru.date);
     return Column(
       children: [
         Container(
@@ -1168,14 +1168,14 @@ class UserReviewWidget extends StatelessWidget {
                                 (math.Random().nextDouble() * 0x333333).toInt())
                             .withOpacity(1.0),
                         child: Text(
-                          review.name[0],
+                          ru.name[0],
                           style: const TextStyle(
                               fontSize: 20, color: Colors.white),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        review.name,
+                        ru.name,
                       ),
                       const SizedBox(
                         width: 4,
@@ -1207,14 +1207,59 @@ class UserReviewWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Icon(MdiIcons.dotsVertical),
+                  PopupMenuButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    itemBuilder: (BuildContext context) => [
+                      const PopupMenuItem(
+                        value: 'update',
+                        child: Text(
+                          'Update review',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ),
+                      const PopupMenuItem(
+                        value: 'delete',
+                        child: Text('Delete review',
+                            style: TextStyle(fontSize: 15)),
+                      ),
+                    ],
+                    onSelected: (String value) {
+                      if (value == 'update') {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const EditReviewDialog(),
+                        );
+                      } else if (value == 'delete') {
+                        APIService.deleteUserReview(currentPlace.first.sId);
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                            "Review deleted",
+                            style: TextStyle(
+                                fontFamily: fontRegular, fontSize: 12),
+                            textAlign: TextAlign.center,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            vertical: 3,
+                          ),
+                          backgroundColor: Colors.green,
+                        ));
+                      }
+                    },
+                    child: const Icon(
+                      Icons.more_vert,
+                      color: Colors.grey,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 8),
               Row(
                 children: [
                   RatingBar.builder(
-                    initialRating: review.rating.toDouble(),
+                    initialRating: ru.rating.toDouble(),
                     ignoreGestures: true,
                     minRating: 1,
                     direction: Axis.horizontal,
@@ -1236,7 +1281,7 @@ class UserReviewWidget extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                review.comment,
+                ru.comment,
                 style: TextStyle(color: Colors.grey[700] as Color),
               ),
             ],
@@ -1284,8 +1329,6 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
 
   @override
   Widget build(BuildContext context) {
-    List<Places2> placeList =
-        ModalRoute.of(context)!.settings.arguments as List<Places2>;
     return AlertDialog(
       title: const Text('Write a review'),
       shape: RoundedRectangleBorder(
@@ -1336,7 +1379,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
                 controller: _controller,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please write review!';
+                    return 'Please write a review!';
                   }
                   return null;
                 },
@@ -1418,6 +1461,177 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
           child: const Text(
             'Save',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class EditReviewDialog extends StatefulWidget {
+  const EditReviewDialog({Key? key}) : super(key: key);
+
+  @override
+  State<EditReviewDialog> createState() => _EditReviewDialogState();
+}
+
+class _EditReviewDialogState extends State<EditReviewDialog> {
+  final _formKey = GlobalKey<FormState>();
+  final _nameNotifier = ValueNotifier<String>('');
+  double userRating = ru.rating.toDouble();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Edit review'),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      content: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Text(
+                    'Give rating: ',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  Row(
+                    //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      RatingBar.builder(
+                        initialRating: ru.rating.toDouble(),
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: false,
+                        itemCount: 5,
+                        itemSize: 18.0,
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 6.0),
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: Colors.blue,
+                        ),
+                        onRatingUpdate: (rating) {
+                          userRating = rating;
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 14,
+              ),
+              TextFormField(
+                //controller: _controller,
+                initialValue: ru.comment,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please write a review!';
+                  }
+                  return null;
+                },
+                maxLines: null,
+                style: const TextStyle(fontSize: 14),
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  hintText: 'Write a review..',
+                  hintStyle: const TextStyle(fontSize: 14),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(
+                      width: 3,
+                      color: Colors.black,
+                      style: BorderStyle.solid,
+                    ),
+                  ),
+                  filled: true,
+                  contentPadding: const EdgeInsets.all(16),
+                  fillColor: Colors.white,
+                ),
+                onChanged: (value) {
+                  _nameNotifier.value = value;
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(
+            'Cancel',
+            style: TextStyle(color: Colors.lightBlue[800]),
+          ),
+        ),
+        MaterialButton(
+          onPressed: () {
+            //Navigator.of(context).pop();
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+            if (_formKey.currentState!.validate()) {
+              UserReviewModel model = UserReviewModel(
+                  placeId: currentPlace.first.sId,
+                  rating: userRating.toInt(),
+                  comment: _nameNotifier.value);
+              APIService.updateUserReview(model).then(
+                (response) {
+                  if (response.contains('Successfully updated!')) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text(
+                        'Successfully updated!',
+                        style: TextStyle(fontFamily: fontRegular, fontSize: 12),
+                        textAlign: TextAlign.center,
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 3,
+                      ),
+                      backgroundColor: Colors.green,
+                    ));
+                  } else {
+                    final snackBar = SnackBar(
+                      width: double.infinity,
+                      dismissDirection: DismissDirection.down,
+                      elevation: 0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      content: DefaultTextStyle(
+                        style: const TextStyle(
+                          fontFamily: fontRegular,
+                        ),
+                        child: AwesomeSnackbarContent(
+                          title: 'Error 500',
+                          message: response,
+                          contentType: ContentType.warning,
+                        ),
+                      ),
+                    );
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(snackBar);
+                  }
+                },
+              );
+            }
+          },
+          color: Colors.lightBlue[800],
+          elevation: 0,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          child: const Text(
+            'Update',
             style: TextStyle(color: Colors.white),
           ),
         ),
