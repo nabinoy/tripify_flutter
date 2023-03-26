@@ -538,84 +538,103 @@ class _PlaceState extends State<Place> {
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Rate this place',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              RatingBar.builder(
-                                initialRating: ru.rating.toDouble(),
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: false,
-                                itemCount: 5,
-                                itemPadding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
-                                itemBuilder: (context, _) => const Icon(
-                                  Icons.star,
-                                  color: Colors.blue,
-                                ),
-                                onRatingUpdate: (rating) {
-                                  userRating = rating;
-                                },
+                      child: (ru.rating.toDouble() == 0)
+                          ? Container(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Rate this place',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 12,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      RatingBar.builder(
+                                        initialRating: ru.rating.toDouble(),
+                                        minRating: 1,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: false,
+                                        itemCount: 5,
+                                        itemPadding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        itemBuilder: (context, _) => const Icon(
+                                          Icons.star,
+                                          color: Colors.blue,
+                                        ),
+                                        onRatingUpdate: (rating) {
+                                          userRating = rating;
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: MaterialButton(
+                                      minWidth:
+                                          MediaQuery.of(context).size.width -
+                                              200,
+                                      height: 40,
+                                      onPressed: () {
+                                        if (userRating == 0) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                const RatingErrorDialog(),
+                                          );
+                                        } else {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                WriteReviewDialog(userRating),
+                                          );
+                                        }
+                                      },
+                                      color: Colors.lightBlue[800],
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      child: const Text(
+                                        'Write a review',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: MaterialButton(
-                              minWidth: MediaQuery.of(context).size.width - 200,
-                              height: 40,
-                              onPressed: () {},
-                              color: Colors.lightBlue[800],
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (userRating == 0) {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) =>
-                                          const RatingErrorDialog(),
-                                    );
-                                  } else {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) =>
-                                          WriteReviewDialog(userRating),
-                                    );
-                                  }
-                                },
-                                child: const Text(
-                                  'Write a review',
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                            )
+                          : Container(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Your review',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 12,
+                                  ),
+                                  UserReviewWidget(review: r.reviews[2])
+                                ],
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                            )),
                   SliverToBoxAdapter(
                     child: Container(
                       padding: const EdgeInsets.all(16),
@@ -632,9 +651,11 @@ class _PlaceState extends State<Place> {
                             height: 5,
                           ),
                           FutureBuilder(
-                            future:
-                                APIService.reviewRatingAll(placeList.first.sId)
-                                    .then((value) => {r = value}),
+                            future: Future.wait([
+                              APIService.reviewRatingAll(placeList.first.sId)
+                                  .then((value) => {r = value}),
+                              SharedService.getSharedLogin()
+                            ]),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.done) {
@@ -830,8 +851,14 @@ class _PlaceState extends State<Place> {
                                             const NeverScrollableScrollPhysics(),
                                         itemCount: 3,
                                         itemBuilder: (context, index) {
-                                          final review = r.reviews[index];
-                                          return ReviewWidget(review: review);
+                                          if (r.reviews[index].name !=
+                                              SharedService.name) {
+                                            final review = r.reviews[index];
+                                            return ReviewWidget(review: review);
+                                          } else {
+                                            return ReviewWidget(
+                                                review: r.reviews[index + 1]);
+                                          }
                                         },
                                       ),
                                       GestureDetector(
@@ -1106,6 +1133,121 @@ class ReviewWidget extends StatelessWidget {
   }
 }
 
+class UserReviewWidget extends StatelessWidget {
+  final Reviews2 review;
+
+  const UserReviewWidget({Key? key, required this.review}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    DateTime dateTime = DateTime.parse(review.date);
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(
+              color: Colors.grey[300] as Color,
+              width: 1.0,
+            ),
+          ),
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 17,
+                        backgroundColor: Color(
+                                (math.Random().nextDouble() * 0x333333).toInt())
+                            .withOpacity(1.0),
+                        child: Text(
+                          review.name[0],
+                          style: const TextStyle(
+                              fontSize: 20, color: Colors.white),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        review.name,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.0),
+                          color: Colors.lightBlue,
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              MdiIcons.checkDecagram,
+                              size: 12,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            Text(
+                              'You',
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Icon(MdiIcons.dotsVertical),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  RatingBar.builder(
+                    initialRating: review.rating.toDouble(),
+                    ignoreGestures: true,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemSize: 16,
+                    itemBuilder: (context, _) => const Icon(
+                      Icons.star,
+                      color: Colors.blue,
+                    ),
+                    onRatingUpdate: (rating) {},
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    "${dateTime.day}/${dateTime.month}/${dateTime.year}",
+                    style: const TextStyle(color: Colors.black54, fontSize: 12),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                review.comment,
+                style: TextStyle(color: Colors.grey[700] as Color),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+      ],
+    );
+  }
+}
+
 Widget buildImage(BuildContext context, String urlImage, int index) {
   return ClipRRect(
     child: CachedNetworkImage(
@@ -1185,6 +1327,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
             TextFormField(
               controller: _controller,
               maxLines: null,
+              style: const TextStyle(fontSize: 14),
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 hintText: 'Write a review..',
