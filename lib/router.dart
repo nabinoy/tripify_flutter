@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tripify/otp_form.dart';
 import 'package:tripify/screens/category.dart';
 import 'package:tripify/screens/drawer/helpline.dart';
 import 'package:tripify/screens/forgot_password.dart';
@@ -57,6 +58,9 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     case ReviewAll.routeName:
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const ReviewAll(),);
+
+    case OtpForm.routeName:
+      return MaterialPageRoute(settings : routeSettings,builder: (_) => const OtpForm(),);
   
     default: 
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const Scaffold(

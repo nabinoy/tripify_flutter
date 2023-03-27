@@ -89,6 +89,7 @@ class _PlaceState extends State<Place> {
     return Scaffold(
       backgroundColor: bgColor,
       body: FutureBuilder(
+          key: const ValueKey('myKey'),
           future: Future.wait([
             APIService.reviewRatingAll(placeList.first.sId)
                 .then((value) => {r = value}),
@@ -1480,6 +1481,7 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
   final _formKey = GlobalKey<FormState>();
   final _nameNotifier = ValueNotifier<String>('');
   double userRating = ru.rating.toDouble();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -1582,6 +1584,7 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
               currentFocus.unfocus();
             }
             if (_formKey.currentState!.validate()) {
+              isLoading = true;
               UserReviewModel model = UserReviewModel(
                 placeId: currentPlace.first.sId,
                 rating: userRating.toInt(),
@@ -1592,6 +1595,8 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
               APIService.updateUserReview(model).then(
                 (response) {
                   if (response.contains('Successfully updated!')) {
+                    Navigator.of(context).pop();
+                    isLoading = false;
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text(
                         'Successfully updated!',
@@ -1604,6 +1609,7 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
                       backgroundColor: Colors.green,
                     ));
                   } else {
+                    isLoading = false;
                     final snackBar = SnackBar(
                       width: double.infinity,
                       dismissDirection: DismissDirection.down,
@@ -1633,10 +1639,19 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
           elevation: 0,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-          child: const Text(
-            'Update',
-            style: TextStyle(color: Colors.white),
-          ),
+          child: isLoading
+              ? const SizedBox(
+                  height: 20.0,
+                  width: 20.0,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    color: Colors.white,
+                  ),
+                )
+              : const Text(
+                  'Update',
+                  style: TextStyle(color: Colors.white),
+                ),
         ),
       ],
     );

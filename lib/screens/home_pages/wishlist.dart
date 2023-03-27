@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/place_response_model.dart';
+import 'package:tripify/otp_form.dart';
 import 'package:tripify/screens/place.dart';
 import 'package:tripify/screens/map_webview.dart';
 import 'package:tripify/services/api_service.dart';
@@ -27,6 +28,11 @@ class _WishlistState extends State<Wishlist> {
                   Navigator.pushNamed(context, MapWebView.routeName);
                 },
                 child: const Text('Map Webview')),
+            TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, OtpForm.routeName);
+                },
+                child: const Text('OTP Form')),
             FutureBuilder(
               future: APIService.placeAll().then((value) => {pd = value}),
               builder: (context, snapshot) {
