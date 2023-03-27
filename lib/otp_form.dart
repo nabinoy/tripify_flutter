@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
@@ -12,6 +14,46 @@ class OtpForm extends StatefulWidget {
 }
 
 class _OtpFormState extends State<OtpForm> {
+  int _seconds = 120;
+  late Timer _timer;
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) => setState(
+        () {
+          if (_seconds < 1) {
+            timer.cancel();
+          } else {
+            _seconds = _seconds - 1;
+          }
+        },
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  String formatDuration(int seconds) {
+    int minutes = (seconds / 60).truncate();
+    int remainingSeconds = seconds - (minutes * 60);
+    String formattedSeconds = remainingSeconds < 10
+        ? '0$remainingSeconds'
+        : remainingSeconds.toString();
+    return '$minutes:$formattedSeconds';
+  }
+
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
@@ -70,7 +112,7 @@ class _OtpFormState extends State<OtpForm> {
               ),
               const Text(
                 "Verification code",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
                 height: 10,
@@ -82,11 +124,12 @@ class _OtpFormState extends State<OtpForm> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const Text(
+              Text(
                 "examp*****m.com",
                 style: TextStyle(
-                  fontSize: 16,
-                ),
+                    fontSize: 15,
+                    color: Colors.lightBlue[800],
+                    fontWeight: FontWeight.w600),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(
@@ -134,9 +177,20 @@ class _OtpFormState extends State<OtpForm> {
                       (route) => false,
                     );
                   },
-                  child: const Text(
-                    "Resend code after 1:23",
-                    style: TextStyle(color: Colors.black),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Resend code after ",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Text(
+                        formatDuration(_seconds),
+                        style: TextStyle(
+                            color: Colors.lightBlue[800],
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
                   ))
             ],
           ),
