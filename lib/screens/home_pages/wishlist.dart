@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/screens/place.dart';
 import 'package:tripify/screens/map_webview.dart';
@@ -37,7 +38,7 @@ class _WishlistState extends State<Wishlist> {
                       physics: const NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                      itemCount: pd.filteredPlaceNumber,
+                      itemCount: placeCount,
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {

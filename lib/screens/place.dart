@@ -1583,9 +1583,12 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
             }
             if (_formKey.currentState!.validate()) {
               UserReviewModel model = UserReviewModel(
-                  placeId: currentPlace.first.sId,
-                  rating: userRating.toInt(),
-                  comment: _nameNotifier.value);
+                placeId: currentPlace.first.sId,
+                rating: userRating.toInt(),
+                comment: (_nameNotifier.value == '')
+                    ? ru.comment
+                    : _nameNotifier.value,
+              );
               APIService.updateUserReview(model).then(
                 (response) {
                   if (response.contains('Successfully updated!')) {

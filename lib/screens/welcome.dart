@@ -21,6 +21,7 @@ class Welcome extends StatelessWidget {
       title: appName,
       theme: ThemeData(
         fontFamily: fontRegular,
+        scaffoldBackgroundColor: bgColor,
       ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
