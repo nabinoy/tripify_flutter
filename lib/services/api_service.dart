@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'package:html/dom.dart';
-import 'package:html/parser.dart';
 import 'package:tripify/models/forgot_password_request_model.dart';
 import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/login_request_model.dart';
 import 'package:tripify/models/place_response_model.dart';
+import 'package:tripify/models/otp_request_model.dart';
 import 'package:tripify/models/review_rating_model.dart';
 import 'package:tripify/models/signup_request_model.dart';
 import 'package:http/http.dart' as http;
@@ -38,19 +37,11 @@ class APIService {
       SharedService.setSharedLogin(data);
       return true;
     } else {
-      print(response.statusCode);
-      Document document = parse(response.body);
-      Element? errorElement = document.querySelector('pre');
-      String errorString = errorElement!.text;
-      final pattern = RegExp(r'Error: (.*?)\s+at');
-      final match = pattern.firstMatch(errorString);
-      final errorMessage = match!.group(1);
-      print(errorMessage);
       return false;
     }
   }
 
-  static Future<String> signup(
+  static Future<dynamic> signup(
     SignupRequestModel model,
   ) async {
     Map<String, String> requestHeaders = {
@@ -67,18 +58,9 @@ class APIService {
       headers: requestHeaders,
       body: jsonEncode(model.toJson()),
     );
+    final data = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      SharedService.setSharedLogin(data);
-      return 'Done';
-    } else {
-      if (response.body
-          .toString()
-          .contains('E11000 duplicate key error collection')) {
-        return 'This email is already taken. Please use a different email';
-      } else {
-        return 'Sorry, we couldn\'t process your request due to a server error. Please try again later.';
-      }
+      return data;
     }
   }
 
@@ -132,13 +114,6 @@ class APIService {
     if (response.statusCode == 200) {
       return true;
     } else {
-      Document document = parse(response.body);
-      Element? errorElement = document.querySelector('pre');
-      String errorString = errorElement!.text;
-      final pattern = RegExp(r'Error: (.*?)\s+at');
-      final match = pattern.firstMatch(errorString);
-      final errorMessage = match!.group(1);
-      print(errorMessage);
       return false;
     }
   }
@@ -206,6 +181,43 @@ class APIService {
         c.add(ca);
       }
       return c;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<List<ServiceAll>> serviceAll() async {
+    //var userToken = '';
+    // await SharedService.getSecureUserToken().then((String? data) {
+    //   String? token = data.toString();
+    //   userToken = token;
+    // });
+
+    Map<String, String> requestHeaders = {
+     // 'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+    };
+
+    var url = Uri.https(
+      Config.apiURL,
+      Config.serviceAllAPI,
+    );
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['services'];
+      List<ServiceAll> s = [];
+
+      for (var i = 0; i < data.length; i++) {
+        ServiceAll sa = ServiceAll.fromJson(data[i]);
+        s.add(sa);
+      }
+      return s;
     } else {
       throw Exception('Failed to load person details');
     }
@@ -301,6 +313,44 @@ class APIService {
     );
     if (response.statusCode == 200) {
       return 'Successfully deleted!';
+    } else {
+      throw Exception('Error, please try again!');
+    }
+  }
+
+  static Future<String> regenerateOTP(RegenerateOTPRequest model) async {
+    Map<String, String> requestHeaders = {'Content-Type': 'application/json'};
+    var url = Uri.https(
+      Config.apiURL,
+      Config.regenerateOTPAPI,
+    );
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+    if (response.statusCode == 200) {
+      return 'Successfully Resend OTP';
+    } else {
+      throw Exception('Error, please try again!');
+    }
+  }
+
+  static Future<dynamic> verifyOTP(VerifyOTPRequest model) async {
+    Map<String, String> requestHeaders = {'Content-Type': 'application/json'};
+    var url = Uri.https(
+      Config.apiURL,
+      Config.verifyOTPAPI,
+    );
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      SharedService.setSharedLogin(data);
+      return data;
     } else {
       throw Exception('Error, please try again!');
     }

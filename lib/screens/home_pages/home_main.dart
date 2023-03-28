@@ -22,6 +22,7 @@ String currentPlace = '';
 final controller = CarouselController();
 List<CategoryAll> c = [];
 List<IslandAll> ia = [];
+List<ServiceAll> sa = [];
 
 Future<void> delayMain(int milliseconds) {
   return Future.delayed(Duration(milliseconds: milliseconds), () {
@@ -51,6 +52,7 @@ class _HomeMainState extends State<HomeMain> {
         //delayMain(3000),
         APIService.categoryAll().then((value) => {c = value}),
         APIService.islandAll().then((value) => {ia = value}),
+        APIService.serviceAll().then((value) => {sa = value}),
         getCurrentLocation(),
         SharedService.getSharedLogin(),
       ]),
@@ -217,7 +219,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                             onTap: () {
                               HapticFeedback.mediumImpact();
                               Navigator.pushNamed(context, Category.routeName,
-                                  arguments: c);
+                                  arguments: [c[i]]);
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
@@ -249,7 +251,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                               onTap: () {
                                 HapticFeedback.mediumImpact();
                                 Navigator.pushNamed(context, Category.routeName,
-                                    arguments: c);
+                                    arguments: [c[i + 1]]);
                               },
                               child: Container(
                                 margin: const EdgeInsets.only(left: 16.0),
@@ -301,6 +303,50 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                 ),
               ),
             ),
+            const SizedBox(
+              height: 14,
+            ),
+            FadeAnimation(
+                1.7,
+                SizedBox(
+                  height: 150,
+                  child: GridView.count(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: List.generate(sa.length, (index) {
+                      return GestureDetector(
+                        onTap: () {
+                          HapticFeedback.mediumImpact();
+                          Navigator.pushNamed(context, Category.routeName,
+                              arguments: c);
+                        },
+                        child: ClipRRect(
+                          child: Stack(alignment: Alignment.center, children: [
+                            CachedNetworkImage(
+                              height: containerHeight,
+                              width: MediaQuery.of(context).size.width - 32,
+                              imageUrl: c[index].image.secureUrl,
+                              placeholder: (context, url) => Image.memory(
+                                kTransparentImage,
+                                fit: BoxFit.cover,
+                              ),
+                              fadeInDuration: const Duration(milliseconds: 200),
+                              fit: BoxFit.cover,
+                            ),
+                            Center(
+                              child: Text(
+                                sa[index].name!,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          ]),
+                        ),
+                      );
+                    }),
+                  ),
+                )),
           ],
         ),
       ),

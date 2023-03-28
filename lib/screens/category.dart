@@ -1,6 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tripify/constants/global_variables.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/models/home_main_model.dart';
 
 class Category extends StatelessWidget {
@@ -16,27 +17,22 @@ class Category extends StatelessWidget {
       slivers: [
         SliverAppBar(
           backgroundColor: Colors.white,
-          expandedHeight: 300,
+          expandedHeight: 400,
           pinned: true,
           elevation: 0,
-          // flexibleSpace: FlexibleSpaceBar(
-          //     background: CarouselSlider.builder(
-          //         carouselController: controller,
-          //         itemCount: placeList.first.images.length,
-          //         itemBuilder: (context, index, realIndex) {
-          //           final urlImage =
-          //               placeList.first.images[index].secureUrl;
-          //           return buildImage(context, urlImage, index);
-          //         },
-          //         options: CarouselOptions(
-          //           height: 400,
-          //           viewportFraction: 1,
-          //           autoPlay: true,
-          //           enableInfiniteScroll: true,
-          //           autoPlayAnimationDuration:
-          //               const Duration(seconds: 1),
-          //           autoPlayCurve: Curves.fastOutSlowIn,
-          //         ))),
+          flexibleSpace: FlexibleSpaceBar(
+              background: CachedNetworkImage(
+            height: 600,
+            width: MediaQuery.of(context).size.width,
+            alignment: Alignment.bottomCenter,
+            imageUrl: categoryDetails.first.image.secureUrl,
+            placeholder: (context, url) => Image.memory(
+              kTransparentImage,
+              fit: BoxFit.cover,
+            ),
+            fadeInDuration: const Duration(milliseconds: 200),
+            fit: BoxFit.cover,
+          )),
           leading: GestureDetector(
             onTap: () {
               HapticFeedback.mediumImpact();
@@ -56,10 +52,20 @@ class Category extends StatelessWidget {
           ),
         ),
         SliverToBoxAdapter(
-          child: Text(categoryDetails.first.name),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: Center(
+                child: Text(
+              categoryDetails.first.name,
+              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
+            )),
+          ),
         ),
         SliverToBoxAdapter(
-          child: Text(categoryDetails.first.description),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(categoryDetails.first.description),
+          ),
         ),
       ],
     ));

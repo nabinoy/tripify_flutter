@@ -1,15 +1,12 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:tripify/animation/FadeAnimation.dart';
-import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/signup_request_model.dart';
-import 'package:tripify/screens/home.dart';
+import 'package:tripify/otp_form.dart';
 import 'package:tripify/screens/login.dart';
 import 'package:tripify/services/api_service.dart';
-import 'package:tripify/services/shared_service.dart';
 
 class SignupPage extends StatelessWidget {
   static const String routeName = '/signup';
@@ -18,27 +15,27 @@ class SignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          leading: IconButton(
-            onPressed: () {
-              HapticFeedback.mediumImpact();
-              Navigator.pop(context);
-              //SystemNavigator.pop();
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              size: 20,
-              color: Colors.black,
-            ),
+        leading: IconButton(
+          onPressed: () {
+            HapticFeedback.mediumImpact();
+            Navigator.pop(context);
+            //SystemNavigator.pop();
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            size: 20,
+            color: Colors.black,
           ),
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
-        body: const SignupPageScreen(),
-      );
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+      ),
+      body: const SignupPageScreen(),
+    );
   }
 }
 
@@ -321,33 +318,26 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                                     isApiCallProcess = false;
                                   });
 
-                                  if (response.contains('Done')) {
+                                  if (response['success'].toString() ==
+                                      'true') {
                                     isLoading = false;
-                                    SharedService.setSharedHomeAfter(true);
-                                    Navigator.pushReplacementNamed(
-                                        context, Home.routeName);
+                                    Navigator.pushNamed(
+                                        context, OtpForm.routeName,
+                                        arguments: email);
                                   } else {
                                     isLoading = false;
-                                    final snackBar = SnackBar(
-                                      width: double.infinity,
-                                      dismissDirection: DismissDirection.down,
-                                      elevation: 0,
-                                      behavior: SnackBarBehavior.floating,
-                                      backgroundColor: Colors.transparent,
-                                      content: DefaultTextStyle(
-                                        style: const TextStyle(
-                                          fontFamily: fontRegular,
-                                        ),
-                                        child: AwesomeSnackbarContent(
-                                          title: 'Error 500',
-                                          message: response,
-                                          contentType: ContentType.warning,
-                                        ),
-                                      ),
-                                    );
                                     ScaffoldMessenger.of(context)
-                                      ..hideCurrentSnackBar()
-                                      ..showSnackBar(snackBar);
+                                        .showSnackBar(const SnackBar(
+                                      content: Text(
+                                        'Error! Please try again!',
+                                        style: TextStyle(fontSize: 14),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 3,
+                                      ),
+                                      backgroundColor: Colors.red,
+                                    ));
                                   }
                                 },
                               );

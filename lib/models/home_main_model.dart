@@ -78,3 +78,46 @@ class CategoryImage {
     return CategoryImage(id: json['id'], secureUrl: json['secure_url']);
   }
 }
+
+class ServiceAll {
+  ServiceImage? image;
+  String? sId;
+  String? name;
+  String? description;
+  String? createdAt;
+  int? iV;
+
+  ServiceAll(
+      {required this.image,
+      required this.sId,
+      required this.name,
+      required this.description,
+      required this.createdAt,
+      required this.iV});
+
+  factory ServiceAll.fromJson(Map<String, dynamic> json) {
+    return ServiceAll(
+      image:
+          json['image'] != null ? ServiceImage.fromJson(json['image']) : null,
+      sId: json['_id'],
+      name: json['name'],
+      description: json['description'],
+      createdAt: json['createdAt'],
+      iV: json['__v'],
+    );
+  }
+}
+
+class ServiceImage {
+  String? id;
+  String? secureUrl;
+
+  ServiceImage({required this.id, required this.secureUrl});
+
+  factory ServiceImage.fromJson(Map<String, dynamic> json) {
+    return ServiceImage(
+      id: json['id'],
+      secureUrl: json['secure_url'],
+    );
+  }
+}

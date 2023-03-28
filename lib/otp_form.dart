@@ -1,8 +1,14 @@
 import 'dart:async';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
+import 'package:tripify/constants/global_variables.dart';
+import 'package:tripify/models/otp_request_model.dart';
+import 'package:tripify/screens/home.dart';
+import 'package:tripify/services/api_service.dart';
+import 'package:tripify/services/shared_service.dart';
 
 class OtpForm extends StatefulWidget {
   static const String routeName = '/otpform';
@@ -14,8 +20,11 @@ class OtpForm extends StatefulWidget {
 }
 
 class _OtpFormState extends State<OtpForm> {
-  int _seconds = 120;
+  int _seconds = 60; //600
   late Timer _timer;
+  String otp = '';
+  bool isTimeOut = false;
+  bool isLoading = false;
 
   void startTimer() {
     const oneSec = Duration(seconds: 1);
@@ -25,6 +34,7 @@ class _OtpFormState extends State<OtpForm> {
         () {
           if (_seconds < 1) {
             timer.cancel();
+            isTimeOut = true;
           } else {
             _seconds = _seconds - 1;
           }
@@ -56,6 +66,7 @@ class _OtpFormState extends State<OtpForm> {
 
   @override
   Widget build(BuildContext context) {
+    String email = ModalRoute.of(context)!.settings.arguments as String;
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
@@ -125,7 +136,7 @@ class _OtpFormState extends State<OtpForm> {
                 textAlign: TextAlign.center,
               ),
               Text(
-                "examp*****m.com",
+                email,
                 style: TextStyle(
                     fontSize: 15,
                     color: Colors.lightBlue[800],
@@ -141,7 +152,9 @@ class _OtpFormState extends State<OtpForm> {
                 focusedPinTheme: focusedPinTheme,
                 submittedPinTheme: submittedPinTheme,
                 showCursor: true,
-                onCompleted: (pin) => print(pin),
+                onCompleted: (pin) {
+                  otp = pin;
+                },
               ),
               const SizedBox(
                 height: 20,
@@ -153,45 +166,112 @@ class _OtpFormState extends State<OtpForm> {
                   minWidth: double.infinity,
                   height: 60,
                   onPressed: () {
+                    isLoading = true;
                     HapticFeedback.mediumImpact();
-                    //Navigator.pushNamed(context, SignupPage.routeName);
+                    VerifyOTPRequest model = VerifyOTPRequest(
+                      otp: otp,
+                    );
+                    APIService.verifyOTP(model).then((response) {
+                      if (response['success'].toString() == 'true') {
+                        isLoading = false;
+                        SharedService.setSharedHomeAfter(true);
+                        Navigator.pushReplacementNamed(context, Home.routeName);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                            response['message'],
+                            style: const TextStyle(fontSize: 14),
+                            textAlign: TextAlign.center,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 3,
+                          ),
+                          backgroundColor: Colors.green,
+                        ));
+                      }
+                    });
                   },
                   color: Colors.lightBlue[800],
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50)),
-                  child: const Text(
-                    "Confirm",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18),
-                  ),
+                  child: isLoading
+                      ? const SizedBox(
+                          height: 22.0,
+                          width: 22.0,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text(
+                          "Confirm",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18),
+                        ),
                 ),
               ),
-              TextButton(
-                  onPressed: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      'phone',
-                      (route) => false,
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Resend code after ",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      Text(
-                        formatDuration(_seconds),
+              const SizedBox(
+                height: 12,
+              ),
+              isTimeOut
+                  ? TextButton(
+                      onPressed: () {
+                        setState(() {
+                          RegenerateOTPRequest model = RegenerateOTPRequest(
+                            email: email,
+                          );
+
+                          APIService.regenerateOTP(model).then(
+                            (response) {
+                              // setState(() {
+                              //   isApiCallProcess = false;
+                              // });
+                              if (response
+                                  .contains('Successfully Resend OTP')) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text(
+                                    'Successfully sent OTP!',
+                                    style: TextStyle(fontSize: 14),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 4,
+                                  ),
+                                  backgroundColor: Colors.green,
+                                ));
+                                isTimeOut = false;
+                                _seconds = 60;
+                                startTimer();
+                              } else {}
+                            },
+                          );
+                        });
+                      },
+                      child: Text(
+                        "Resend OTP",
                         style: TextStyle(
                             color: Colors.lightBlue[800],
                             fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ))
+                      ))
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Resend code after ",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        Text(
+                          formatDuration(_seconds),
+                          style: TextStyle(
+                              color: Colors.lightBlue[800],
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
             ],
           ),
         ),
