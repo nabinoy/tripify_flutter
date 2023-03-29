@@ -21,51 +21,40 @@ class Helpline extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness: Brightness.light,
-    ));
-    return MaterialApp(
-      title: appName,
-      theme: ThemeData(
-        fontFamily: fontRegular,
-        // ignore: deprecated_member_use
-        androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
-        scaffoldBackgroundColor: bgColor,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: bgColor,
-          leading: IconButton(
-            onPressed: () async {
-              HapticFeedback.mediumImpact();
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              size: 20,
-              color: Colors.black,
-            ),
+    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    //   statusBarColor: Colors.white,
+    //   statusBarIconBrightness: Brightness.dark,
+    //   statusBarBrightness: Brightness.light,
+    // ));
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: bgColor,
+        leading: IconButton(
+          onPressed: () async {
+            HapticFeedback.mediumImpact();
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            size: 20,
+            color: Colors.black,
           ),
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
-        resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-          child: Row(children: [
-            const Text('Call here'),
-            ElevatedButton(
-              onPressed: () {
-                _makePhoneCall('+919531839056');
-              },
-              child: const Text('Call'),
-            )
-          ]),
-        ),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
-      onGenerateRoute: (settings) => generateRoute(settings),
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Row(children: [
+          const Text('Call here'),
+          ElevatedButton(
+            onPressed: () {
+              _makePhoneCall('+919531839056');
+            },
+            child: const Text('Call'),
+          )
+        ]),
+      ),
     );
   }
 }

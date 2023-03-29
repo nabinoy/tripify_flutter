@@ -80,12 +80,12 @@ class CategoryImage {
 }
 
 class ServiceAll {
-  ServiceImage? image;
-  String? sId;
-  String? name;
-  String? description;
-  String? createdAt;
-  int? iV;
+  ServiceImage image;
+  String sId;
+  String name;
+  String description;
+  String createdAt;
+  int iV;
 
   ServiceAll(
       {required this.image,
@@ -97,8 +97,9 @@ class ServiceAll {
 
   factory ServiceAll.fromJson(Map<String, dynamic> json) {
     return ServiceAll(
-      image:
-          json['image'] != null ? ServiceImage.fromJson(json['image']) : null,
+      image: (json['image'] != null
+          ? ServiceImage.fromJson(json['image'])
+          : null)!,
       sId: json['_id'],
       name: json['name'],
       description: json['description'],
@@ -109,8 +110,8 @@ class ServiceAll {
 }
 
 class ServiceImage {
-  String? id;
-  String? secureUrl;
+  String id;
+  String secureUrl;
 
   ServiceImage({required this.id, required this.secureUrl});
 

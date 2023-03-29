@@ -22,87 +22,79 @@ class _WishlistState extends State<Wishlist> {
   Widget build(BuildContext context) {
     late PlaceDetails pd;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, MapWebView.routeName);
-                },
-                child: const Text('Map Webview')),
-            FutureBuilder(
-              future: APIService.placeAll().then((value) => {pd = value}),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height + 200,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      // padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                      itemCount: placeCount,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, Place.routeName,
-                                arguments: [pd.places[index]]);
-                          },
-                          child: Column(
-                            children: [
-                              Container(
-                                //height: 200,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.all(12),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        child: CachedNetworkImage(
-                                          height: 200,
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          imageUrl: pd.places[index].images
-                                              .first.secureUrl,
-                                          placeholder: (context, url) =>
-                                              Image.memory(
-                                            kTransparentImage,
-                                            fit: BoxFit.cover,
-                                          ),
-                                          fadeInDuration:
-                                              const Duration(milliseconds: 200),
+      body: FutureBuilder(
+        future: APIService.placeAll().then((value) => {pd = value}),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    //physics: const NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    // padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                    itemCount: placeCount,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, Place.routeName,
+                              arguments: [pd.places[index]]);
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.all(12),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      child: CachedNetworkImage(
+                                        height: 200,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        imageUrl: pd.places[index].images.first
+                                            .secureUrl,
+                                        placeholder: (context, url) =>
+                                            Image.memory(
+                                          kTransparentImage,
                                           fit: BoxFit.cover,
                                         ),
+                                        fadeInDuration:
+                                            const Duration(milliseconds: 200),
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
-                                    Text(pd.places[index].name),
-                                    Text(pd.places[index].address.city),
-                                  ],
-                                ),
+                                  ),
+                                  Text(
+                                    pd.places[index].name,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Text(pd.places[index].address.city,
+                                      style: const TextStyle(fontSize: 12)),
+                                ],
                               ),
-                            ],
-                          ),
-                          // child: SizedBox(
-                          //   width: 100.0,
-                          //   child: Text(pd.places[index].name),
-                          // ),
-                        );
-                      },
-                    ),
-                  );
-                } else {
-                  return const LoadingScreen();
-                }
-              },
-            )
-          ],
-        ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return const LoadingScreen();
+          }
+        },
       ),
     );
   }

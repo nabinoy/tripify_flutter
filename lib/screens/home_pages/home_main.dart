@@ -327,7 +327,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                             CachedNetworkImage(
                               height: containerHeight,
                               width: MediaQuery.of(context).size.width - 32,
-                              imageUrl: c[index].image.secureUrl,
+                              imageUrl: sa[index].image.secureUrl,
                               placeholder: (context, url) => Image.memory(
                                 kTransparentImage,
                                 fit: BoxFit.cover,
@@ -337,7 +337,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                             ),
                             Center(
                               child: Text(
-                                sa[index].name!,
+                                sa[index].name,
                                 style: const TextStyle(color: Colors.black),
                               ),
                             ),
