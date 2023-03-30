@@ -26,7 +26,7 @@ class _HourForecastState extends State<HourForecast> {
           height: MediaQuery.of(context).size.height / 2 * 0.33,
           width: MediaQuery.of(context).size.width,
           child: ListView.builder(
-            physics: const ClampingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
             itemCount: hourForecasts.length,

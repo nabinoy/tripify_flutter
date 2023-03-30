@@ -70,6 +70,8 @@ class _PlaceState extends State<Place> {
   @override
   void dispose() {
     hourForecasts.clear();
+    googleMapController.dispose();
+    polylineCoordinates.clear();
     super.dispose();
   }
 

@@ -3,23 +3,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/models/home_main_model.dart';
+import 'package:tripify/models/place_response_model.dart';
+import 'package:tripify/screens/weather_details.dart';
+import 'package:tripify/services/api_service.dart';
 import 'package:tripify/widget/place_horizontal.dart';
 
-class Category extends StatefulWidget {
+late PlaceDetails pd;
+List<IslandAll> ia = [];
+
+class Category extends StatelessWidget {
   static const String routeName = '/category';
   const Category({super.key});
 
   @override
-  State<Category> createState() => _CategoryState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: FutureBuilder(
+      future: Future.wait([
+        APIService.placeAll().then((value) => {pd = value}),
+        APIService.islandAll().then((value) => {ia = value})
+      ]),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return const CategoryPage();
+        } else {
+          return const LoadingScreen();
+        }
+      },
+    ));
+  }
 }
 
-class _CategoryState extends State<Category> {
+class CategoryPage extends StatefulWidget {
+  const CategoryPage({super.key});
+
+  @override
+  State<CategoryPage> createState() => _CategoryPageState();
+}
+
+class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
     List<CategoryAll> categoryDetails =
         ModalRoute.of(context)!.settings.arguments as List<CategoryAll>;
-    return Scaffold(
-        body: CustomScrollView(
+    return CustomScrollView(
       slivers: [
         SliverAppBar(
           backgroundColor: Colors.white,
@@ -75,10 +102,31 @@ class _CategoryState extends State<Category> {
         ),
         SliverToBoxAdapter(
           child: Container(
-              padding: const EdgeInsets.all(16),
-              child: const PlaceHorizontal()),
+            margin: const EdgeInsets.all(16),
+            child: Column(
+              children: ia
+                  .map((item) => Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.name,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
+                              height: MediaQuery.of(context).size.width / 1.58,
+                              child: PlaceHorizontal(pd.places)),
+                        ],
+                      ))
+                  .toList(),
+            ),
+          ),
         ),
       ],
-    ));
+    );
   }
 }

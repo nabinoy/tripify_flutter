@@ -26,9 +26,6 @@ class _DirectionMapState extends State<DirectionMap> {
   double destinationLat = double.parse(weatherLatAPI);
   double destinationLong = double.parse(weatherLongAPI);
 
-  //static LatLng destination = LatLng(PlaceModel.lat, PlaceModel.long); //destination
-  //static const LatLng destination = LatLng(11.637482, 92.713127); //destination
-
   LatLng midpoint = LatLng((lat + double.parse(weatherLatAPI)) / 2,
       (long + double.parse(weatherLongAPI)) / 2);
 
