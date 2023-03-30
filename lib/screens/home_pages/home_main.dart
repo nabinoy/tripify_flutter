@@ -308,44 +308,42 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
             ),
             FadeAnimation(
                 1.7,
-                SizedBox(
-                  height: 150,
-                  child: GridView.count(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: List.generate(sa.length, (index) {
-                      return GestureDetector(
-                        onTap: () {
-                          HapticFeedback.mediumImpact();
-                          Navigator.pushNamed(context, Category.routeName,
-                              arguments: c);
-                        },
-                        child: ClipRRect(
-                          child: Stack(alignment: Alignment.center, children: [
-                            CachedNetworkImage(
-                              height: containerHeight,
-                              width: MediaQuery.of(context).size.width - 32,
-                              imageUrl: sa[index].image.secureUrl,
-                              placeholder: (context, url) => Image.memory(
-                                kTransparentImage,
-                                fit: BoxFit.cover,
-                              ),
-                              fadeInDuration: const Duration(milliseconds: 200),
+                GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  children: List.generate(sa.length, (index) {
+                    return GestureDetector(
+                      onTap: () {
+                        HapticFeedback.mediumImpact();
+                        Navigator.pushNamed(context, Category.routeName,
+                            arguments: c);
+                      },
+                      child: ClipRRect(
+                        child: Stack(alignment: Alignment.center, children: [
+                          CachedNetworkImage(
+                            height: containerHeight,
+                            width: MediaQuery.of(context).size.width - 32,
+                            imageUrl: sa[index].image.secureUrl,
+                            placeholder: (context, url) => Image.memory(
+                              kTransparentImage,
                               fit: BoxFit.cover,
                             ),
-                            Center(
-                              child: Text(
-                                sa[index].name,
-                                style: const TextStyle(color: Colors.black),
-                              ),
+                            fadeInDuration: const Duration(milliseconds: 200),
+                            fit: BoxFit.cover,
+                          ),
+                          Center(
+                            child: Text(
+                              sa[index].name,
+                              style: const TextStyle(color: Colors.black),
                             ),
-                          ]),
-                        ),
-                      );
-                    }),
-                  ),
+                          ),
+                        ]),
+                      ),
+                    );
+                  }),
                 )),
           ],
         ),

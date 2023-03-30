@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tripify/otp_form.dart';
+import 'package:tripify/screens/otp_form.dart';
 import 'package:tripify/screens/category.dart';
 import 'package:tripify/screens/drawer/helpline.dart';
 import 'package:tripify/screens/forgot_password.dart';

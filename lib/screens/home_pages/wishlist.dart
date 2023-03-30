@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/place_response_model.dart';
-import 'package:tripify/otp_form.dart';
 import 'package:tripify/screens/place.dart';
-import 'package:tripify/screens/map_webview.dart';
 import 'package:tripify/services/api_service.dart';
 
 import '../weather_details.dart';

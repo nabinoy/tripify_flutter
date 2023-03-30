@@ -1,10 +1,7 @@
 import 'dart:async';
-
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
-import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/otp_request_model.dart';
 import 'package:tripify/screens/home.dart';
 import 'package:tripify/services/api_service.dart';

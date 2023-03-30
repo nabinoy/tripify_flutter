@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/models/signup_request_model.dart';
-import 'package:tripify/otp_form.dart';
+import 'package:tripify/screens/otp_form.dart';
 import 'package:tripify/screens/login.dart';
 import 'package:tripify/services/api_service.dart';
 

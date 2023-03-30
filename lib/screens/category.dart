@@ -3,11 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/models/home_main_model.dart';
+import 'package:tripify/widget/place_horizontal.dart';
 
-class Category extends StatelessWidget {
+class Category extends StatefulWidget {
   static const String routeName = '/category';
   const Category({super.key});
 
+  @override
+  State<Category> createState() => _CategoryState();
+}
+
+class _CategoryState extends State<Category> {
   @override
   Widget build(BuildContext context) {
     List<CategoryAll> categoryDetails =
@@ -17,12 +23,12 @@ class Category extends StatelessWidget {
       slivers: [
         SliverAppBar(
           backgroundColor: Colors.white,
-          expandedHeight: 400,
+          expandedHeight: 300,
           pinned: true,
           elevation: 0,
           flexibleSpace: FlexibleSpaceBar(
               background: CachedNetworkImage(
-            height: 600,
+            height: 300,
             width: MediaQuery.of(context).size.width,
             alignment: Alignment.bottomCenter,
             imageUrl: categoryDetails.first.image.secureUrl,
@@ -66,6 +72,11 @@ class Category extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(categoryDetails.first.description),
           ),
+        ),
+        SliverToBoxAdapter(
+          child: Container(
+              padding: const EdgeInsets.all(16),
+              child: const PlaceHorizontal()),
         ),
       ],
     ));
