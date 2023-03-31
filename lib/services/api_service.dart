@@ -118,15 +118,8 @@ class APIService {
     }
   }
 
-  static Future<PlaceDetails> placeAll() async {
-    var userToken = '';
-    await SharedService.getSecureUserToken().then((String? data) {
-      String? token = data.toString();
-      userToken = token;
-    });
-
+  static Future<List<Places2>> placeAll() async {
     Map<String, String> requestHeaders = {
-      'Authorization': 'Bearer $userToken',
       'Accept': 'application/json',
     };
 
@@ -142,7 +135,41 @@ class APIService {
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
-      PlaceDetails pd = PlaceDetails.fromJson(data);
+      data = data['places'];
+      List<Places2> pd = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Places2 p2 = Places2.fromJson(data[i]);
+        pd.add(p2);
+      }
+      return pd;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<List<Places2>> placePagination(String page) async {
+    print(page);
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {'page': page};
+    var url = Uri.https(Config.apiURL, Config.placeAllAPI, queryParameters);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['places'];
+      List<Places2> pd = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Places2 p2 = Places2.fromJson(data[i]);
+        pd.add(p2);
+      }
       return pd;
     } else {
       throw Exception('Failed to load person details');
@@ -194,7 +221,7 @@ class APIService {
     // });
 
     Map<String, String> requestHeaders = {
-     // 'Authorization': 'Bearer $userToken',
+      // 'Authorization': 'Bearer $userToken',
       'Accept': 'application/json',
     };
 

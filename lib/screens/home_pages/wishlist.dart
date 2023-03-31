@@ -18,10 +18,10 @@ class Wishlist extends StatefulWidget {
 class _WishlistState extends State<Wishlist> {
   @override
   Widget build(BuildContext context) {
-    late PlaceDetails pd;
+    List<Places2> pd=[];
     return Scaffold(
       body: FutureBuilder(
-        future: APIService.placeAll().then((value) => {pd = value}),
+        future: APIService.placeAll().then((value) => {pd.addAll(value)}),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Column(
@@ -37,7 +37,7 @@ class _WishlistState extends State<Wishlist> {
                       return GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(context, Place.routeName,
-                              arguments: [pd.places[index]]);
+                              arguments: [pd[index]]);
                         },
                         child: Column(
                           children: [
@@ -57,7 +57,7 @@ class _WishlistState extends State<Wishlist> {
                                         height: 200,
                                         width:
                                             MediaQuery.of(context).size.width,
-                                        imageUrl: pd.places[index].images.first
+                                        imageUrl: pd[index].images.first
                                             .secureUrl,
                                         placeholder: (context, url) =>
                                             Image.memory(
@@ -71,12 +71,12 @@ class _WishlistState extends State<Wishlist> {
                                     ),
                                   ),
                                   Text(
-                                    pd.places[index].name,
+                                    pd[index].name,
                                     style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600),
                                   ),
-                                  Text(pd.places[index].address.city,
+                                  Text(pd[index].address.city,
                                       style: const TextStyle(fontSize: 12)),
                                 ],
                               ),
