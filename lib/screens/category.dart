@@ -21,7 +21,6 @@ class Category extends StatelessWidget {
         body: FutureBuilder(
       future: Future.wait([
         APIService.placeAll().then((value) => {pd = value}),
-        APIService.islandAll().then((value) => {ia = value})
       ]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
@@ -44,8 +43,11 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
-    List<CategoryAll> categoryDetails =
-        ModalRoute.of(context)!.settings.arguments as List<CategoryAll>;
+    final List<dynamic> arguments =
+        ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+
+    final CategoryAll categoryDetails = arguments[0];
+    ia = arguments[1] as List<IslandAll>;
     return CustomScrollView(
       slivers: [
         SliverAppBar(
@@ -58,7 +60,7 @@ class _CategoryPageState extends State<CategoryPage> {
             height: 300,
             width: MediaQuery.of(context).size.width,
             alignment: Alignment.bottomCenter,
-            imageUrl: categoryDetails.first.image.secureUrl,
+            imageUrl: categoryDetails.image.secureUrl,
             placeholder: (context, url) => Image.memory(
               kTransparentImage,
               fit: BoxFit.cover,
@@ -89,7 +91,7 @@ class _CategoryPageState extends State<CategoryPage> {
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: Center(
                 child: Text(
-              categoryDetails.first.name,
+              categoryDetails.name,
               style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
             )),
           ),
@@ -97,7 +99,7 @@ class _CategoryPageState extends State<CategoryPage> {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(categoryDetails.first.description),
+            child: Text(categoryDetails.description),
           ),
         ),
         SliverToBoxAdapter(

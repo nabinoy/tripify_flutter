@@ -219,7 +219,10 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                             onTap: () {
                               HapticFeedback.mediumImpact();
                               Navigator.pushNamed(context, Category.routeName,
-                                  arguments: [c[i]]);
+                                  arguments: [
+                                    c[i],
+                                    ia,
+                                  ]);
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
@@ -251,7 +254,10 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                               onTap: () {
                                 HapticFeedback.mediumImpact();
                                 Navigator.pushNamed(context, Category.routeName,
-                                    arguments: [c[i + 1]]);
+                                    arguments: [
+                                      c[i + 1],
+                                      ia,
+                                    ]);
                               },
                               child: Container(
                                 margin: const EdgeInsets.only(left: 16.0),
