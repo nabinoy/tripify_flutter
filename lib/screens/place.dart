@@ -24,7 +24,6 @@ import 'dart:math' as math;
 
 late PlaceDetails placeDetails;
 late List<Places2> currentPlace;
-late ReviewUser ru;
 
 class PlaceCategoryTop extends SliverPersistentHeaderDelegate {
   double ratingsAverage;
@@ -67,6 +66,18 @@ class Place extends StatefulWidget {
 }
 
 class _PlaceState extends State<Place> {
+  late ReviewUser ru;
+  late List<Future> future;
+
+  @override
+  void initState() {
+    super.initState();
+    future = [
+      getForcastInfo(),
+      getWeatherInfo(),
+    ];
+  }
+
   @override
   void dispose() {
     hourForecasts.clear();
@@ -91,15 +102,7 @@ class _PlaceState extends State<Place> {
     return Scaffold(
       backgroundColor: bgColor,
       body: FutureBuilder(
-          key: const ValueKey('myKey'),
-          future: Future.wait([
-            APIService.reviewRatingAll(placeList.first.sId)
-                .then((value) => {r = value}),
-            APIService.reviewRatingUser(placeList.first.sId)
-                .then((value) => {ru = value}),
-            getForcastInfo(),
-            getWeatherInfo(),
-          ]),
+          future: Future.wait(future),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return CustomScrollView(
@@ -205,7 +208,7 @@ class _PlaceState extends State<Place> {
                     ),
                   ),
                   SliverPersistentHeader(
-                    delegate: PlaceCategoryTop(r.ratingsAverage),
+                    delegate: PlaceCategoryTop(placeList.first.ratings),
                     pinned: true,
                   ),
                   SliverToBoxAdapter(
@@ -545,103 +548,117 @@ class _PlaceState extends State<Place> {
                     ),
                   ),
                   SliverToBoxAdapter(
-                      child: (ru.rating.toDouble() == 0)
-                          ? Container(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Rate this place',
-                                    style: TextStyle(
-                                      fontSize: 18,
+                      child: FutureBuilder(
+                    future: Future.wait([
+                      APIService.reviewRatingUser(placeList.first.sId)
+                          .then((value) => {ru = value}),
+                    ]),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return (ru.rating.toDouble() == 0)
+                            ? Container(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Rate this place',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      RatingBar.builder(
-                                        initialRating: ru.rating.toDouble(),
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: false,
-                                        itemCount: 5,
-                                        itemPadding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        itemBuilder: (context, _) => const Icon(
-                                          Icons.star,
-                                          color: Colors.blue,
+                                    const SizedBox(
+                                      height: 12,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        RatingBar.builder(
+                                          initialRating: ru.rating.toDouble(),
+                                          minRating: 1,
+                                          direction: Axis.horizontal,
+                                          allowHalfRating: false,
+                                          itemCount: 5,
+                                          itemPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 16.0),
+                                          itemBuilder: (context, _) =>
+                                              const Icon(
+                                            Icons.star,
+                                            color: Colors.blue,
+                                          ),
+                                          onRatingUpdate: (rating) {
+                                            userRating = rating;
+                                          },
                                         ),
-                                        onRatingUpdate: (rating) {
-                                          userRating = rating;
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    Container(
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
+                                      child: MaterialButton(
+                                        minWidth:
+                                            MediaQuery.of(context).size.width -
+                                                200,
+                                        height: 40,
+                                        onPressed: () {
+                                          if (userRating == 0) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  const RatingErrorDialog(),
+                                            );
+                                          } else {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  WriteReviewDialog(userRating),
+                                            );
+                                          }
                                         },
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                    child: MaterialButton(
-                                      minWidth:
-                                          MediaQuery.of(context).size.width -
-                                              200,
-                                      height: 40,
-                                      onPressed: () {
-                                        if (userRating == 0) {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                const RatingErrorDialog(),
-                                          );
-                                        } else {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                WriteReviewDialog(userRating),
-                                          );
-                                        }
-                                      },
-                                      color: Colors.lightBlue[800],
-                                      elevation: 0,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50)),
-                                      child: const Text(
-                                        'Write a review',
-                                        style: TextStyle(color: Colors.white),
+                                        color: Colors.lightBlue[800],
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50)),
+                                        child: const Text(
+                                          'Write a review',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : Container(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    'Your review',
-                                    style: TextStyle(
-                                      fontSize: 18,
+                                  ],
+                                ),
+                              )
+                            : Container(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Your review',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 12,
-                                  ),
-                                  UserReviewWidget()
-                                ],
-                              ),
-                            )),
+                                    const SizedBox(
+                                      height: 12,
+                                    ),
+                                    UserReviewWidget(ru)
+                                  ],
+                                ),
+                              );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  )),
                   SliverToBoxAdapter(
                     child: Container(
                       padding: const EdgeInsets.all(16),
@@ -1140,12 +1157,18 @@ class ReviewWidget extends StatelessWidget {
   }
 }
 
-class UserReviewWidget extends StatelessWidget {
-  const UserReviewWidget({Key? key}) : super(key: key);
+class UserReviewWidget extends StatefulWidget {
+  final ReviewUser ru;
+  const UserReviewWidget(this.ru, {Key? key}) : super(key: key);
 
   @override
+  State<UserReviewWidget> createState() => _UserReviewWidgetState();
+}
+
+class _UserReviewWidgetState extends State<UserReviewWidget> {
+  @override
   Widget build(BuildContext context) {
-    DateTime dateTime = DateTime.parse(ru.date);
+    DateTime dateTime = DateTime.parse(widget.ru.date);
     return Column(
       children: [
         Container(
@@ -1171,14 +1194,14 @@ class UserReviewWidget extends StatelessWidget {
                                 (math.Random().nextDouble() * 0x333333).toInt())
                             .withOpacity(1.0),
                         child: Text(
-                          ru.name[0],
+                          widget.ru.name[0],
                           style: const TextStyle(
                               fontSize: 20, color: Colors.white),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        ru.name,
+                        widget.ru.name,
                       ),
                       const SizedBox(
                         width: 4,
@@ -1232,7 +1255,7 @@ class UserReviewWidget extends StatelessWidget {
                       if (value == 'update') {
                         showDialog(
                           context: context,
-                          builder: (context) => const EditReviewDialog(),
+                          builder: (context) => EditReviewDialog(widget.ru),
                         );
                       } else if (value == 'delete') {
                         APIService.deleteUserReview(currentPlace.first.sId);
@@ -1262,7 +1285,7 @@ class UserReviewWidget extends StatelessWidget {
               Row(
                 children: [
                   RatingBar.builder(
-                    initialRating: ru.rating.toDouble(),
+                    initialRating: widget.ru.rating.toDouble(),
                     ignoreGestures: true,
                     minRating: 1,
                     direction: Axis.horizontal,
@@ -1284,7 +1307,7 @@ class UserReviewWidget extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                ru.comment,
+                widget.ru.comment,
                 style: TextStyle(color: Colors.grey[700] as Color),
               ),
             ],
@@ -1473,7 +1496,8 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
 }
 
 class EditReviewDialog extends StatefulWidget {
-  const EditReviewDialog({Key? key}) : super(key: key);
+  final ReviewUser ru;
+  const EditReviewDialog(this.ru, {Key? key}) : super(key: key);
 
   @override
   State<EditReviewDialog> createState() => _EditReviewDialogState();
@@ -1482,11 +1506,12 @@ class EditReviewDialog extends StatefulWidget {
 class _EditReviewDialogState extends State<EditReviewDialog> {
   final _formKey = GlobalKey<FormState>();
   final _nameNotifier = ValueNotifier<String>('');
-  double userRating = ru.rating.toDouble();
+  double userRating = 0;
   bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
+    userRating = widget.ru.rating.toDouble();
     return AlertDialog(
       title: const Text('Edit review'),
       shape: RoundedRectangleBorder(
@@ -1512,7 +1537,7 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
                     //mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       RatingBar.builder(
-                        initialRating: ru.rating.toDouble(),
+                        initialRating: widget.ru.rating.toDouble(),
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: false,
@@ -1537,7 +1562,7 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
               ),
               TextFormField(
                 //controller: _controller,
-                initialValue: ru.comment,
+                initialValue: widget.ru.comment,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please write a review!';
@@ -1591,7 +1616,7 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
                 placeId: currentPlace.first.sId,
                 rating: userRating.toInt(),
                 comment: (_nameNotifier.value == '')
-                    ? ru.comment
+                    ? widget.ru.comment
                     : _nameNotifier.value,
               );
               APIService.updateUserReview(model).then(

@@ -592,14 +592,11 @@ class FilterDialog extends StatefulWidget {
   const FilterDialog(this.setSortBool, {Key? key}) : super(key: key);
 
   @override
-  // ignore: no_logic_in_create_state
-  State<FilterDialog> createState() => _FilterDialogState(setSortBool);
+  State<FilterDialog> createState() => _FilterDialogState();
 }
 
 class _FilterDialogState extends State<FilterDialog> {
   String _selectedOption = (isRecent) ? 'Most recent' : 'Most relevant';
-  final Function(String, List<String>) setSortBool;
-  _FilterDialogState(this.setSortBool);
 
   void _handleOptionChange(String? value) {
     setState(() {
@@ -706,7 +703,7 @@ class _FilterDialogState extends State<FilterDialog> {
         ),
         MaterialButton(
           onPressed: () {
-            setSortBool(_selectedOption, _selectedChips);
+            widget.setSortBool(_selectedOption, _selectedChips);
             Navigator.of(context).pop();
           },
           color: Colors.lightBlue[800],

@@ -17,23 +17,25 @@ class OnboardModel {
 List<OnboardModel> screens = <OnboardModel>[
   OnboardModel(
     img: "assets/onboard/onboard_image1.json",
-    text: "Belajar Dengan Metode Learning by Doing",
+    text:
+        "Welcome to Tripify! Your One-Stop Shop for Planning Your Dream Vacation!",
     desc:
-        "Sebuah metode belajar yang terbuktiampuh dalam meningkatkan produktifitas belajar, Learning by Doing. shdsdhsidhihknkr trthrht ",
+        "Welcome to our tourism app! We are thrilled to have you on board and ready to explore the world with us.",
     bg: Colors.white,
   ),
   OnboardModel(
     img: "assets/onboard/onboard_image2.json",
-    text: "Dapatkan Kemudahan Akses Kapanpun dan Dimanapun",
+    text:
+        "Discover Our Featured Destinations: Handpicked for Your Next Adventure!",
     desc:
-        "Tidak peduli dimanapun kamu, semua kursus yang telah kamu ikuti bias kamu akses sepenuhnya",
+        "Looking for inspiration for your next vacation? Check out our featured destinations!",
     bg: Colors.white,
   ),
   OnboardModel(
     img: "assets/onboard/onboard_image2.json",
-    text: "Gunakan Fitur Kolaborasi Untuk Pengalaman Lebih",
+    text: "Personalize Your Interests and Budget!",
     desc:
-        "Tersedia fitur Kolaborasi dengan tujuan untuk mengasah skill lebih dalam karena bias belajar bersama",
+        "Ready to start planning your trip? Our trip planner makes it easy to create a personalized itinerary that fits your interests and budget.",
     bg: Colors.white,
   ),
 ];

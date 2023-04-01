@@ -4,12 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/place_response_model.dart';
-import 'package:tripify/screens/weather_details.dart';
-import 'package:tripify/services/api_service.dart';
 import 'package:tripify/widget/place_horizontal.dart';
 
 List<Places2> pd = [];
 List<IslandAll> ia = [];
+
 
 class Category extends StatelessWidget {
   static const String routeName = '/category';

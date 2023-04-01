@@ -148,6 +148,30 @@ class APIService {
     }
   }
 
+  static Future<dynamic> islandPlaceCount() async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    var url = Uri.https(
+      Config.apiURL,
+      Config.placeAllAPI,
+    );
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['filteredPlaceNumber'];
+      return data;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
   static Future<List<Places2>> placePagination(String page) async {
     print(page);
     Map<String, String> requestHeaders = {
