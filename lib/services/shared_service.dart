@@ -36,10 +36,6 @@ class SharedService {
     prefs.setString(keyId, valueId);
     await storage.write(key: 'token', value: data['token']);
     setSharedUserToken(true);
-    Map<String, dynamic> decodedToken = JwtDecoder.decode(data['token']);
-    DateTime expiryTokenDate =
-        DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] * 1000);
-    print(expiryTokenDate);
   }
 
   static String name = '';

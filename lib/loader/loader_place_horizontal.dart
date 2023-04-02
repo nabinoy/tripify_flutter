@@ -29,7 +29,7 @@ class LoaderPlaceHorizontalInside extends StatelessWidget {
       width: MediaQuery.of(context).size.width / 1.4,
       margin: const EdgeInsets.fromLTRB(8, 8, 8, 16),
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 249, 249, 249),
+        color: const Color.fromARGB(255, 249, 249, 249),
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Column(

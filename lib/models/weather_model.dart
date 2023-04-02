@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'dart:convert';
 
 import 'package:tripify/constants/config.dart';
+import 'package:tripify/screens/place.dart';
 
 String weatherLatAPI = '';
 String weatherLongAPI = '';
@@ -42,7 +43,8 @@ Future<void> getWeatherInfo() async {
     desc1 = weatherData['weather'][0]['main'].toString();
     desc2 = weatherData['weather'][0]['description'].toString();
     ico = weatherData['weather'][0]['icon'].toString();
-    temperature = (weatherData['main']['temp'] - 273.15).toStringAsFixed(0);
+    temperatureNotifier.value =
+        temperature = (weatherData['main']['temp'] - 273.15).toStringAsFixed(0);
     feelsLike = (weatherData['main']['feels_like'] - 273.15).toStringAsFixed(0);
     tempMin = (weatherData['main']['temp_min'] - 273.15).toStringAsFixed(0);
     tempMax = (weatherData['main']['temp_max'] - 273.15).toStringAsFixed(0);

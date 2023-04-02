@@ -9,6 +9,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
+import 'package:tripify/loader/loader_review_all.dart';
+import 'package:tripify/loader/loader_review_user.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/models/review_rating_model.dart';
 import 'package:tripify/models/user_review_model.dart';
@@ -24,6 +26,7 @@ import 'dart:math' as math;
 
 late PlaceDetails placeDetails;
 late List<Places2> currentPlace;
+ValueNotifier<String> temperatureNotifier = ValueNotifier<String>('');
 
 class PlaceCategoryTop extends SliverPersistentHeaderDelegate {
   double ratingsAverage;
@@ -67,19 +70,10 @@ class Place extends StatefulWidget {
 
 class _PlaceState extends State<Place> {
   late ReviewUser ru;
-  late List<Future> future;
-
-  @override
-  void initState() {
-    super.initState();
-    future = [
-      getForcastInfo(),
-      getWeatherInfo(),
-    ];
-  }
 
   @override
   void dispose() {
+    temperatureNotifier.value = '';
     hourForecasts.clear();
     googleMapController.dispose();
     polylineCoordinates.clear();
@@ -101,847 +95,814 @@ class _PlaceState extends State<Place> {
 
     return Scaffold(
       backgroundColor: bgColor,
-      body: FutureBuilder(
-          future: Future.wait(future),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return CustomScrollView(
-                slivers: [
-                  SliverAppBar(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: Colors.white,
+            expandedHeight: 300,
+            pinned: true,
+            elevation: 0,
+            flexibleSpace: FlexibleSpaceBar(
+                background: CarouselSlider.builder(
+                    carouselController: controller,
+                    itemCount: placeList.first.images.length,
+                    itemBuilder: (context, index, realIndex) {
+                      final urlImage = placeList.first.images[index].secureUrl;
+                      return buildImage(context, urlImage, index);
+                    },
+                    options: CarouselOptions(
+                      height: 400,
+                      viewportFraction: 1,
+                      autoPlay: true,
+                      enableInfiniteScroll: true,
+                      autoPlayAnimationDuration: const Duration(seconds: 1),
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                    ))),
+            leading: GestureDetector(
+              onTap: () {
+                HapticFeedback.mediumImpact();
+                Navigator.pop(context);
+              },
+              child: const Padding(
+                padding: EdgeInsets.only(left: 20),
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                ),
+              ),
+            ),
+            actions: [
+              GestureDetector(
+                onTap: () {},
+                child: const Padding(
+                  padding: EdgeInsets.only(right: 20),
+                  child: CircleAvatar(
                     backgroundColor: Colors.white,
-                    expandedHeight: 300,
-                    pinned: true,
-                    elevation: 0,
-                    flexibleSpace: FlexibleSpaceBar(
-                        background: CarouselSlider.builder(
-                            carouselController: controller,
-                            itemCount: placeList.first.images.length,
-                            itemBuilder: (context, index, realIndex) {
-                              final urlImage =
-                                  placeList.first.images[index].secureUrl;
-                              return buildImage(context, urlImage, index);
-                            },
-                            options: CarouselOptions(
-                              height: 400,
-                              viewportFraction: 1,
-                              autoPlay: true,
-                              enableInfiniteScroll: true,
-                              autoPlayAnimationDuration:
-                                  const Duration(seconds: 1),
-                              autoPlayCurve: Curves.fastOutSlowIn,
-                            ))),
-                    leading: GestureDetector(
-                      onTap: () {
-                        HapticFeedback.mediumImpact();
-                        Navigator.pop(context);
-                      },
-                      child: const Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          child: Icon(
-                            Icons.arrow_back,
-                            color: Colors.black,
-                            size: 24,
-                          ),
-                        ),
+                    child: Icon(
+                      MdiIcons.share,
+                      color: Colors.black,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: const Padding(
+                  padding: EdgeInsets.only(right: 20),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      MdiIcons.heartOutline,
+                      color: Colors.black,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+              alignment: Alignment.bottomLeft,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      placeList.first.name,
+                      style: const TextStyle(
+                        fontSize: 20,
                       ),
                     ),
-                    actions: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: const Padding(
-                          padding: EdgeInsets.only(right: 20),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            child: Icon(
-                              MdiIcons.share,
-                              color: Colors.black,
-                              size: 24,
-                            ),
-                          ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_pin,
+                          size: 18,
                         ),
+                        Text(
+                          placeList.first.address.city,
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(color: Colors.black54),
+                        ),
+                      ],
+                    ),
+                  ]),
+            ),
+          ),
+          SliverPersistentHeader(
+            delegate: PlaceCategoryTop(placeList.first.ratings),
+            pinned: true,
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Description',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    placeList.first.description,
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(color: Colors.black54),
+                  )
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Activities',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'scuba diving',
+                    style: TextStyle(color: Colors.black54),
+                  )
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Timing',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Table(
+                    border: TableBorder.all(),
+                    columnWidths: const {
+                      0: FractionColumnWidth(0.3),
+                      1: FractionColumnWidth(0.3),
+                      2: FractionColumnWidth(0.4),
+                    },
+                    children: [
+                      TableRow(
+                        decoration: BoxDecoration(
+                          color: Colors.lightBlue[200],
+                        ),
+                        children: const [
+                          Center(child: Text('Day')),
+                          Center(child: Text('Open Time')),
+                          Center(child: Text('Close Time')),
+                        ],
                       ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: const Padding(
-                          padding: EdgeInsets.only(right: 20),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            child: Icon(
-                              MdiIcons.heartOutline,
-                              color: Colors.black,
-                              size: 24,
+                      ...List.generate(
+                        placeList.first.timings.length,
+                        (rowIndex) => TableRow(
+                          children: [
+                            Text(
+                              placeList.first.timings[rowIndex].day,
+                              textAlign: TextAlign.center,
                             ),
-                          ),
+                            Text(
+                              placeList.first.timings[rowIndex].openTime,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              placeList.first.timings[rowIndex].closeTime,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
                       ),
                     ],
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                      alignment: Alignment.bottomLeft,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              placeList.first.name,
-                              style: const TextStyle(
-                                fontSize: 20,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.location_pin,
-                                  size: 18,
-                                ),
-                                Text(
-                                  placeList.first.address.city,
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(color: Colors.black54),
-                                ),
-                              ],
-                            ),
-                          ]),
+                  )
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Dos and Don\'ts',
+                    style: TextStyle(
+                      fontSize: 18,
                     ),
                   ),
-                  SliverPersistentHeader(
-                    delegate: PlaceCategoryTop(placeList.first.ratings),
-                    pinned: true,
+                  const SizedBox(
+                    height: 5,
                   ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
+                  Column(
+                    children: [
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Description',
+                            'Dos:',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
                             ),
                           ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            placeList.first.description,
-                            textAlign: TextAlign.justify,
-                            style: const TextStyle(color: Colors.black54),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'Activities',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            'scuba diving',
-                            style: TextStyle(color: Colors.black54),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Timing',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Table(
-                            border: TableBorder.all(),
-                            columnWidths: const {
-                              0: FractionColumnWidth(0.3),
-                              1: FractionColumnWidth(0.3),
-                              2: FractionColumnWidth(0.4),
-                            },
-                            children: [
-                              TableRow(
-                                decoration: BoxDecoration(
-                                  color: Colors.lightBlue[200],
-                                ),
-                                children: const [
-                                  Center(child: Text('Day')),
-                                  Center(child: Text('Open Time')),
-                                  Center(child: Text('Close Time')),
-                                ],
-                              ),
-                              ...List.generate(
-                                placeList.first.timings.length,
-                                (rowIndex) => TableRow(
-                                  children: [
-                                    Text(
-                                      placeList.first.timings[rowIndex].day,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Text(
-                                      placeList
-                                          .first.timings[rowIndex].openTime,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Text(
-                                      placeList
-                                          .first.timings[rowIndex].closeTime,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Dos and Don\'ts',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Column(
-                            children: [
-                              Column(
+                          const SizedBox(height: 16),
+                          ...placeList.first.doS.map((d) => Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'Dos:',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24,
+                                  const Icon(
+                                    MdiIcons.checkCircleOutline,
+                                    color: Colors.green,
+                                    size: 18,
+                                  ),
+                                  const SizedBox(
+                                    width: 2,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      d,
+                                      style: const TextStyle(fontSize: 14),
                                     ),
                                   ),
-                                  const SizedBox(height: 16),
-                                  ...placeList.first.doS.map((d) => Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Icon(
-                                            MdiIcons.checkCircleOutline,
-                                            color: Colors.green,
-                                            size: 18,
-                                          ),
-                                          const SizedBox(
-                                            width: 2,
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              d,
-                                              style:
-                                                  const TextStyle(fontSize: 14),
-                                            ),
-                                          ),
-                                        ],
-                                      )),
                                 ],
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Column(
+                              )),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Don\'ts:',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          ...placeList.first.dontS.map((d) => Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'Don\'ts:',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24,
+                                  const Icon(
+                                    MdiIcons.closeCircleOutline,
+                                    color: Colors.red,
+                                    size: 18,
+                                  ),
+                                  const SizedBox(
+                                    width: 2,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      d,
+                                      style: const TextStyle(fontSize: 14),
                                     ),
                                   ),
-                                  const SizedBox(height: 16),
-                                  ...placeList.first.dontS.map((d) => Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Icon(
-                                            MdiIcons.closeCircleOutline,
-                                            color: Colors.red,
-                                            size: 18,
-                                          ),
-                                          const SizedBox(
-                                            width: 2,
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              d,
-                                              style:
-                                                  const TextStyle(fontSize: 14),
-                                            ),
-                                          ),
-                                        ],
-                                      )),
                                 ],
-                              ),
-                            ],
-                          ),
+                              )),
                         ],
                       ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Cost',
+                    style: TextStyle(
+                      fontSize: 18,
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'Cost',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            'No fees required',
-                            style: TextStyle(color: Colors.black54),
-                          )
-                        ],
-                      ),
-                    ),
+                  SizedBox(
+                    height: 5,
                   ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'Direction',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      alignment: Alignment.center,
-                      child: SizedBox(
-                        height: screenWidth * 0.8,
-                        width: screenWidth,
-                        child: FutureBuilder(
-                            future: Future.wait([
-                              getCurrentLocation(),
-                            ]),
-                            builder: (builder, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.done) {
-                                return ClipRRect(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    child: const DirectionMap());
-                              } else {
-                                return Container(
-                                  color: Colors.white,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                );
-                              }
-                            }),
-                      ),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 5,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Address',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            '${placeList.first.address.street}\n${placeList.first.address.landmark}\n${placeList.first.address.zip}\n${placeList.first.address.city}\n${placeList.first.address.state}\n${placeList.first.address.country}',
-                            style: const TextStyle(color: Colors.black54),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'Weather Forecast',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  HapticFeedback.mediumImpact();
-                                  Navigator.pushNamed(
-                                    context,
-                                    WeatherDetails.routeName,
-                                    arguments: [weatherLatAPI, weatherLongAPI],
-                                  );
-                                },
-                                child: const Text(
-                                  'View more',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.lightBlue,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const HourForecast(),
-                      ],
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                      child: FutureBuilder(
-                    future: Future.wait([
-                      APIService.reviewRatingUser(placeList.first.sId)
-                          .then((value) => {ru = value}),
-                    ]),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        return (ru.rating.toDouble() == 0)
-                            ? Container(
-                                padding: const EdgeInsets.all(16),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Rate this place',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        RatingBar.builder(
-                                          initialRating: ru.rating.toDouble(),
-                                          minRating: 1,
-                                          direction: Axis.horizontal,
-                                          allowHalfRating: false,
-                                          itemCount: 5,
-                                          itemPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 16.0),
-                                          itemBuilder: (context, _) =>
-                                              const Icon(
-                                            Icons.star,
-                                            color: Colors.blue,
-                                          ),
-                                          onRatingUpdate: (rating) {
-                                            userRating = rating;
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      child: MaterialButton(
-                                        minWidth:
-                                            MediaQuery.of(context).size.width -
-                                                200,
-                                        height: 40,
-                                        onPressed: () {
-                                          if (userRating == 0) {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  const RatingErrorDialog(),
-                                            );
-                                          } else {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  WriteReviewDialog(userRating),
-                                            );
-                                          }
-                                        },
-                                        color: Colors.lightBlue[800],
-                                        elevation: 0,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(50)),
-                                        child: const Text(
-                                          'Write a review',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : Container(
-                                padding: const EdgeInsets.all(16),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Your review',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
-                                    UserReviewWidget(ru)
-                                  ],
-                                ),
-                              );
-                      } else {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                    },
-                  )),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Ratings and reviews',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          FutureBuilder(
-                            future: Future.wait([
-                              APIService.reviewRatingAll(placeList.first.sId)
-                                  .then((value) => {r = value}),
-                              SharedService.getSharedLogin()
-                            ]),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.done) {
-                                if (r.numberOfReviews == 0) {
-                                  return Container(
-                                    padding: const EdgeInsets.only(top: 30),
-                                    alignment: Alignment.center,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          MdiIcons.emoticonSadOutline,
-                                          size: 58,
-                                          color:
-                                              Theme.of(context).disabledColor,
-                                        ),
-                                        const SizedBox(height: 16),
-                                        Text(
-                                          'No data available',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color:
-                                                Theme.of(context).disabledColor,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                } else {
-                                  return Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Text(
-                                                r.ratingsAverage
-                                                    .toStringAsFixed(1),
-                                                style: const TextStyle(
-                                                  fontSize: 50,
-                                                ),
-                                              ),
-                                              RatingBar.builder(
-                                                initialRating:
-                                                    r.ratingsAverage.toDouble(),
-                                                ignoreGestures: true,
-                                                minRating: 1,
-                                                direction: Axis.horizontal,
-                                                allowHalfRating: true,
-                                                itemCount: 5,
-                                                itemSize: 14.0,
-                                                itemPadding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 4.0),
-                                                itemBuilder: (context, _) =>
-                                                    const Icon(
-                                                  Icons.star,
-                                                  color: Colors.blue,
-                                                ),
-                                                onRatingUpdate: (rating) {},
-                                              ),
-                                              Text(
-                                                r.numberOfReviews.toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 12),
-                                              ),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              Row(
-                                                children: <Widget>[
-                                                  const Text('5'),
-                                                  LinearPercentIndicator(
-                                                    backgroundColor: Colors
-                                                        .grey[300] as Color,
-                                                    animation: true,
-                                                    animationDuration: 3000,
-                                                    width: 160.0,
-                                                    lineHeight: 10.0,
-                                                    percent: (r.numberOfReviews ==
-                                                            0)
-                                                        ? 0
-                                                        : (r.fiveCount /
-                                                            r.numberOfReviews),
-                                                    barRadius:
-                                                        const Radius.circular(
-                                                            16),
-                                                    progressColor: Colors.blue,
-                                                  )
-                                                ],
-                                              ),
-                                              Row(
-                                                children: <Widget>[
-                                                  const Text('4'),
-                                                  LinearPercentIndicator(
-                                                    backgroundColor: Colors
-                                                        .grey[300] as Color,
-                                                    animation: true,
-                                                    animationDuration: 3000,
-                                                    width: 160.0,
-                                                    lineHeight: 10.0,
-                                                    percent: (r.numberOfReviews ==
-                                                            0)
-                                                        ? 0
-                                                        : (r.fourCount /
-                                                            r.numberOfReviews),
-                                                    barRadius:
-                                                        const Radius.circular(
-                                                            16),
-                                                    progressColor: Colors.blue,
-                                                  )
-                                                ],
-                                              ),
-                                              Row(
-                                                children: <Widget>[
-                                                  const Text('3'),
-                                                  LinearPercentIndicator(
-                                                    backgroundColor: Colors
-                                                        .grey[300] as Color,
-                                                    animation: true,
-                                                    animationDuration: 3000,
-                                                    width: 160.0,
-                                                    lineHeight: 10.0,
-                                                    percent: (r.numberOfReviews ==
-                                                            0)
-                                                        ? 0
-                                                        : (r.threeCount /
-                                                            r.numberOfReviews),
-                                                    barRadius:
-                                                        const Radius.circular(
-                                                            16),
-                                                    progressColor: Colors.blue,
-                                                  )
-                                                ],
-                                              ),
-                                              Row(
-                                                children: <Widget>[
-                                                  const Text('2'),
-                                                  LinearPercentIndicator(
-                                                    backgroundColor: Colors
-                                                        .grey[300] as Color,
-                                                    animation: true,
-                                                    animationDuration: 3000,
-                                                    width: 160.0,
-                                                    lineHeight: 10.0,
-                                                    percent: (r.numberOfReviews ==
-                                                            0)
-                                                        ? 0
-                                                        : (r.twoCount /
-                                                            r.numberOfReviews),
-                                                    barRadius:
-                                                        const Radius.circular(
-                                                            16),
-                                                    progressColor: Colors.blue,
-                                                  )
-                                                ],
-                                              ),
-                                              Row(
-                                                children: <Widget>[
-                                                  const Text('1 '),
-                                                  LinearPercentIndicator(
-                                                    backgroundColor: Colors
-                                                        .grey[300] as Color,
-                                                    animation: true,
-                                                    animationDuration: 3000,
-                                                    width: 160.0,
-                                                    lineHeight: 10.0,
-                                                    percent: (r.numberOfReviews ==
-                                                            0)
-                                                        ? 0
-                                                        : (r.oneCount /
-                                                            r.numberOfReviews),
-                                                    barRadius:
-                                                        const Radius.circular(
-                                                            16),
-                                                    progressColor: Colors.blue,
-                                                  )
-                                                ],
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      ListView.builder(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        itemCount: (r.numberOfReviews == 1)
-                                            ? 1
-                                            : (r.numberOfReviews == 2)
-                                                ? 2
-                                                : 3,
-                                        itemBuilder: (context, index) {
-                                          final review = r.reviews[index];
-                                          return ReviewWidget(review: review);
-                                        },
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, ReviewAll.routeName,
-                                              arguments: r);
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            'View more',
-                                            style: TextStyle(
-                                                color: Colors.lightBlue[700]
-                                                    as Color),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                }
-                              } else {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'External links',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            'https://www.example.com',
-                            style: TextStyle(color: Colors.black54),
-                          )
-                        ],
-                      ),
+                  Text(
+                    'No fees required',
+                    style: TextStyle(color: Colors.black54),
+                  )
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Direction',
+                    style: TextStyle(
+                      fontSize: 18,
                     ),
                   ),
                 ],
-              );
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          }),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              alignment: Alignment.center,
+              child: SizedBox(
+                height: screenWidth * 0.8,
+                width: screenWidth,
+                child: FutureBuilder(
+                    future: Future.wait([
+                      getCurrentLocation(),
+                    ]),
+                    builder: (builder, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return ClipRRect(
+                            borderRadius: BorderRadius.circular(15.0),
+                            child: const DirectionMap());
+                      } else {
+                        return Container(
+                          color: Colors.white,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                    }),
+              ),
+            ),
+          ),
+          const SliverToBoxAdapter(
+            child: SizedBox(
+              height: 5,
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Address',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    '${placeList.first.address.street}\n${placeList.first.address.landmark}\n${placeList.first.address.zip}\n${placeList.first.address.city}\n${placeList.first.address.state}\n${placeList.first.address.country}',
+                    style: const TextStyle(color: Colors.black54),
+                  )
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Weather Forecast',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        HapticFeedback.mediumImpact();
+                        Navigator.pushNamed(
+                          context,
+                          WeatherDetails.routeName,
+                          arguments: [weatherLatAPI, weatherLongAPI],
+                        );
+                      },
+                      child: const Text(
+                        'View more',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.lightBlue,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              FutureBuilder(
+                future: Future.wait([getWeatherInfo(), getForcastInfo()]),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return const HourForecast();
+                  } else {
+                    return const Center(
+                        child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      child: CircularProgressIndicator(),
+                    ));
+                  }
+                },
+              ),
+            ],
+          )),
+          SliverToBoxAdapter(
+              child: FutureBuilder(
+            future: Future.wait([
+              APIService.reviewRatingUser(placeList.first.sId)
+                  .then((value) => {ru = value}),
+            ]),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return (ru.rating.toDouble() == 0)
+                    ? Container(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Rate this place',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                RatingBar.builder(
+                                  initialRating: ru.rating.toDouble(),
+                                  minRating: 1,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: false,
+                                  itemCount: 5,
+                                  itemPadding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0),
+                                  itemBuilder: (context, _) => const Icon(
+                                    Icons.star,
+                                    color: Colors.blue,
+                                  ),
+                                  onRatingUpdate: (rating) {
+                                    userRating = rating;
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: MaterialButton(
+                                minWidth:
+                                    MediaQuery.of(context).size.width - 200,
+                                height: 40,
+                                onPressed: () {
+                                  if (userRating == 0) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          const RatingErrorDialog(),
+                                    );
+                                  } else {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          WriteReviewDialog(userRating),
+                                    );
+                                  }
+                                },
+                                color: Colors.lightBlue[800],
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: const Text(
+                                  'Write a review',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Your review',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            UserReviewWidget(ru)
+                          ],
+                        ),
+                      );
+              } else {
+                return const LoaderReviewUser();
+              }
+            },
+          )),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Ratings and reviews',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  FutureBuilder(
+                    future: Future.wait([
+                      APIService.reviewRatingAll(placeList.first.sId)
+                          .then((value) => {r = value}),
+                      SharedService.getSharedLogin()
+                    ]),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (r.numberOfReviews == 0) {
+                          return Container(
+                            padding: const EdgeInsets.only(top: 30),
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  MdiIcons.emoticonSadOutline,
+                                  size: 58,
+                                  color: Theme.of(context).disabledColor,
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'No data available',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).disabledColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text(
+                                        r.ratingsAverage.toStringAsFixed(1),
+                                        style: const TextStyle(
+                                          fontSize: 50,
+                                        ),
+                                      ),
+                                      RatingBar.builder(
+                                        initialRating:
+                                            r.ratingsAverage.toDouble(),
+                                        ignoreGestures: true,
+                                        minRating: 1,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        itemCount: 5,
+                                        itemSize: 14.0,
+                                        itemPadding: const EdgeInsets.symmetric(
+                                            horizontal: 4.0),
+                                        itemBuilder: (context, _) => const Icon(
+                                          Icons.star,
+                                          color: Colors.blue,
+                                        ),
+                                        onRatingUpdate: (rating) {},
+                                      ),
+                                      Text(
+                                        r.numberOfReviews.toString(),
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: <Widget>[
+                                          const Text('5'),
+                                          LinearPercentIndicator(
+                                            backgroundColor:
+                                                Colors.grey[300] as Color,
+                                            animation: true,
+                                            animationDuration: 3000,
+                                            width: 160.0,
+                                            lineHeight: 10.0,
+                                            percent: (r.numberOfReviews == 0)
+                                                ? 0
+                                                : (r.fiveCount /
+                                                    r.numberOfReviews),
+                                            barRadius:
+                                                const Radius.circular(16),
+                                            progressColor: Colors.blue,
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          const Text('4'),
+                                          LinearPercentIndicator(
+                                            backgroundColor:
+                                                Colors.grey[300] as Color,
+                                            animation: true,
+                                            animationDuration: 3000,
+                                            width: 160.0,
+                                            lineHeight: 10.0,
+                                            percent: (r.numberOfReviews == 0)
+                                                ? 0
+                                                : (r.fourCount /
+                                                    r.numberOfReviews),
+                                            barRadius:
+                                                const Radius.circular(16),
+                                            progressColor: Colors.blue,
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          const Text('3'),
+                                          LinearPercentIndicator(
+                                            backgroundColor:
+                                                Colors.grey[300] as Color,
+                                            animation: true,
+                                            animationDuration: 3000,
+                                            width: 160.0,
+                                            lineHeight: 10.0,
+                                            percent: (r.numberOfReviews == 0)
+                                                ? 0
+                                                : (r.threeCount /
+                                                    r.numberOfReviews),
+                                            barRadius:
+                                                const Radius.circular(16),
+                                            progressColor: Colors.blue,
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          const Text('2'),
+                                          LinearPercentIndicator(
+                                            backgroundColor:
+                                                Colors.grey[300] as Color,
+                                            animation: true,
+                                            animationDuration: 3000,
+                                            width: 160.0,
+                                            lineHeight: 10.0,
+                                            percent: (r.numberOfReviews == 0)
+                                                ? 0
+                                                : (r.twoCount /
+                                                    r.numberOfReviews),
+                                            barRadius:
+                                                const Radius.circular(16),
+                                            progressColor: Colors.blue,
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          const Text('1 '),
+                                          LinearPercentIndicator(
+                                            backgroundColor:
+                                                Colors.grey[300] as Color,
+                                            animation: true,
+                                            animationDuration: 3000,
+                                            width: 160.0,
+                                            lineHeight: 10.0,
+                                            percent: (r.numberOfReviews == 0)
+                                                ? 0
+                                                : (r.oneCount /
+                                                    r.numberOfReviews),
+                                            barRadius:
+                                                const Radius.circular(16),
+                                            progressColor: Colors.blue,
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: (r.numberOfReviews == 1)
+                                    ? 1
+                                    : (r.numberOfReviews == 2)
+                                        ? 2
+                                        : 3,
+                                itemBuilder: (context, index) {
+                                  final review = r.reviews[index];
+                                  return ReviewWidget(review: review);
+                                },
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, ReviewAll.routeName,
+                                      arguments: r);
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'View more',
+                                    style: TextStyle(
+                                        color: Colors.lightBlue[700] as Color),
+                                  ),
+                                ),
+                              )
+                            ],
+                          );
+                        }
+                      } else {
+                        return const LoaderReviewAll();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'External links',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'https://www.example.com',
+                    style: TextStyle(color: Colors.black54),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -1025,14 +986,9 @@ class _PlaceCategoryState extends State<PlaceCategory> {
                     style: TextStyle(
                         fontSize: 12, color: Colors.grey[700] as Color),
                   ),
-                  ValueListenableBuilder(
-                    valueListenable: distance,
-                    builder: (context, value, child) {
-                      return Text(
-                        widget.ratingsAverage.toStringAsFixed(1),
-                        style: const TextStyle(fontSize: 14),
-                      );
-                    },
+                  Text(
+                    widget.ratingsAverage.toStringAsFixed(1),
+                    style: const TextStyle(fontSize: 14),
                   ),
                 ],
               ),
@@ -1057,12 +1013,14 @@ class _PlaceCategoryState extends State<PlaceCategory> {
                         fontSize: 12, color: Colors.grey[700] as Color),
                   ),
                   ValueListenableBuilder(
-                    valueListenable: distance,
+                    valueListenable: temperatureNotifier,
                     builder: (context, value, child) {
-                      return Text(
-                        '$temperature°c',
-                        style: const TextStyle(fontSize: 14),
-                      );
+                      return (temperatureNotifier.value == '')
+                          ? const Text('-')
+                          : Text(
+                              '${temperatureNotifier.value}°c',
+                              style: const TextStyle(fontSize: 14),
+                            );
                     },
                   ),
                 ],
@@ -1313,9 +1271,6 @@ class _UserReviewWidgetState extends State<UserReviewWidget> {
             ],
           ),
         ),
-        const SizedBox(
-          height: 12,
-        ),
       ],
     );
   }
@@ -1352,6 +1307,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
   _WriteReviewDialogState(this.rating);
   final TextEditingController _controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -1443,6 +1399,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
         MaterialButton(
           onPressed: () {
             //Navigator.of(context).pop();
+            isLoading = true;
             FocusScopeNode currentFocus = FocusScope.of(context);
             if (!currentFocus.hasPrimaryFocus) {
               currentFocus.unfocus();
@@ -1455,6 +1412,19 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
               APIService.userReview(model).then(
                 (response) {
                   if (response.contains('Done')) {
+                    Navigator.of(context).pop();
+                    isLoading = false;
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text(
+                        'Successfully submitted!',
+                        style: TextStyle(fontFamily: fontRegular, fontSize: 12),
+                        textAlign: TextAlign.center,
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 3,
+                      ),
+                      backgroundColor: Colors.green,
+                    ));
                   } else {
                     final snackBar = SnackBar(
                       width: double.infinity,
@@ -1485,10 +1455,19 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
           elevation: 0,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-          child: const Text(
-            'Save',
-            style: TextStyle(color: Colors.white),
-          ),
+          child: isLoading
+              ? const SizedBox(
+                  height: 20.0,
+                  width: 20.0,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    color: Colors.white,
+                  ),
+                )
+              : const Text(
+                  'Save',
+                  style: TextStyle(color: Colors.white),
+                ),
         ),
       ],
     );

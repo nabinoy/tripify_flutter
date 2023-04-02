@@ -12,6 +12,7 @@ class HourForecast extends StatefulWidget {
 class _HourForecastState extends State<HourForecast> {
   @override
   void dispose() {
+    temperature = '';
     hourForecasts.clear();
     getForcastInfo();
     super.dispose();
