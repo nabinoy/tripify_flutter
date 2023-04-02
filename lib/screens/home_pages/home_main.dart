@@ -38,7 +38,6 @@ class HomeMain extends StatefulWidget {
 }
 
 class _HomeMainState extends State<HomeMain> {
-
   @override
   Widget build(BuildContext context) {
     if (currentHour < 12) {
@@ -241,10 +240,23 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                                       const Duration(milliseconds: 200),
                                   fit: BoxFit.cover,
                                 ),
-                                Center(
-                                  child: Text(
-                                    c[i].name,
-                                    style: const TextStyle(color: Colors.white),
+                                Container(
+                                  height: containerHeight,
+                                  width: containerWidth,
+                                  color: const Color.fromARGB(69, 0, 0, 0),
+                                ),
+                                SizedBox(
+                                  height: containerHeight,
+                                  width: containerWidth - 8,
+                                  child: Center(
+                                    child: Text(
+                                      c[i].name,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600),
+                                    ),
                                   ),
                                 ),
                               ]),
@@ -280,11 +292,24 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                                               const Duration(milliseconds: 200),
                                           fit: BoxFit.cover,
                                         ),
-                                        Center(
-                                          child: Text(
-                                            c[i + 1].name,
-                                            style: const TextStyle(
-                                                color: Colors.white),
+                                        Container(
+                                          height: containerHeight,
+                                          width: containerWidth,
+                                          color:
+                                              const Color.fromARGB(69, 0, 0, 0),
+                                        ),
+                                        SizedBox(
+                                          height: containerHeight,
+                                          width: containerWidth - 8,
+                                          child: Center(
+                                            child: Text(
+                                              c[i + 1].name,
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
                                           ),
                                         ),
                                       ]),
@@ -329,23 +354,25 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                             arguments: c);
                       },
                       child: ClipRRect(
-                        child: Stack(alignment: Alignment.center, children: [
-                          CachedNetworkImage(
-                            height: containerHeight,
-                            width: MediaQuery.of(context).size.width - 32,
-                            imageUrl: sa[index].image.secureUrl,
-                            placeholder: (context, url) => Image.memory(
-                              kTransparentImage,
+                        child: Column(children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(100.0),
+                            child: CachedNetworkImage(
+                              height: screenWidth / 5.61,
+                              width: screenWidth / 5.61,
+                              imageUrl: sa[index].image.secureUrl,
+                              placeholder: (context, url) => Image.memory(
+                                kTransparentImage,
+                                fit: BoxFit.cover,
+                              ),
+                              fadeInDuration: const Duration(milliseconds: 200),
                               fit: BoxFit.cover,
                             ),
-                            fadeInDuration: const Duration(milliseconds: 200),
-                            fit: BoxFit.cover,
                           ),
-                          Center(
-                            child: Text(
-                              sa[index].name,
-                              style: const TextStyle(color: Colors.black),
-                            ),
+                          SizedBox(height: 10.0),
+                          Text(
+                            sa[index].name,
+                            style: const TextStyle(color: Colors.black),
                           ),
                         ]),
                       ),

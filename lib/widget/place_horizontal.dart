@@ -29,7 +29,8 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
   void initState() {
     super.initState();
     fetchData();
-    dataFuture = APIService.placeByCategoryIsland(widget.catId,widget.islandId).then((value) => {pd = value});
+    dataFuture = APIService.placeByCategoryIsland(widget.catId, widget.islandId)
+        .then((value) => {pd = value});
     controller.addListener(() {
       if (controller.position.maxScrollExtent == controller.offset) {
         fetch();
@@ -45,7 +46,8 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
   }
 
   Future fetchData() async {
-    await APIService.islandPlaceCount(widget.catId,widget.islandId).then((value) => {placeCount = value});
+    await APIService.islandPlaceCount(widget.catId, widget.islandId)
+        .then((value) => {placeCount = value});
   }
 
   Future fetch() async {
@@ -79,7 +81,7 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'No place found!',
+                    'No places found!',
                     style: TextStyle(
                       fontSize: 16,
                       color: Theme.of(context).disabledColor,
@@ -89,11 +91,11 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
               ),
             );
           } else {
-            if(placeCount<=(page*placePageSize)){
-            isEndLoading = 0;
-          }
+            if (placeCount <= (page * placePageSize)) {
+              isEndLoading = 0;
+            }
             return ListView.builder(
-                controller: (isEndLoading==0)?null: controller,
+                controller: (isEndLoading == 0) ? null : controller,
                 itemCount: pd.length + isEndLoading,
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
@@ -209,8 +211,7 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
                 });
           }
         } else {
-          return LoaderPlaceHorizontal();
-          //const Center(child: CircularProgressIndicator(),);
+          return const LoaderPlaceHorizontal();
         }
       },
     );
