@@ -148,14 +148,16 @@ class APIService {
     }
   }
 
-  static Future<dynamic> islandPlaceCount() async {
+  static Future<List<Places2>> placeByCategoryIsland(String categoryId,String islandID) async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
     };
 
+    final queryParameters = {'category': categoryId,'island':islandID};
     var url = Uri.https(
       Config.apiURL,
       Config.placeAllAPI,
+      queryParameters
     );
 
     var response = await client.get(
@@ -165,15 +167,45 @@ class APIService {
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
-      data = data['filteredPlaceNumber'];
-      return data;
+      data = data['places'];
+      List<Places2> pd = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Places2 p2 = Places2.fromJson(data[i]);
+        pd.add(p2);
+      }
+      return pd;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<int> islandPlaceCount(String categoryId,String islandID) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {'category': categoryId,'island':islandID};
+    var url = Uri.https(
+      Config.apiURL,
+      Config.placeAllAPI,
+      queryParameters
+    );
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data['filteredPlaceNumber'];
     } else {
       throw Exception('Failed to load person details');
     }
   }
 
   static Future<List<Places2>> placePagination(String page) async {
-    print(page);
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
     };

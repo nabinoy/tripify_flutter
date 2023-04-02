@@ -2,13 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/loader/loader_place_horizontal.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/screens/place.dart';
 import 'package:tripify/services/api_service.dart';
 
 class PlaceHorizontal extends StatefulWidget {
-  const PlaceHorizontal({super.key});
+  final String catId;
+  final String islandId;
+  const PlaceHorizontal(this.catId, this.islandId, {super.key});
 
   @override
   State<PlaceHorizontal> createState() => _PlaceHorizontalState();
@@ -20,11 +23,13 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
   int isEndLoading = 1;
   final controller = ScrollController();
   late Future dataFuture;
+  int placeCount = 1;
 
   @override
   void initState() {
     super.initState();
-    dataFuture = APIService.placeAll().then((value) => {pd = value});
+    fetchData();
+    dataFuture = APIService.placeByCategoryIsland(widget.catId,widget.islandId).then((value) => {pd = value});
     controller.addListener(() {
       if (controller.position.maxScrollExtent == controller.offset) {
         fetch();
@@ -37,6 +42,10 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
     page = 1;
     controller.dispose();
     super.dispose();
+  }
+
+  Future fetchData() async {
+    await APIService.islandPlaceCount(widget.catId,widget.islandId).then((value) => {placeCount = value});
   }
 
   Future fetch() async {
@@ -80,8 +89,11 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
               ),
             );
           } else {
+            if(placeCount<=(page*placePageSize)){
+            isEndLoading = 0;
+          }
             return ListView.builder(
-                controller: controller,
+                controller: (isEndLoading==0)?null: controller,
                 itemCount: pd.length + isEndLoading,
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,

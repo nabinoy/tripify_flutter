@@ -97,7 +97,7 @@ class Category extends StatelessWidget {
                             SizedBox(
                                 height:
                                     MediaQuery.of(context).size.width / 1.58,
-                                child: PlaceHorizontal()),
+                                child: PlaceHorizontal(categoryDetails.sId,item.sId)),
                           ],
                         ))
                     .toList(),
