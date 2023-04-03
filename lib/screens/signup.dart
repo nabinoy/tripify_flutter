@@ -32,7 +32,6 @@ class SignupPage extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: const SignupPageScreen(),
     );

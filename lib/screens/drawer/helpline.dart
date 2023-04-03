@@ -21,11 +21,6 @@ class Helpline extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    //   statusBarColor: Colors.white,
-    //   statusBarIconBrightness: Brightness.dark,
-    //   statusBarBrightness: Brightness.light,
-    // ));
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -41,7 +36,6 @@ class Helpline extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(

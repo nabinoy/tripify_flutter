@@ -24,12 +24,6 @@ List<CategoryAll> c = [];
 List<IslandAll> ia = [];
 List<ServiceAll> sa = [];
 
-Future<void> delayMain(int milliseconds) {
-  return Future.delayed(Duration(milliseconds: milliseconds), () {
-    // code to be executed after the specified duration
-  });
-}
-
 class HomeMain extends StatefulWidget {
   const HomeMain({super.key});
 
@@ -49,7 +43,6 @@ class _HomeMainState extends State<HomeMain> {
     }
     return FutureBuilder(
       future: Future.wait([
-        //delayMain(3000),
         APIService.categoryAll().then((value) => {c = value}),
         APIService.islandAll().then((value) => {ia = value}),
         APIService.serviceAll().then((value) => {sa = value}),

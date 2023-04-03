@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tripify/screens/chatbot.dart';
 import 'package:tripify/screens/otp_form.dart';
 import 'package:tripify/screens/category.dart';
 import 'package:tripify/screens/drawer/helpline.dart';
@@ -61,6 +62,9 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     case OtpForm.routeName:
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const OtpForm(),);
+
+    case ChatBot.routeName:
+      return MaterialPageRoute(settings : routeSettings,builder: (_) => const ChatBot(),);
   
     default: 
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const Scaffold(

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/router.dart';
+import 'package:tripify/screens/home.dart';
 import 'package:tripify/screens/login.dart';
 import 'package:tripify/screens/signup.dart';
 
@@ -12,11 +13,6 @@ class Welcome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness: Brightness.light,
-    ));
     return MaterialApp(
       title: appName,
       theme: ThemeData(
@@ -29,7 +25,7 @@ class Welcome extends StatelessWidget {
           elevation: 0,
           backgroundColor: Colors.white,
           leading: IconButton(
-            onPressed: () async {
+            onPressed: () {
               HapticFeedback.mediumImpact();
               SystemNavigator.pop();
             },
@@ -39,7 +35,21 @@ class Welcome extends StatelessWidget {
               color: Colors.black,
             ),
           ),
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          actions: [
+            GestureDetector(
+              onTap: () {
+                HapticFeedback.lightImpact();
+                Navigator.pushReplacementNamed(context, Home.routeName);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text('Login as guest',
+                    style: TextStyle(
+                        color: Colors.lightBlue[800],
+                        fontWeight: FontWeight.w600)),
+              ),
+            ),
+          ],
         ),
         resizeToAvoidBottomInset: false,
         body: const WelcomePage(),

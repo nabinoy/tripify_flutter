@@ -34,7 +34,6 @@ class LoginPage extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: const LoginPageScreen(),
     );

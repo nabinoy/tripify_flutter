@@ -7,6 +7,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:random_avatar/random_avatar.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/router.dart';
+import 'package:tripify/screens/chatbot.dart';
 import 'package:tripify/screens/drawer/helpline.dart';
 import 'package:tripify/screens/home_pages/home_main.dart';
 import 'package:tripify/screens/home_pages/profile.dart';
@@ -177,7 +178,11 @@ class _HomepageState extends State<Homepage> {
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
         ),
         actions: [
-          randomAvatar('saytoonz', height: 35, width: 35),
+          GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, ChatBot.routeName);
+              },
+              child: randomAvatar('saytoonz', height: 35, width: 35)),
           const Padding(padding: EdgeInsets.only(right: 16))
         ],
       ),
@@ -262,7 +267,7 @@ class _HomepageState extends State<Homepage> {
                   Navigator.pushNamed(
                     context,
                     WeatherDetails.routeName,
-                    arguments: ['Current','Location'],
+                    arguments: ['Current', 'Location'],
                   );
                 },
               ),
