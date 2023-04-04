@@ -74,6 +74,7 @@ dependencies:
   percent_indicator: ^4.2.2
   pinput: ^2.2.31
   chat_bubbles: ^1.4.1
+  flutter_keyboard_visibility: ^5.4.0
 
 dev_dependencies:
   flutter_test:

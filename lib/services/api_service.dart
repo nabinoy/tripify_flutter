@@ -148,17 +148,14 @@ class APIService {
     }
   }
 
-  static Future<List<Places2>> placeByCategoryIsland(String categoryId,String islandID) async {
+  static Future<List<Places2>> placeByCategoryIsland(
+      String categoryId, String islandID) async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
     };
 
-    final queryParameters = {'category': categoryId,'island':islandID};
-    var url = Uri.https(
-      Config.apiURL,
-      Config.placeAllAPI,
-      queryParameters
-    );
+    final queryParameters = {'category': categoryId, 'island': islandID};
+    var url = Uri.https(Config.apiURL, Config.placeAllAPI, queryParameters);
 
     var response = await client.get(
       url,
@@ -180,17 +177,14 @@ class APIService {
     }
   }
 
-  static Future<int> islandPlaceCount(String categoryId,String islandID) async {
+  static Future<int> islandPlaceCount(
+      String categoryId, String islandID) async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
     };
 
-    final queryParameters = {'category': categoryId,'island':islandID};
-    var url = Uri.https(
-      Config.apiURL,
-      Config.placeAllAPI,
-      queryParameters
-    );
+    final queryParameters = {'category': categoryId, 'island': islandID};
+    var url = Uri.https(Config.apiURL, Config.placeAllAPI, queryParameters);
 
     var response = await client.get(
       url,
@@ -301,6 +295,27 @@ class APIService {
         s.add(sa);
       }
       return s;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<String> askChatBot(String question) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {'question': question};
+    var url = Uri.https(Config.apiURL, Config.chatBotAPI, queryParameters);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data['answer'];
     } else {
       throw Exception('Failed to load person details');
     }

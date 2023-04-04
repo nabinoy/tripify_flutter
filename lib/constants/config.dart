@@ -13,6 +13,7 @@ class Config {
   static const forgotPasswordAPI = '/api/v1/forgotPassword';
   static const regenerateOTPAPI = '/api/v1/regenerate/otp';
   static const verifyOTPAPI = '/api/v1/verify/otp';
+  static const chatBotAPI = '/api/v1/chatbot/ask';
   static const String gmapAPI = 'AIzaSyBqJ1Tw86J77TZamEAl2crSnXCSJX_xde0';
   static const String weatherAPI = 'ebe059455ee33a095b1e6f4dfe7f964b';
   // static const userProfileAPI = "/api/v1/user-Profile";
