@@ -1,5 +1,6 @@
 class Config {
-  static const String apiURL = 'precious-jersey-wasp.cyclic.app';
+  static const String apiURL = 'tripify-backend-0hxm.onrender.com';
+  // static const String apiURL = 'precious-jersey-wasp.cyclic.app';
   static const loginAPI = "/api/v1/login";
   static const registerAPI = "/api/v1/signup";
   static const placeAPI = "/api/v1/place/";

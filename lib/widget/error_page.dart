@@ -1,174 +1,542 @@
-// import 'dart:developer';
 
-// import 'package:chatapp/main.dart';
-// import 'package:chatapp/models/ChatRoomModel.dart';
-// import 'package:chatapp/models/MessageModel.dart';
-// import 'package:chatapp/models/UserModel.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
 
-// class ChatRoomPage extends StatefulWidget {
-//   final UserModel targetUser;
-//   final ChatRoomModel chatroom;
-//   final UserModel userModel;
-//   final User firebaseUser;
-
-//   const ChatRoomPage({Key? key, required this.targetUser, required this.chatroom, required this.userModel, required this.firebaseUser}) : super(key: key);
+// class IndividualPage extends StatefulWidget {
+//   IndividualPage({Key key, this.chatModel, this.sourchat}) : super(key: key);
 
 //   @override
-//   _ChatRoomPageState createState() => _ChatRoomPageState();
+//   _IndividualPageState createState() => _IndividualPageState();
 // }
 
-// class _ChatRoomPageState extends State<ChatRoomPage> {
+// class _IndividualPageState extends State<IndividualPage> {
+//   bool show = false;
+//   FocusNode focusNode = FocusNode();
+//   bool sendButton = false;
+//   List<MessageModel> messages = [];
+//   TextEditingController _controller = TextEditingController();
+//   ScrollController _scrollController = ScrollController();
+//   IO.Socket socket;
+//   @override
+//   void initState() {
+//     super.initState();
+//     // connect();
 
-//   TextEditingController messageController = TextEditingController();
+//     focusNode.addListener(() {
+//       if (focusNode.hasFocus) {
+//         setState(() {
+//           show = false;
+//         });
+//       }
+//     });
+//   }
 
-//   void sendMessage() async {
-//     String msg = messageController.text.trim();
-//     messageController.clear();
+//   void sendMessage(String message, int sourceId, int targetId) {
+//     setMessage("source", message);
+//     socket.emit("message",
+//         {"message": message, "sourceId": sourceId, "targetId": targetId});
+//   }
 
-//     if(msg != "") {
-//       // Send Message
-//       MessageModel newMessage = MessageModel(
-//         messageid: uuid.v1(),
-//         sender: widget.userModel.uid,
-//         createdon: DateTime.now(),
-//         text: msg,
-//         seen: false
-//       );
+//   void setMessage(String type, String message) {
+//     MessageModel messageModel = MessageModel(
+//         type: type,
+//         message: message,
+//         time: DateTime.now().toString().substring(10, 16));
+//     print(messages);
 
-//       FirebaseFirestore.instance.collection("chatrooms").doc(widget.chatroom.chatroomid).collection("messages").doc(newMessage.messageid).set(newMessage.toMap());
-
-//       widget.chatroom.lastMessage = msg;
-//       FirebaseFirestore.instance.collection("chatrooms").doc(widget.chatroom.chatroomid).set(widget.chatroom.toMap());
-
-//       log("Message Sent!");
-//     }
+//     setState(() {
+//       messages.add(messageModel);
+//     });
 //   }
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Row(
-//           children: [
-
-//             CircleAvatar(
-//               backgroundColor: Colors.grey[300],
-//               backgroundImage: NetworkImage(widget.targetUser.profilepic.toString()),
-//             ),
-
-//             SizedBox(width: 10,),
-
-//             Text(widget.targetUser.fullname.toString()),
-
-//           ],
+//     return Stack(
+//       children: [
+//         Image.asset(
+//           "assets/whatsapp_Back.png",
+//           height: MediaQuery.of(context).size.height,
+//           width: MediaQuery.of(context).size.width,
+//           fit: BoxFit.cover,
 //         ),
-//       ),
-//       body: SafeArea(
-//         child: Container(
-//           child: Column(
-//             children: [
-
-//               // This is where the chats will go
-//               Expanded(
-//                 child: Container(
-//                   padding: EdgeInsets.symmetric(
-//                     horizontal: 10
-//                   ),
-//                   child: StreamBuilder(
-//                     stream: FirebaseFirestore.instance.collection("chatrooms").doc(widget.chatroom.chatroomid).collection("messages").orderBy("createdon", descending: true).snapshots(),
-//                     builder: (context, snapshot) {
-//                       if(snapshot.connectionState == ConnectionState.active) {
-//                         if(snapshot.hasData) {
-//                           QuerySnapshot dataSnapshot = snapshot.data as QuerySnapshot;
-
-//                           return ListView.builder(
-//                             reverse: true,
-//                             itemCount: dataSnapshot.docs.length,
-//                             itemBuilder: (context, index) {
-//                               MessageModel currentMessage = MessageModel.fromMap(dataSnapshot.docs[index].data() as Map<String, dynamic>);
-
-//                               return Row(
-//                                 mainAxisAlignment: (currentMessage.sender == widget.userModel.uid) ? MainAxisAlignment.end : MainAxisAlignment.start,
-//                                 children: [
-//                                   Container(
-//                                     margin: EdgeInsets.symmetric(
-//                                       vertical: 2,
-//                                     ),
-//                                     padding: EdgeInsets.symmetric(
-//                                       vertical: 10,
-//                                       horizontal: 10,
-//                                     ),
-//                                     decoration: BoxDecoration(
-//                                       color: (currentMessage.sender == widget.userModel.uid) ? Colors.grey : Theme.of(context).colorScheme.secondary,
-//                                       borderRadius: BorderRadius.circular(5),
-//                                     ),
-//                                     child: Text(
-//                                       currentMessage.text.toString(),
-//                                       style: TextStyle(
-//                                         color: Colors.white,
-//                                       ),
-//                                     )
-//                                   ),
-//                                 ],
-//                               );
-//                             },
-//                           );
-//                         }
-//                         else if(snapshot.hasError) {
-//                           return Center(
-//                             child: Text("An error occured! Please check your internet connection."),
-//                           );
-//                         }
-//                         else {
-//                           return Center(
-//                             child: Text("Say hi to your new friend"),
-//                           );
-//                         }
-//                       }
-//                       else {
-//                         return Center(
-//                           child: CircularProgressIndicator(),
-//                         );
-//                       }
-//                     },
-//                   ),
-//                 ),
-//               ),
-
-//               Container(
-//                 color: Colors.grey[200],
-//                 padding: EdgeInsets.symmetric(
-//                   horizontal: 15,
-//                   vertical: 5
-//                 ),
+//         Scaffold(
+//           backgroundColor: Colors.transparent,
+//           appBar: PreferredSize(
+//             preferredSize: Size.fromHeight(60),
+//             child: AppBar(
+//               leadingWidth: 70,
+//               titleSpacing: 0,
+//               leading: InkWell(
+//                 onTap: () {
+//                   Navigator.pop(context);
+//                 },
 //                 child: Row(
+//                   mainAxisAlignment: MainAxisAlignment.center,
 //                   children: [
-
-//                     Flexible(
-//                       child: TextField(
-//                         controller: messageController,
-//                         maxLines: null,
-//                         decoration: InputDecoration(
-//                           border: InputBorder.none,
-//                           hintText: "Enter message"
-//                         ),
+//                     Icon(
+//                       Icons.arrow_back,
+//                       size: 24,
+//                     ),
+//                     CircleAvatar(
+//                       child: SvgPicture.asset(
+//                         widget.chatModel.isGroup
+//                             ? "assets/groups.svg"
+//                             : "assets/person.svg",
+//                         color: Colors.white,
+//                         height: 36,
+//                         width: 36,
 //                       ),
+//                       radius: 20,
+//                       backgroundColor: Colors.blueGrey,
 //                     ),
-
-//                     IconButton(
-//                       onPressed: () {
-//                         sendMessage();
-//                       },
-//                       icon: Icon(Icons.send, color: Theme.of(context).colorScheme.secondary,),
-//                     ),
-
 //                   ],
 //                 ),
 //               ),
+//               title: InkWell(
+//                 onTap: () {},
+//                 child: Container(
+//                   margin: EdgeInsets.all(6),
+//                   child: Column(
+//                     mainAxisAlignment: MainAxisAlignment.start,
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Text(
+//                         widget.chatModel.name,
+//                         style: TextStyle(
+//                           fontSize: 18.5,
+//                           fontWeight: FontWeight.bold,
+//                         ),
+//                       ),
+//                       Text(
+//                         "last seen today at 12:05",
+//                         style: TextStyle(
+//                           fontSize: 13,
+//                         ),
+//                       )
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//               actions: [
+//                 IconButton(icon: Icon(Icons.videocam), onPressed: () {}),
+//                 IconButton(icon: Icon(Icons.call), onPressed: () {}),
+//                 PopupMenuButton<String>(
+//                   padding: EdgeInsets.all(0),
+//                   onSelected: (value) {
+//                     print(value);
+//                   },
+//                   itemBuilder: (BuildContext contesxt) {
+//                     return [
+//                       PopupMenuItem(
+//                         child: Text("View Contact"),
+//                         value: "View Contact",
+//                       ),
+//                       PopupMenuItem(
+//                         child: Text("Media, links, and docs"),
+//                         value: "Media, links, and docs",
+//                       ),
+//                       PopupMenuItem(
+//                         child: Text("Whatsapp Web"),
+//                         value: "Whatsapp Web",
+//                       ),
+//                       PopupMenuItem(
+//                         child: Text("Search"),
+//                         value: "Search",
+//                       ),
+//                       PopupMenuItem(
+//                         child: Text("Mute Notification"),
+//                         value: "Mute Notification",
+//                       ),
+//                       PopupMenuItem(
+//                         child: Text("Wallpaper"),
+//                         value: "Wallpaper",
+//                       ),
+//                     ];
+//                   },
+//                 ),
+//               ],
+//             ),
+//           ),
+//           body: Container(
+//             height: MediaQuery.of(context).size.height,
+//             width: MediaQuery.of(context).size.width,
+//             child: WillPopScope(
+//               child: Column(
+//                 children: [
+//                   Expanded(
+//                     // height: MediaQuery.of(context).size.height - 150,
+//                     child: ListView.builder(
+//                       shrinkWrap: true,
+//                       controller: _scrollController,
+//                       itemCount: messages.length + 1,
+//                       itemBuilder: (context, index) {
+//                         if (index == messages.length) {
+//                           return Container(
+//                             height: 70,
+//                           );
+//                         }
+//                         if (messages[index].type == "source") {
+//                           return OwnMessageCard(
+//                             message: messages[index].message,
+//                             time: messages[index].time,
+//                           );
+//                         } else {
+//                           return ReplyCard(
+//                             message: messages[index].message,
+//                             time: messages[index].time,
+//                           );
+//                         }
+//                       },
+//                     ),
+//                   ),
+//                   Align(
+//                     alignment: Alignment.bottomCenter,
+//                     child: Container(
+//                       height: 70,
+//                       child: Column(
+//                         mainAxisAlignment: MainAxisAlignment.end,
+//                         children: [
+//                           Row(
+//                             children: [
+//                               Container(
+//                                 width: MediaQuery.of(context).size.width - 60,
+//                                 child: Card(
+//                                   margin: EdgeInsets.only(
+//                                       left: 2, right: 2, bottom: 8),
+//                                   shape: RoundedRectangleBorder(
+//                                     borderRadius: BorderRadius.circular(25),
+//                                   ),
+//                                   child: TextFormField(
+//                                     controller: _controller,
+//                                     focusNode: focusNode,
+//                                     textAlignVertical: TextAlignVertical.center,
+//                                     keyboardType: TextInputType.multiline,
+//                                     maxLines: 5,
+//                                     minLines: 1,
+//                                     onChanged: (value) {
+//                                       if (value.length > 0) {
+//                                         setState(() {
+//                                           sendButton = true;
+//                                         });
+//                                       } else {
+//                                         setState(() {
+//                                           sendButton = false;
+//                                         });
+//                                       }
+//                                     },
+//                                     decoration: InputDecoration(
+//                                       border: InputBorder.none,
+//                                       hintText: "Type a message",
+//                                       hintStyle: TextStyle(color: Colors.grey),
+//                                       prefixIcon: IconButton(
+//                                         icon: Icon(
+//                                           show
+//                                               ? Icons.keyboard
+//                                               : Icons.emoji_emotions_outlined,
+//                                         ),
+//                                         onPressed: () {
+//                                           if (!show) {
+//                                             focusNode.unfocus();
+//                                             focusNode.canRequestFocus = false;
+//                                           }
+//                                           setState(() {
+//                                             show = !show;
+//                                           });
+//                                         },
+//                                       ),
+//                                       suffixIcon: Row(
+//                                         mainAxisSize: MainAxisSize.min,
+//                                         children: [
+//                                           IconButton(
+//                                             icon: Icon(Icons.attach_file),
+//                                             onPressed: () {
+//                                               showModalBottomSheet(
+//                                                   backgroundColor:
+//                                                       Colors.transparent,
+//                                                   context: context,
+//                                                   builder: (builder) =>
+//                                                       bottomSheet());
+//                                             },
+//                                           ),
+//                                           IconButton(
+//                                             icon: Icon(Icons.camera_alt),
+//                                             onPressed: () {
+//                                               // Navigator.push(
+//                                               //     context,
+//                                               //     MaterialPageRoute(
+//                                               //         builder: (builder) =>
+//                                               //             CameraApp()));
+//                                             },
+//                                           ),
+//                                         ],
+//                                       ),
+//                                       contentPadding: EdgeInsets.all(5),
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ),
+//                               Padding(
+//                                 padding: const EdgeInsets.only(
+//                                   bottom: 8,
+//                                   right: 2,
+//                                   left: 2,
+//                                 ),
+//                                 child: CircleAvatar(
+//                                   radius: 25,
+//                                   backgroundColor: Color(0xFF128C7E),
+//                                   child: IconButton(
+//                                     icon: Icon(
+//                                       sendButton ? Icons.send : Icons.mic,
+//                                       color: Colors.white,
+//                                     ),
+//                                     onPressed: () {
+//                                       if (sendButton) {
+//                                         _scrollController.animateTo(
+//                                             _scrollController
+//                                                 .position.maxScrollExtent,
+//                                             duration:
+//                                                 Duration(milliseconds: 300),
+//                                             curve: Curves.easeOut);
+//                                         sendMessage(
+//                                             _controller.text,
+//                                             widget.sourchat.id,
+//                                             widget.chatModel.id);
+//                                         _controller.clear();
+//                                         setState(() {
+//                                           sendButton = false;
+//                                         });
+//                                       }
+//                                     },
+//                                   ),
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                           show ? emojiSelect() : Container(),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//               onWillPop: () {
+//                 if (show) {
+//                   setState(() {
+//                     show = false;
+//                   });
+//                 } else {
+//                   Navigator.pop(context);
+//                 }
+//                 return Future.value(false);
+//               },
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
 
+//   Widget bottomSheet() {
+//     return Container(
+//       height: 278,
+//       width: MediaQuery.of(context).size.width,
+//       child: Card(
+//         margin: const EdgeInsets.all(18.0),
+//         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+//         child: Padding(
+//           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+//           child: Column(
+//             children: [
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: [
+//                   iconCreation(
+//                       Icons.insert_drive_file, Colors.indigo, "Document"),
+//                   SizedBox(
+//                     width: 40,
+//                   ),
+//                   iconCreation(Icons.camera_alt, Colors.pink, "Camera"),
+//                   SizedBox(
+//                     width: 40,
+//                   ),
+//                   iconCreation(Icons.insert_photo, Colors.purple, "Gallery"),
+//                 ],
+//               ),
+//               SizedBox(
+//                 height: 30,
+//               ),
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: [
+//                   iconCreation(Icons.headset, Colors.orange, "Audio"),
+//                   SizedBox(
+//                     width: 40,
+//                   ),
+//                   iconCreation(Icons.location_pin, Colors.teal, "Location"),
+//                   SizedBox(
+//                     width: 40,
+//                   ),
+//                   iconCreation(Icons.person, Colors.blue, "Contact"),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Widget iconCreation(IconData icons, Color color, String text) {
+//     return InkWell(
+//       onTap: () {},
+//       child: Column(
+//         children: [
+//           CircleAvatar(
+//             radius: 30,
+//             backgroundColor: color,
+//             child: Icon(
+//               icons,
+//               // semanticLabel: "Help",
+//               size: 29,
+//               color: Colors.white,
+//             ),
+//           ),
+//           SizedBox(
+//             height: 5,
+//           ),
+//           Text(
+//             text,
+//             style: TextStyle(
+//               fontSize: 12,
+//               // fontWeight: FontWeight.w100,
+//             ),
+//           )
+//         ],
+//       ),
+//     );
+//   }
+
+//   Widget emojiSelect() {
+//     return EmojiPicker(
+//         rows: 4,
+//         columns: 7,
+//         onEmojiSelected: (emoji, category) {
+//           print(emoji);
+//           setState(() {
+//             _controller.text = _controller.text + emoji.emoji;
+//           });
+//         });
+//   }
+// }
+
+// class OwnMessageCard extends StatelessWidget {
+//   const OwnMessageCard({Key key, this.message, this.time}) : super(key: key);
+//   final String message;
+//   final String time;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Align(
+//       alignment: Alignment.centerRight,
+//       child: ConstrainedBox(
+//         constraints: BoxConstraints(
+//           maxWidth: MediaQuery.of(context).size.width - 45,
+//         ),
+//         child: Card(
+//           elevation: 1,
+//           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+//           color: Color(0xffdcf8c6),
+//           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+//           child: Stack(
+//             children: [
+//               Padding(
+//                 padding: const EdgeInsets.only(
+//                   left: 10,
+//                   right: 30,
+//                   top: 5,
+//                   bottom: 20,
+//                 ),
+//                 child: Text(
+//                   message,
+//                   style: TextStyle(
+//                     fontSize: 16,
+//                   ),
+//                 ),
+//               ),
+//               Positioned(
+//                 bottom: 4,
+//                 right: 10,
+//                 child: Row(
+//                   children: [
+//                     Text(
+//                       time,
+//                       style: TextStyle(
+//                         fontSize: 13,
+//                         color: Colors.grey[600],
+//                       ),
+//                     ),
+//                     SizedBox(
+//                       width: 5,
+//                     ),
+//                     Icon(
+//                       Icons.done_all,
+//                       size: 20,
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class ReplyCard extends StatelessWidget {
+//   const ReplyCard({Key key, this.message, this.time}) : super(key: key);
+//   final String message;
+//   final String time;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Align(
+//       alignment: Alignment.centerLeft,
+//       child: ConstrainedBox(
+//         constraints: BoxConstraints(
+//           maxWidth: MediaQuery.of(context).size.width - 45,
+//         ),
+//         child: Card(
+//           elevation: 1,
+//           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+//           // color: Color(0xffdcf8c6),
+//           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+//           child: Stack(
+//             children: [
+//               Padding(
+//                 padding: const EdgeInsets.only(
+//                   left: 8,
+//                   right: 50,
+//                   top: 5,
+//                   bottom: 10,
+//                 ),
+//                 child: Text(
+//                   message,
+//                   style: TextStyle(
+//                     fontSize: 16,
+//                   ),
+//                 ),
+//               ),
+//               Positioned(
+//                 bottom: 4,
+//                 right: 10,
+//                 child: Text(
+//                   time,
+//                   style: TextStyle(
+//                     fontSize: 13,
+//                     color: Colors.grey[600],
+//                   ),
+//                 ),
+//               ),
 //             ],
 //           ),
 //         ),
