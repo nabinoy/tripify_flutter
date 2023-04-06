@@ -1,7 +1,11 @@
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:random_avatar/random_avatar.dart';
 import 'package:tripify/services/api_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //late StreamSubscription<bool> keyboardSubscription;
 
@@ -21,7 +25,7 @@ class ChatBot extends StatefulWidget {
 
 class _ChatBotState extends State<ChatBot> {
   final _scrollController = ScrollController();
-
+  double typeAnimationHeight = 0;
   String chatResponse = '';
 
   List<Widget> chatList = [];
@@ -55,6 +59,7 @@ class _ChatBotState extends State<ChatBot> {
   @override
   Widget build(BuildContext context) {
     final nameNotifier = ValueNotifier<String>('');
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -69,16 +74,41 @@ class _ChatBotState extends State<ChatBot> {
           Expanded(
             child: SingleChildScrollView(
               reverse: true,
-              child: ListView.builder(
-                  controller: _scrollController,
-                  shrinkWrap: true,
-                  itemCount: chatList.length,
-                  itemBuilder: (context, index) {
-                    return chatList[index];
-                  }),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    controller: _scrollController,
+                    shrinkWrap: true,
+                    itemCount: chatList.length,
+                    itemBuilder: (context, index) {
+                      return chatList[index];
+                    }),
+              ),
             ),
           ),
-          //Padding(padding: EdgeInsets.symmetric(vertical.: 10)),
+          const Padding(padding: EdgeInsets.only(top: 10)),
+          Container(
+            padding: const EdgeInsets.fromLTRB(16, 0, 0, 10),
+            height: typeAnimationHeight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16.0),
+                  child: Container(
+                    height: 74,
+                    width: 64,
+                    color: const Color.fromARGB(255, 212, 212, 214),
+                    child: const SpinKitThreeBounce(
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
           MessageBar(
             //messageBarColor: Colors.white,
             onTextChanged: (value) {
@@ -87,35 +117,57 @@ class _ChatBotState extends State<ChatBot> {
             onSend: (_) async {
               HapticFeedback.mediumImpact();
               setState(() {
+                typeAnimationHeight = 40;
                 chatList.add(
-                  BubbleSpecialTwo(
-                    tail: false,
+                  BubbleNormal(
+                    tail: true,
                     text: nameNotifier.value,
                     isSender: true,
                     color: const Color(0xFF1B97F3),
                     textStyle:
-                        const TextStyle(color: Colors.white, fontSize: 16),
+                        const TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 );
               });
               await APIService.askChatBot(nameNotifier.value)
                   .then((value) => {chatResponse = value});
               setState(() {
+                typeAnimationHeight = 0;
                 chatList.add(
-                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Container(
-                      height: 25,
-                      width: 25,
-                      color: Colors.amber,
+                  Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 3.0),
+                      child: randomAvatar('saytoonz', height: 32, width: 32),
                     ),
-                    BubbleSpecialTwo(
-                      tail: false,
-                      text: chatResponse,
-                      isSender: false,
-                      color: const Color(0xFFE8E8EE),
-                      textStyle: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
+                    Container(
+                      color: Colors.transparent,
+                      constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width * .8),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 2),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFE8E8EE),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                              bottomLeft: Radius.circular(0),
+                              bottomRight: Radius.circular(16),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 4, horizontal: 4),
+                            child: Html(
+                              data: chatResponse,
+                              onLinkTap: (String? url, RenderContext context,
+                                  Map<String, String> attributes, _) {
+                                launchUrl(Uri.parse(url!));
+                              },
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ]),
