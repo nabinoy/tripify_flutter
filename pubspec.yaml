@@ -113,8 +113,10 @@ flutter:
     - assets/onboard/onboard_image2.json
     - assets/onboard/onboard_image3.json
     - assets/lottie/forgot_password.json
+    - assets/lottie/chatbot.json
     - assets/images/background.png
     - assets/images/illustration.png
+    - assets/images/chatbot_profile.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

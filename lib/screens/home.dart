@@ -179,10 +179,18 @@ class _HomepageState extends State<Homepage> {
         ),
         actions: [
           GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, ChatBot.routeName);
-              },
-              child: randomAvatar('saytoonz', height: 35, width: 35)),
+            onTap: () {
+              Navigator.pushNamed(context, ChatBot.routeName);
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 9),
+              child: const CircleAvatar(
+                radius: 18,
+                backgroundImage:
+                    AssetImage('assets/images/chatbot_profile.png'),
+              ),
+            ),
+          ),
           const Padding(padding: EdgeInsets.only(right: 16))
         ],
       ),

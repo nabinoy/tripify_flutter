@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:lottie/lottie.dart';
 import 'package:random_avatar/random_avatar.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,18 +32,6 @@ class _ChatBotState extends State<ChatBot> {
   List<Widget> chatList = [];
 
   @override
-  void initState() {
-    super.initState();
-    //var keyboardVisibilityController = KeyboardVisibilityController();
-
-    // keyboardSubscription =
-    //     keyboardVisibilityController.onChange.listen((bool visible) {
-    //   if (visible) {
-    //   }
-    // });
-  }
-
-  @override
   void dispose() {
     _scrollController.dispose(); //keyboardSubscription.cancel();
     super.dispose();
@@ -62,8 +51,30 @@ class _ChatBotState extends State<ChatBot> {
 
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Chat Bot'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            //randomAvatar('saytoonz', height: 32, width: 32),
+            const CircleAvatar(
+              radius: 18,
+              backgroundImage: AssetImage('assets/images/chatbot_profile.png'),
+            ),
+            const SizedBox(width: 10.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  'Trek',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                Text(
+                  'Personalized ML assistant',
+                  style: TextStyle(fontSize: 12.0),
+                ),
+              ],
+            ),
+          ],
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
@@ -71,22 +82,62 @@ class _ChatBotState extends State<ChatBot> {
         // mainAxisSize: MainAxisSize.min,
         //mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-              reverse: true,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    controller: _scrollController,
-                    shrinkWrap: true,
-                    itemCount: chatList.length,
-                    itemBuilder: (context, index) {
-                      return chatList[index];
-                    }),
-              ),
-            ),
-          ),
+          (chatList.isEmpty)
+              ? Expanded(
+                  child: SingleChildScrollView(
+                    reverse: true,
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 200,
+                          child: Lottie.asset('assets/lottie/chatbot.json'),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Say",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              " Hi!",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.lightBlue[800],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          height: 200,
+                          margin: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height * .03),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : Expanded(
+                  child: SingleChildScrollView(
+                    reverse: true,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          controller: _scrollController,
+                          shrinkWrap: true,
+                          itemCount: chatList.length,
+                          itemBuilder: (context, index) {
+                            return chatList[index];
+                          }),
+                    ),
+                  ),
+                ),
           const Padding(padding: EdgeInsets.only(top: 10)),
           Container(
             padding: const EdgeInsets.fromLTRB(16, 0, 0, 10),
@@ -119,13 +170,16 @@ class _ChatBotState extends State<ChatBot> {
               setState(() {
                 typeAnimationHeight = 40;
                 chatList.add(
-                  BubbleNormal(
-                    tail: true,
-                    text: nameNotifier.value,
-                    isSender: true,
-                    color: const Color(0xFF1B97F3),
-                    textStyle:
-                        const TextStyle(color: Colors.white, fontSize: 15),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: BubbleNormal(
+                      tail: true,
+                      text: nameNotifier.value,
+                      isSender: true,
+                      color: const Color(0xFF1B97F3),
+                      textStyle:
+                          const TextStyle(color: Colors.white, fontSize: 15),
+                    ),
                   ),
                 );
               });
@@ -135,17 +189,21 @@ class _ChatBotState extends State<ChatBot> {
                 typeAnimationHeight = 0;
                 chatList.add(
                   Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 3.0),
-                      child: randomAvatar('saytoonz', height: 32, width: 32),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 3.0),
+                      child: CircleAvatar(
+                        radius: 16,
+                        backgroundImage:
+                            AssetImage('assets/images/chatbot_profile.png'),
+                      ),
                     ),
                     Container(
                       color: Colors.transparent,
                       constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width * .8),
+                          maxWidth: MediaQuery.of(context).size.width * .7),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 2),
+                            horizontal: 6, vertical: 2),
                         child: Container(
                           decoration: const BoxDecoration(
                             color: Color(0xFFE8E8EE),
