@@ -2,14 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/loader/loader_home_main.dart';
 import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/screens/category.dart';
+import 'package:tripify/screens/home_services/hotel.dart';
+import 'package:tripify/screens/home_services/tour_operator.dart';
 import 'package:tripify/screens/island.dart';
 import 'package:tripify/screens/location_weather.dart';
+import 'package:tripify/screens/search_page.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/geocoding.dart';
@@ -23,6 +27,7 @@ final controller = CarouselController();
 List<CategoryAll> c = [];
 List<IslandAll> ia = [];
 List<ServiceAll> sa = [];
+List<LatLng> islandCoords = [];
 
 class HomeMain extends StatefulWidget {
   const HomeMain({super.key});
@@ -32,6 +37,20 @@ class HomeMain extends StatefulWidget {
 }
 
 class _HomeMainState extends State<HomeMain> {
+  List<LatLng> islandCoords = [];
+
+  Future<List<LatLng>> fetchIslandLocation(List<IslandAll> ia) async {
+    List<LatLng> islandCoords = [];
+    LatLng cameraTarget = const LatLng(0, 0);
+    for (var i = 0; i < ia.length; i++) {
+      await getCoordinatesFromPace('(andaman and nicobar island) ${ia[i].name}')
+          .then((value) => {cameraTarget = value});
+      islandCoords.add(cameraTarget);
+    }
+    print(islandCoords.length);
+    return islandCoords;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (currentHour < 12) {
@@ -51,7 +70,7 @@ class _HomeMainState extends State<HomeMain> {
       ]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return const HomeMainScreen();
+          return HomeMainScreen(islandCoords);
         } else {
           return const LoaderHomeMain();
         }
@@ -61,7 +80,8 @@ class _HomeMainState extends State<HomeMain> {
 }
 
 class HomeMainScreen extends StatefulWidget {
-  const HomeMainScreen({super.key});
+  final List<LatLng> islandCoords;
+  const HomeMainScreen(this.islandCoords, {super.key});
 
   @override
   State<HomeMainScreen> createState() => _HomeMainScreenState();
@@ -84,6 +104,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
 
   @override
   void dispose() {
+    islandCoords = [];
     stopListeningForLocationUpdates();
     super.dispose();
   }
@@ -165,13 +186,55 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
             ),
             FadeAnimation(
               1.3,
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, SearchPage.routeName);
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 30),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(.1),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(50),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.search_outlined,
+                            color: Color.fromARGB(221, 55, 55, 55)),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical:
+                                  MediaQuery.of(context).size.height * .0145),
+                          height: MediaQuery.of(context).size.height * .06,
+                          child: const Text(
+                            'Search Places',
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.black54),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            FadeAnimation(
+              1.4,
               CarouselSlider.builder(
                   carouselController: controller,
                   itemCount: ia.length,
                   itemBuilder: (context, index, realIndex) {
                     final urlImage = ia[index].image.secureUrl;
                     final urlImageText = ia[index].name;
-                    return buildImage(context, urlImage, urlImageText, index);
+                    return buildImage(context, urlImage, urlImageText, index
+                        // widget.islandCoords[index]
+                        );
                   },
                   options: CarouselOptions(
                       height: 200,
@@ -185,9 +248,9 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                           setState(() => activeIndex = index))),
             ),
             const SizedBox(height: 12),
-            FadeAnimation(1.4, buildIndicator()),
+            FadeAnimation(1.5, buildIndicator()),
             FadeAnimation(
-              1.5,
+              1.6,
               Container(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: const Text(
@@ -200,7 +263,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
               ),
             ),
             FadeAnimation(
-              1.6,
+              1.7,
               Column(
                 children: [
                   for (int i = 0; i < c.length; i += 2)
@@ -316,7 +379,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
               ),
             ),
             FadeAnimation(
-              1.7,
+              1.8,
               Container(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: const Text(
@@ -332,7 +395,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
               height: 14,
             ),
             FadeAnimation(
-                1.7,
+                1.9,
                 GridView.count(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -343,8 +406,15 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                     return GestureDetector(
                       onTap: () {
                         HapticFeedback.mediumImpact();
-                        Navigator.pushNamed(context, Category.routeName,
-                            arguments: c);
+                        if (index == 0) {
+                          Navigator.pushNamed(context, HotelScreen.routeName);
+                        }
+                        if (index == 1) {
+                          Navigator.pushNamed(
+                              context, TourOperatorSceen.routeName);
+                        }
+                        // Navigator.pushNamed(context, HotelScreen.routeName,
+                        //     arguments: c);
                       },
                       child: ClipRRect(
                         child: Column(children: [
@@ -362,7 +432,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          SizedBox(height: 10.0),
+                          const SizedBox(height: 10.0),
                           Text(
                             sa[index].name,
                             style: const TextStyle(color: Colors.black),
@@ -393,11 +463,16 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
 }
 
 Widget buildImage(
-    BuildContext context, String urlImage, String urlImageText, int index) {
+  BuildContext context,
+  String urlImage,
+  String urlImageText,
+  int index,
+  //LatLng islandCoord
+) {
   return GestureDetector(
     onTap: () {
       HapticFeedback.mediumImpact();
-      Navigator.pushNamed(context, Island.routeName);
+      Navigator.pushNamed(context, Island.routeName, arguments: [c, ia[index]]);
     },
     child: ClipRRect(
       borderRadius: BorderRadius.circular(10.0),

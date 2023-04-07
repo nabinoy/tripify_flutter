@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tripify/screens/chatbot.dart';
+import 'package:tripify/screens/home_services/hotel.dart';
+import 'package:tripify/screens/home_services/tour_operator.dart';
 import 'package:tripify/screens/otp_form.dart';
 import 'package:tripify/screens/category.dart';
 import 'package:tripify/screens/drawer/helpline.dart';
@@ -12,6 +14,7 @@ import 'package:tripify/screens/onboard.dart';
 import 'package:tripify/screens/place.dart';
 import 'package:tripify/screens/map_webview.dart';
 import 'package:tripify/screens/review_all.dart';
+import 'package:tripify/screens/search_page.dart';
 import 'package:tripify/screens/signup.dart';
 import 'package:tripify/screens/weather_details.dart';
 import 'package:tripify/screens/welcome.dart';
@@ -65,6 +68,15 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     case ChatBot.routeName:
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const ChatBot(),);
+
+    case HotelScreen.routeName:
+      return MaterialPageRoute(settings : routeSettings,builder: (_) => const HotelScreen(),);
+
+    case TourOperatorSceen.routeName:
+      return MaterialPageRoute(settings : routeSettings,builder: (_) => const TourOperatorSceen(),);
+
+    case SearchPage.routeName:
+      return MaterialPageRoute(settings : routeSettings,builder: (_) => const SearchPage(),);
   
     default: 
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const Scaffold(

@@ -180,18 +180,12 @@ class _HomepageState extends State<Homepage> {
         actions: [
           GestureDetector(
             onTap: () {
+              HapticFeedback.mediumImpact();
               Navigator.pushNamed(context, ChatBot.routeName);
             },
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 9),
-              child: const CircleAvatar(
-                radius: 18,
-                backgroundImage:
-                    AssetImage('assets/images/chatbot_profile.png'),
-              ),
-            ),
+            child: const Icon(MdiIcons.forumOutline),
           ),
-          const Padding(padding: EdgeInsets.only(right: 16))
+          const Padding(padding: EdgeInsets.all(6))
         ],
       ),
       body: _widgetOptions.elementAt(_selectedIndex),

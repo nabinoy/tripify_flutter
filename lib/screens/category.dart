@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -6,14 +7,17 @@ import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/widget/place_horizontal.dart';
 
-List<Places2> pd = [];
-List<IslandAll> ia = [];
-
-
-class Category extends StatelessWidget {
+class Category extends StatefulWidget {
   static const String routeName = '/category';
   const Category({super.key});
 
+  @override
+  State<Category> createState() => _CategoryState();
+}
+
+class _CategoryState extends State<Category> {
+  List<Places2> pd = [];
+  List<IslandAll> ia = [];
   @override
   Widget build(BuildContext context) {
     final List<dynamic> arguments =
@@ -74,7 +78,14 @@ class Category extends StatelessWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(categoryDetails.description),
+              child: ExpandableText(
+                categoryDetails.description,
+                animation: true,
+                expandText: 'show more',
+                collapseText: 'show less',
+                maxLines: 6,
+                linkColor: Colors.blue,
+              ),
             ),
           ),
           SliverToBoxAdapter(
@@ -97,7 +108,8 @@ class Category extends StatelessWidget {
                             SizedBox(
                                 height:
                                     MediaQuery.of(context).size.width / 1.58,
-                                child: PlaceHorizontal(categoryDetails.sId,item.sId)),
+                                child: PlaceHorizontal(
+                                    categoryDetails.sId, item.sId)),
                           ],
                         ))
                     .toList(),

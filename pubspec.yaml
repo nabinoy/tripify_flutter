@@ -76,6 +76,7 @@ dependencies:
   chat_bubbles: ^1.4.1
   flutter_keyboard_visibility: ^5.4.0
   flutter_html: ^3.0.0-alpha.6
+  expandable_text: ^2.3.0
 
 dev_dependencies:
   flutter_test:
