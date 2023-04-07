@@ -185,7 +185,7 @@ class _HomepageState extends State<Homepage> {
             },
             child: const Icon(MdiIcons.forumOutline),
           ),
-          const Padding(padding: EdgeInsets.all(6))
+          const Padding(padding: EdgeInsets.all(8))
         ],
       ),
       body: _widgetOptions.elementAt(_selectedIndex),
