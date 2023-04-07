@@ -12,7 +12,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
           SizedBox(
@@ -33,18 +33,18 @@ class _ProfileState extends State<Profile> {
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50),
-                            side: BorderSide(color: Colors.white),
+                            side: const BorderSide(color: Colors.white),
                           ),
-                          backgroundColor: Color(0xFFF5F6F9),
+                          backgroundColor: const Color(0xFFF5F6F9),
                         ),
                         onPressed: () {},
-                        child: Icon(Icons.camera_outlined)),
+                        child: const Icon(Icons.camera_outlined)),
                   ),
                 )
               ],
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ProfileMenu(
             text: "My Account",
             icon: "assets/icons/User Icon.svg",
@@ -90,21 +90,21 @@ class ProfileMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextButton(
         style: TextButton.styleFrom(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          backgroundColor: Color(0xFFF5F6F9),
+          backgroundColor: const Color(0xFFF5F6F9),
         ),
         onPressed: press,
         child: Row(
           children: [
-            Icon(Icons.search),
-            SizedBox(width: 20),
+            const Icon(Icons.search),
+            const SizedBox(width: 20),
             Expanded(child: Text(text)),
-            Icon(Icons.arrow_forward_ios),
+            const Icon(Icons.arrow_forward_ios),
           ],
         ),
       ),
