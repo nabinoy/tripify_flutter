@@ -257,14 +257,8 @@ class APIService {
   }
 
   static Future<List<CategoryAll>> categoryAll() async {
-    var userToken = '';
-    await SharedService.getSecureUserToken().then((String? data) {
-      String? token = data.toString();
-      userToken = token;
-    });
 
     Map<String, String> requestHeaders = {
-      'Authorization': 'Bearer $userToken',
       'Accept': 'application/json',
     };
 
@@ -294,14 +288,8 @@ class APIService {
   }
 
   static Future<List<ServiceAll>> serviceAll() async {
-    //var userToken = '';
-    // await SharedService.getSecureUserToken().then((String? data) {
-    //   String? token = data.toString();
-    //   userToken = token;
-    // });
 
     Map<String, String> requestHeaders = {
-      // 'Authorization': 'Bearer $userToken',
       'Accept': 'application/json',
     };
 
@@ -352,14 +340,8 @@ class APIService {
   }
 
   static Future<List<IslandAll>> islandAll() async {
-    var userToken = '';
-    await SharedService.getSecureUserToken().then((String? data) {
-      String? token = data.toString();
-      userToken = token;
-    });
 
     Map<String, String> requestHeaders = {
-      'Authorization': 'Bearer $userToken',
       'Accept': 'application/json',
     };
 
@@ -389,14 +371,8 @@ class APIService {
   }
 
   static Future<ReviewRatings> reviewRatingAll(String id) async {
-    var userToken = '';
-    await SharedService.getSecureUserToken().then((String? data) {
-      String? token = data.toString();
-      userToken = token;
-    });
 
     Map<String, String> requestHeaders = {
-      'Authorization': 'Bearer $userToken',
       'Accept': 'application/json',
     };
     final queryParameters = {'id': id};
