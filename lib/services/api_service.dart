@@ -118,6 +118,35 @@ class APIService {
     }
   }
 
+  static Future<List<Places2>> placeBySearch(String search) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {'search': search};
+    var url = Uri.https(Config.apiURL, Config.placeAllAPI, queryParameters);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['places'];
+      List<Places2> pd = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Places2 p2 = Places2.fromJson(data[i]);
+        pd.add(p2);
+        print(pd[i].name);
+      }
+      return pd;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
   static Future<List<Places2>> placeAll() async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
@@ -142,6 +171,7 @@ class APIService {
         Places2 p2 = Places2.fromJson(data[i]);
         pd.add(p2);
       }
+      print(pd.length);
       return pd;
     } else {
       throw Exception('Failed to load person details');
