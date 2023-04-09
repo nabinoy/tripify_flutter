@@ -45,7 +45,7 @@ class SharedService {
   static Future<void> getSharedLogin() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     const keyName = 'name';
-    name = prefs.getString(keyName) ?? 'Developer';
+    name = prefs.getString(keyName) ?? 'Guest';
     const keyEmail = 'email';
     email = prefs.getString(keyEmail) ?? 'Login with your email';
     const keyId = 'id';
