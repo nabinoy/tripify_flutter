@@ -11,6 +11,7 @@ class Config {
   static const ratingAllAPI = "/api/v1/reviews";
   static const userReviewAPI = "/api/v1/userreview";
   static const reviewAPI = "/api/v1/review";
+  static const placeRecommendationByPlaceAPI = "/api/v1/place/similarContent";
   static const forgotPasswordAPI = '/api/v1/forgotPassword';
   static const regenerateOTPAPI = '/api/v1/regenerate/otp';
   static const verifyOTPAPI = '/api/v1/verify/otp';

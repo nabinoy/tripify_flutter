@@ -18,6 +18,7 @@ import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/geocoding.dart';
 import 'package:tripify/services/shared_service.dart';
+import 'package:tripify/widget/place_horizontal.dart';
 
 int currentHour = DateTime.now().hour;
 String greet = '';
@@ -378,6 +379,23 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                 ],
               ),
             ),
+            FadeAnimation(
+                1.8,
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: const Text(
+                        'Recommendations for you',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    //PlaceHorizontal(item.sId, islandDetails.sId)
+                  ],
+                )),
             FadeAnimation(
               1.8,
               Container(

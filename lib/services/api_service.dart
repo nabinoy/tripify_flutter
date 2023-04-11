@@ -178,6 +178,35 @@ class APIService {
     }
   }
 
+  static Future<List<Places2>> placeRecommendationByPlace(
+      String placeId) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    var url = Uri.https(
+        Config.apiURL, '${Config.placeRecommendationByPlaceAPI}/$placeId');
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['places'];
+      List<Places2> pd = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Places2 p2 = Places2.fromJson(data[i]);
+        pd.add(p2);
+      }
+      return pd;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
   static Future<List<Places2>> placeByCategoryIsland(
       String categoryId, String islandID) async {
     Map<String, String> requestHeaders = {
@@ -257,7 +286,6 @@ class APIService {
   }
 
   static Future<List<CategoryAll>> categoryAll() async {
-
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
     };
@@ -288,7 +316,6 @@ class APIService {
   }
 
   static Future<List<ServiceAll>> serviceAll() async {
-
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
     };
@@ -340,7 +367,6 @@ class APIService {
   }
 
   static Future<List<IslandAll>> islandAll() async {
-
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
     };
@@ -371,7 +397,6 @@ class APIService {
   }
 
   static Future<ReviewRatings> reviewRatingAll(String id) async {
-
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
     };

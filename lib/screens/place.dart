@@ -24,6 +24,8 @@ import 'package:tripify/widget/direction_map.dart';
 import 'package:tripify/widget/hour_forecast.dart';
 import 'dart:math' as math;
 
+import 'package:tripify/widget/place_recommendation_byplace.dart';
+
 late PlaceDetails placeDetails;
 late List<Places2> currentPlace;
 ValueNotifier<String> temperatureNotifier = ValueNotifier<String>('');
@@ -983,6 +985,23 @@ class _PlaceState extends State<Place> {
                       }
                     },
                   ),
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Similar places',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.width / 1.58,child: PlaceRecommendationByPlace(placeList.first.sId))
                 ],
               ),
             ),
