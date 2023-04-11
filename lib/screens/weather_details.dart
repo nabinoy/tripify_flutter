@@ -51,54 +51,42 @@ class _WeatherDetailsState extends State<WeatherDetails> {
         getPreviousForecastData();
         return true;
       },
-      child: MaterialApp(
-        title: appName,
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          // ignore: deprecated_member_use
-          androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
-          fontFamily: fontRegular,
-          primarySwatch: Colors.lightBlue,
-          scaffoldBackgroundColor: bgColor,
-        ),
-        onGenerateRoute: (settings) => generateRoute(settings),
-        home: Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              onPressed: () {
-                hourForecasts.clear();
-                getPreviousForecastData();
-                HapticFeedback.mediumImpact();
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios,
-                size: 20,
-                color: Colors.black,
-              ),
-            ),
-            elevation: 0,
-            backgroundColor: bgColor,
-            centerTitle: true,
-            title: const Text(
-              "Weather",
-              style: TextStyle(color: Colors.black, fontSize: 16),
-            ),
-          ),
-          body: FutureBuilder(
-            future: Future.wait([
-              getWeatherInfo(),
-              getForcastInfo(),
-              getDayForcastInfo(),
-            ]),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return const WeatherScreen();
-              } else {
-                return const LoadingScreen();
-              }
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              hourForecasts.clear();
+              getPreviousForecastData();
+              HapticFeedback.mediumImpact();
+              Navigator.pop(context);
             },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              size: 20,
+              color: Colors.black,
+            ),
           ),
+          elevation: 0,
+          backgroundColor: bgColor,
+          centerTitle: true,
+          title: const Text(
+            "Weather",
+            style: TextStyle(color: Colors.black, fontSize: 16),
+          ),
+        ),
+        body: FutureBuilder(
+          future: Future.wait([
+            getWeatherInfo(),
+            getForcastInfo(),
+            getDayForcastInfo(),
+          ]),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return const WeatherScreen();
+            } else {
+              return const LoadingScreen();
+            }
+          },
         ),
       ),
     );

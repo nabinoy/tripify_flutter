@@ -8,6 +8,7 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/loader/loader_home_main.dart';
 import 'package:tripify/models/home_main_model.dart';
+import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/screens/category.dart';
 import 'package:tripify/screens/home_services/hotel.dart';
 import 'package:tripify/screens/home_services/tour_operator.dart';
@@ -18,7 +19,7 @@ import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/geocoding.dart';
 import 'package:tripify/services/shared_service.dart';
-import 'package:tripify/widget/place_horizontal.dart';
+import 'package:tripify/widget/place_recommendation_byuser.dart';
 
 int currentHour = DateTime.now().hour;
 String greet = '';
@@ -29,6 +30,7 @@ List<CategoryAll> c = [];
 List<IslandAll> ia = [];
 List<ServiceAll> sa = [];
 List<LatLng> islandCoords = [];
+List<Places2> pa = [];
 
 class HomeMain extends StatefulWidget {
   const HomeMain({super.key});
@@ -48,7 +50,6 @@ class _HomeMainState extends State<HomeMain> {
           .then((value) => {cameraTarget = value});
       islandCoords.add(cameraTarget);
     }
-    print(islandCoords.length);
     return islandCoords;
   }
 
@@ -66,6 +67,7 @@ class _HomeMainState extends State<HomeMain> {
         APIService.categoryAll().then((value) => {c = value}),
         APIService.islandAll().then((value) => {ia = value}),
         APIService.serviceAll().then((value) => {sa = value}),
+        APIService.placeRecommendationByUser().then((value) => {pa = value}),
         getCurrentLocation(),
         SharedService.getSharedLogin(),
       ]),
@@ -393,6 +395,9 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                         ),
                       ),
                     ),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.width / 1.58,
+                        child: PlaceRecommendationByUser(pa)),
                     //PlaceHorizontal(item.sId, islandDetails.sId)
                   ],
                 )),

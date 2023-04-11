@@ -207,6 +207,40 @@ class APIService {
     }
   }
 
+  static Future<List<Places2>> placeRecommendationByUser() async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    var url = Uri.https(Config.apiURL, Config.placeRecommendationByUserAPI);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['recomendedPlaces'];
+      List<Places2> pd = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Places2 p2 = Places2.fromJson(data[i]);
+        pd.add(p2);
+      }
+      return pd;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
   static Future<List<Places2>> placeByCategoryIsland(
       String categoryId, String islandID) async {
     Map<String, String> requestHeaders = {

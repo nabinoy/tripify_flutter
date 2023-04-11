@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lottie/lottie.dart';
-import 'package:random_avatar/random_avatar.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
