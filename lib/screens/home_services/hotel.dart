@@ -62,7 +62,7 @@ class _HotelScreenState extends State<HotelScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: const [
                                 Text(
-                                  "Ngadiluwih, Kediri",
+                                  "Demo, Name",
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700,
@@ -231,7 +231,7 @@ class _HotelScreenState extends State<HotelScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Near from you',
+                        'All places',
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.8),
                           fontSize: 18,
@@ -321,19 +321,20 @@ class _HotelScreenState extends State<HotelScreen> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
+                                  children: [
                                     Padding(
-                                      padding: EdgeInsets.only(bottom: 10),
+                                      padding:
+                                          const EdgeInsets.only(bottom: 10),
                                       child: Text(
-                                        "Dreamsville House",
-                                        style: TextStyle(
+                                        hd.first.name,
+                                        style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w500,
                                           fontSize: 23,
                                         ),
                                       ),
                                     ),
-                                    Text(
+                                    const Text(
                                       "Jl. Sultan Iskandar Muda",
                                       style: TextStyle(
                                         color: Colors.white,
