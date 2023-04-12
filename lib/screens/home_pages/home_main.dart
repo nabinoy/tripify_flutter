@@ -430,7 +430,9 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                       onTap: () {
                         HapticFeedback.mediumImpact();
                         if (index == 0) {
-                          Navigator.pushNamed(context, HotelScreen.routeName);
+                          Navigator.pushNamed(context, HotelScreen.routeName,arguments: [
+                                    ia,
+                                  ]);
                         }
                         if (index == 1) {
                           Navigator.pushNamed(

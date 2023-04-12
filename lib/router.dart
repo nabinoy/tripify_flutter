@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tripify/screens/chatbot.dart';
 import 'package:tripify/screens/home_services/hotel.dart';
+import 'package:tripify/screens/home_services/hotel_details.dart';
 import 'package:tripify/screens/home_services/tour_operator.dart';
 import 'package:tripify/screens/otp_form.dart';
 import 'package:tripify/screens/category.dart';
@@ -77,6 +78,9 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     case SearchPage.routeName:
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const SearchPage(),);
+
+    case HotelDetailsPage.routeName:
+      return MaterialPageRoute(settings : routeSettings,builder: (_) => const HotelDetailsPage(),);
   
     default: 
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const Scaffold(

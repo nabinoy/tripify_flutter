@@ -13,6 +13,7 @@ class Config {
   static const reviewAPI = "/api/v1/review";
   static const placeRecommendationByPlaceAPI = "/api/v1/place/similarContent";
   static const placeRecommendationByUserAPI = "/api/v1/user/recomendPlaces";
+  static const hotelAllAPI = "/api/v1/hotels/all";
   static const forgotPasswordAPI = '/api/v1/forgotPassword';
   static const regenerateOTPAPI = '/api/v1/regenerate/otp';
   static const verifyOTPAPI = '/api/v1/verify/otp';

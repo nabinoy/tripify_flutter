@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:tripify/models/forgot_password_request_model.dart';
 import 'package:tripify/models/home_main_model.dart';
+import 'package:tripify/models/hotel_response_model.dart';
 import 'package:tripify/models/login_request_model.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/models/otp_request_model.dart';
@@ -171,8 +172,37 @@ class APIService {
         Places2 p2 = Places2.fromJson(data[i]);
         pd.add(p2);
       }
-      print(pd.length);
       return pd;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<List<Hotels>> hotelAll() async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    var url = Uri.https(
+      Config.apiURL,
+      Config.hotelAllAPI,
+    );
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['hotels'];
+      List<Hotels> h = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Hotels h2 = Hotels.fromJson(data[i]);
+        h.add(h2);
+      }
+      return h;
     } else {
       throw Exception('Failed to load person details');
     }
