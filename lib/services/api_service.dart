@@ -322,12 +322,17 @@ class APIService {
     }
   }
 
-  static Future<List<Places2>> placePagination(String page) async {
+  static Future<List<Places2>> placePagination(
+      String categoryId, String islandID, String page) async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
     };
 
-    final queryParameters = {'page': page};
+    final queryParameters = {
+      'category': categoryId,
+      'page': page,
+      'island': islandID
+    };
     var url = Uri.https(Config.apiURL, Config.placeAllAPI, queryParameters);
 
     var response = await client.get(
@@ -342,6 +347,7 @@ class APIService {
       for (var i = 0; i < data.length; i++) {
         Places2 p2 = Places2.fromJson(data[i]);
         pd.add(p2);
+        print(pd[i].name);
       }
       return pd;
     } else {
