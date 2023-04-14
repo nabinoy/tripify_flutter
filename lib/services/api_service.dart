@@ -237,6 +237,58 @@ class APIService {
     }
   }
 
+  static Future<List<Places2>> userWishlist() async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    var url = Uri.https(Config.apiURL, Config.userDashboardAPI);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['user'];
+      List<Places2> pd = [];
+
+      for (var i = 0; i < data['wishlist'].length; i++) {
+        Map<String, String> requestHeaders = {
+          'Accept': 'application/json',
+        };
+
+        var url2 = Uri.https(
+            Config.apiURL, '${Config.placeAPI}/${data['wishlist'][i]}');
+        var response = await client.get(
+          url2,
+          headers: requestHeaders,
+        );
+
+        if (response.statusCode == 200) {
+          var data2 = json.decode(response.body);
+          data2 = data2['place'];
+          Places2 p2 = Places2.fromJson(data2);
+
+          pd.add(p2);
+        } else {
+          throw Exception('Failed to load place details');
+        }
+      }
+      return pd;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
   static Future<List<Places2>> placeRecommendationByUser() async {
     var userToken = '';
     await SharedService.getSecureUserToken().then((String? data) {
