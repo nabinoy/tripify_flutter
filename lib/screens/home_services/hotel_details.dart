@@ -374,6 +374,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                   ),
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 16.0, horizontal: 16.0),
@@ -387,27 +388,148 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                     ),
                     const SizedBox(height: 8.0),
                     ...hotel.rooms.map<Widget>((room) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Room Type: ${room.roomType}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 4.0),
-                          Text('Description: ${room.description}'),
-                          const SizedBox(height: 4.0),
-                          Text('Price: ${room.price}'),
-                          const SizedBox(height: 4.0),
-                          Text('Max Occupancy: ${room.maxOccupancy}'),
-                          const SizedBox(height: 4.0),
-                          const Text('Amenities:'),
-                          ...room.amenities
-                              .map((amenity) => Text('- $amenity'))
-                              .toList(),
-                          const SizedBox(height: 16.0),
-                        ],
+                      return Container(
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 10.0,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2.0,
+                              blurRadius: 5.0,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                          color: Colors.white,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 150.0,
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20.0),
+                                  topRight: Radius.circular(20.0),
+                                ),
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                      'https://via.placeholder.com/150'),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .6,
+                                        child: Text(
+                                          room.roomType,
+                                          style: const TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        'Quantity: ${room.beds.quantity.toString()}',
+                                        style: const TextStyle(fontSize: 14.0),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10.0),
+                                  Text(
+                                    room.description,
+                                    style: const TextStyle(fontSize: 14.0),
+                                  ),
+                                  const SizedBox(height: 10.0),
+                                  const Text(
+                                    'Amenities:',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                  Wrap(
+                                    children: room.amenities
+                                        .map((amenity) => Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              color: Colors.lightBlue[100],
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 9, vertical: 5),
+                                            margin: const EdgeInsets.all(4),
+                                            child: Text(
+                                              amenity,
+                                              style:
+                                                  const TextStyle(fontSize: 12),
+                                            )))
+                                        .toList(),
+                                  ),
+                                  const SizedBox(height: 10.0),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '₹${room.price.toString()}',
+                                        style: const TextStyle(
+                                          fontSize: 20.0,
+                                          color:
+                                              Color.fromARGB(255, 76, 175, 119),
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.people,
+                                            color: Colors.blue,
+                                          ),
+                                          const SizedBox(width: 5.0),
+                                          Text(
+                                              'Max Occupancy: ${room.maxOccupancy}'),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       );
+                      // Column(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     Text(
+                      //       'Room Type: ${room.roomType}',
+                      //       style: const TextStyle(fontWeight: FontWeight.bold),
+                      //     ),
+                      //     const SizedBox(height: 4.0),
+                      //     Text('Description: ${room.description}'),
+                      //     const SizedBox(height: 4.0),
+                      //     Text('Price: ${room.price}'),
+                      //     const SizedBox(height: 4.0),
+                      //     Text('Max Occupancy: ${room.maxOccupancy}'),
+                      //     const SizedBox(height: 4.0),
+
+                      //     const SizedBox(height: 16.0),
+                      //   ],
+                      // );
                     }).toList(),
                   ],
                 ),
