@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/screens/place.dart';
 import 'package:tripify/services/api_service.dart';
@@ -18,6 +19,8 @@ class _WishlistState extends State<Wishlist> {
   @override
   Widget build(BuildContext context) {
     List<Places2> pd = [];
+    String message = '';
+
     return Scaffold(
       body: Column(
         children: [
@@ -180,7 +183,29 @@ class _WishlistState extends State<Wishlist> {
                                           ),
                                           MaterialButton(
                                             elevation: 0,
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              APIService.deleteFromWishlist(
+                                                      pd[index].sId)
+                                                  .then((value) {
+                                                message = value;
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                    message,
+                                                    style: const TextStyle(
+                                                        fontFamily: fontRegular,
+                                                        fontSize: 12),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    vertical: 3,
+                                                  ),
+                                                  backgroundColor: Colors.blue,
+                                                ));
+                                                setState(() {});
+                                              });
+                                            },
                                             color: Colors.red[400],
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:

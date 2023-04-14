@@ -374,6 +374,69 @@ class APIService {
     }
   }
 
+  static Future<String> addToWishlist(String id) async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    final queryParameters = {
+      'id': id,
+    };
+    var url =
+        Uri.https(Config.apiURL, Config.addToWishlistAPI, queryParameters);
+
+    var response = await client.put(
+      url,
+      headers: requestHeaders,
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data['message'];
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<String> deleteFromWishlist(String id) async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    final queryParameters = {
+      'id': id,
+    };
+    var url =
+        Uri.https(Config.apiURL, Config.deleteFromWishlistAPI, queryParameters);
+
+    var response = await client.delete(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data['message'];
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
   static Future<List<Places2>> placePagination(
       String categoryId, String islandID, String page) async {
     Map<String, String> requestHeaders = {
@@ -399,7 +462,6 @@ class APIService {
       for (var i = 0; i < data.length; i++) {
         Places2 p2 = Places2.fromJson(data[i]);
         pd.add(p2);
-        print(pd[i].name);
       }
       return pd;
     } else {

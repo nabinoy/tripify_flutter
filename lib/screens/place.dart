@@ -102,6 +102,8 @@ class _PlaceState extends State<Place> {
     late ReviewRatings r;
     final controller = CarouselController();
     double userRating = 0;
+    String message = '';
+    bool isListed = false;
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -161,16 +163,45 @@ class _PlaceState extends State<Place> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
-                child: const Padding(
-                  padding: EdgeInsets.only(right: 20),
+                onTap: () async {
+                  if (isListed) {
+                    isListed = false;
+                  } else {
+                    await APIService.addToWishlist(placeList.first.sId)
+                        .then((value) {
+                      message = value;
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                          message,
+                          style: const TextStyle(
+                              fontFamily: fontRegular, fontSize: 12),
+                          textAlign: TextAlign.center,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 3,
+                        ),
+                        backgroundColor: Colors.blue,
+                      ));
+                    });
+
+                    isListed = true;
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20),
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
-                    child: Icon(
-                      MdiIcons.heartOutline,
-                      color: Colors.black,
-                      size: 24,
-                    ),
+                    child: (isListed == true)
+                        ? const Icon(
+                            MdiIcons.heartOutline,
+                            color: Colors.black,
+                            size: 24,
+                          )
+                        : const Icon(
+                            MdiIcons.heartOutline,
+                            color: Colors.black,
+                            size: 24,
+                          ),
                   ),
                 ),
               ),
@@ -334,13 +365,6 @@ class _PlaceState extends State<Place> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Dos:',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                            ),
-                          ),
                           const SizedBox(height: 16),
                           ...placeList.first.doS.map((d) => Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -369,13 +393,6 @@ class _PlaceState extends State<Place> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Don\'ts:',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                            ),
-                          ),
                           const SizedBox(height: 16),
                           ...placeList.first.dontS.map((d) => Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1001,7 +1018,9 @@ class _PlaceState extends State<Place> {
                       fontSize: 18,
                     ),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.width / 1.58,child: PlaceRecommendationByPlace(placeList.first.sId))
+                  SizedBox(
+                      height: MediaQuery.of(context).size.width / 1.58,
+                      child: PlaceRecommendationByPlace(placeList.first.sId))
                 ],
               ),
             ),
