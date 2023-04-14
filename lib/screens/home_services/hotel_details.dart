@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/hotel_response_model.dart';
+import 'package:tripify/models/weather_model.dart';
+import 'package:tripify/services/current_location.dart';
+import 'package:tripify/widget/direction_map.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HotelDetailsPage extends StatefulWidget {
@@ -31,10 +34,6 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
   }
 
   void _launchWeb(String website) async {
-    // final Uri params = Uri(
-    //   scheme: 'https',
-    //   host: website,
-    // );
     await launchUrl(Uri.parse(website), mode: LaunchMode.externalApplication);
   }
 
@@ -43,6 +42,8 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
     final List<dynamic> arguments =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     Hotels hotel = arguments[0];
+    weatherLatAPI = hotel.location.coordinates[1].toString();
+    weatherLongAPI = hotel.location.coordinates[0].toString();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: bgColor,
@@ -250,7 +251,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
                 child: ListTile(
-                  leading: Container(
+                  leading: SizedBox(
                       width: 50,
                       height: 50,
                       child: ClipRRect(
@@ -382,9 +383,9 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Rooms:',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16.0),
+                      'Rooms',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 23),
                     ),
                     const SizedBox(height: 8.0),
                     ...hotel.rooms.map<Widget>((room) {
@@ -512,26 +513,50 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                           ],
                         ),
                       );
-                      // Column(
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: [
-                      //     Text(
-                      //       'Room Type: ${room.roomType}',
-                      //       style: const TextStyle(fontWeight: FontWeight.bold),
-                      //     ),
-                      //     const SizedBox(height: 4.0),
-                      //     Text('Description: ${room.description}'),
-                      //     const SizedBox(height: 4.0),
-                      //     Text('Price: ${room.price}'),
-                      //     const SizedBox(height: 4.0),
-                      //     Text('Max Occupancy: ${room.maxOccupancy}'),
-                      //     const SizedBox(height: 4.0),
-
-                      //     const SizedBox(height: 16.0),
-                      //   ],
-                      // );
                     }).toList(),
                   ],
+                ),
+              ),
+
+              Container(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Direction',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 23,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                alignment: Alignment.center,
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.width * 0.8,
+                  width: MediaQuery.of(context).size.width,
+                  child: FutureBuilder(
+                      future: Future.wait([
+                        getCurrentLocation(),
+                      ]),
+                      builder: (builder, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return ClipRRect(
+                              borderRadius: BorderRadius.circular(15.0),
+                              child: const DirectionMap());
+                        } else {
+                          return Container(
+                            color: Colors.white,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+                      }),
                 ),
               ),
 
@@ -557,23 +582,48 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                       child: Row(
                         children: hotel.images
                             .map(
-                              (item) => Container(
-                                margin: const EdgeInsets.only(right: 8),
-                                width: 160,
-                                height: 160,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: CachedNetworkImage(
-                                    height: 430,
-                                    alignment: Alignment.bottomCenter,
-                                    imageUrl: item.secureUrl,
-                                    placeholder: (context, url) => Image.memory(
-                                      kTransparentImage,
+                              (item) => GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Dialog(
+                                        child: CachedNetworkImage(
+                                          height: 430,
+                                          alignment: Alignment.bottomCenter,
+                                          imageUrl: item.secureUrl,
+                                          placeholder: (context, url) =>
+                                              Image.memory(
+                                            kTransparentImage,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          fadeInDuration:
+                                              const Duration(milliseconds: 200),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 8),
+                                  width: 160,
+                                  height: 160,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: CachedNetworkImage(
+                                      height: 430,
+                                      alignment: Alignment.bottomCenter,
+                                      imageUrl: item.secureUrl,
+                                      placeholder: (context, url) =>
+                                          Image.memory(
+                                        kTransparentImage,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      fadeInDuration:
+                                          const Duration(milliseconds: 200),
                                       fit: BoxFit.cover,
                                     ),
-                                    fadeInDuration:
-                                        const Duration(milliseconds: 200),
-                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
@@ -633,7 +683,6 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                     _launchWeb(hotel.contact.website);
                   },
                   child: Container(
-                    margin: const EdgeInsets.only(top: 10),
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
