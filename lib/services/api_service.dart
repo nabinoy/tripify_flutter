@@ -95,6 +95,35 @@ class APIService {
     }
   }
 
+  static Future<String> userHotelReview(UserReviewModel model) async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    var url = Uri.https(
+      Config.apiURL,
+      Config.reviewHotelAPI,
+    );
+    var response = await client.put(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+    if (response.statusCode == 200) {
+      return 'Done';
+    } else {
+      return 'Error, please try again!';
+    }
+  }
+
   static Future<bool> forgotpassword(
     ForgotPasswordRequestModel model,
   ) async {
@@ -631,6 +660,29 @@ class APIService {
     }
   }
 
+  static Future<ReviewRatings> reviewHotelRatingAll(String id) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+    final queryParameters = {'id': id};
+    var url = Uri.https(
+      Config.apiURL,
+      Config.ratingHotelAllAPI,
+      queryParameters,
+    );
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      ReviewRatings rr = ReviewRatings.fromJson(data);
+      return rr;
+    } else {
+      throw Exception('Failed to load review details');
+    }
+  }
+
   static Future<String> deleteUserReview(String id) async {
     var userToken = '';
     await SharedService.getSecureUserToken().then((String? data) {
@@ -646,6 +698,34 @@ class APIService {
     var url = Uri.https(
       Config.apiURL,
       Config.reviewAPI,
+      queryParameters,
+    );
+    var response = await client.delete(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      return 'Successfully deleted!';
+    } else {
+      throw Exception('Error, please try again!');
+    }
+  }
+
+  static Future<String> deleteUserHotelReview(String id) async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+    };
+    final queryParameters = {'id': id};
+    var url = Uri.https(
+      Config.apiURL,
+      Config.reviewHotelAPI,
       queryParameters,
     );
     var response = await client.delete(
@@ -697,34 +777,6 @@ class APIService {
     }
   }
 
-  static Future<String> updateUserReview(UserReviewModel model) async {
-    var userToken = '';
-    await SharedService.getSecureUserToken().then((String? data) {
-      String? token = data.toString();
-      userToken = token;
-    });
-
-    Map<String, String> requestHeaders = {
-      'Authorization': 'Bearer $userToken',
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    };
-    var url = Uri.https(
-      Config.apiURL,
-      Config.reviewAPI,
-    );
-    var response = await client.put(
-      url,
-      headers: requestHeaders,
-      body: jsonEncode(model.toJson()),
-    );
-    if (response.statusCode == 200) {
-      return 'Successfully updated!';
-    } else {
-      throw Exception('Error, please try again!');
-    }
-  }
-
   static Future<ReviewUser> reviewRatingUser(String id) async {
     var userToken = '';
     await SharedService.getSecureUserToken().then((String? data) {
@@ -740,6 +792,50 @@ class APIService {
     var url = Uri.https(
       Config.apiURL,
       Config.userReviewAPI,
+      queryParameters,
+    );
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['review'];
+      ReviewUser ru = ReviewUser.fromJson(data);
+      return ru;
+    } else if (response.statusCode == 500 &&
+        json.decode(response.body)['message'] == 'No review found.') {
+      var emptyJson = {
+        "user": "",
+        "name": "",
+        "rating": 0,
+        "comment": "",
+        "sentiment": "",
+        "_id": "",
+        "date": ""
+      };
+      ReviewUser ru = ReviewUser.fromJson(emptyJson);
+      return ru;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<ReviewUser> reviewHotelRatingUser(String id) async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+    };
+    final queryParameters = {'id': id};
+    var url = Uri.https(
+      Config.apiURL,
+      Config.userHotelReviewAPI,
       queryParameters,
     );
     var response = await client.get(

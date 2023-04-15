@@ -1770,9 +1770,9 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
                     ? widget.ru.comment
                     : _nameNotifier.value,
               );
-              APIService.updateUserReview(model).then(
+              APIService.userReview(model).then(
                 (response) {
-                  if (response.contains('Successfully updated!')) {
+                  if (response.contains('Done')) {
                     Navigator.of(context).pop();
                     isLoading = false;
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

@@ -9,8 +9,11 @@ class Config {
   static const serviceAllAPI = "/api/v1/service/all";
   static const islandAllAPI = "/api/v1/island/all";
   static const ratingAllAPI = "/api/v1/reviews";
+  static const ratingHotelAllAPI = "/api/v1/hotel/reviews";
   static const userReviewAPI = "/api/v1/userreview";
+  static const userHotelReviewAPI = "/api/v1/hotel/userreview";
   static const reviewAPI = "/api/v1/review";
+  static const reviewHotelAPI = "/api/v1/hotel/review";
   static const placeRecommendationByPlaceAPI = "/api/v1/place/similarContent";
   static const placeRecommendationByUserAPI = "/api/v1/user/recomendPlaces";
   static const hotelAllAPI = "/api/v1/hotels/all";
