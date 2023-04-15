@@ -10,6 +10,7 @@ import 'package:tripify/models/signup_request_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:tripify/constants/config.dart';
 import 'package:tripify/models/user_review_model.dart';
+import 'package:tripify/screens/home_pages/wishlist.dart';
 import 'shared_service.dart';
 
 class APIService {
@@ -237,6 +238,34 @@ class APIService {
     }
   }
 
+  static Future<List<String>> checkUserWishlist() async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    var url = Uri.https(Config.apiURL, Config.userDashboardAPI);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['user']['wishlist'];
+      return data.cast<String>();
+    } else {
+      throw Exception('Failed to load wishlist details');
+    }
+  }
+
   static Future<List<Places2>> userWishlist() async {
     var userToken = '';
     await SharedService.getSecureUserToken().then((String? data) {
@@ -397,7 +426,6 @@ class APIService {
       url,
       headers: requestHeaders,
     );
-    print(response.body);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       return data['message'];

@@ -24,6 +24,7 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
   final controller = ScrollController();
   late List<Future> dataFuture;
   int placeCount = 1;
+  List<String> wishlistPlaceIdList = [];
 
   @override
   void initState() {
@@ -32,7 +33,9 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
       APIService.islandPlaceCount(widget.catId, widget.islandId)
           .then((value) => {placeCount = value}),
       APIService.placeByCategoryIsland(widget.catId, widget.islandId)
-          .then((value) => {pd = value})
+          .then((value) => {pd = value}),
+          APIService.checkUserWishlist()
+                  .then((value) => {wishlistPlaceIdList.addAll(value)})
     ];
     controller.addListener(() {
       if (controller.position.maxScrollExtent == controller.offset) {
@@ -103,7 +106,10 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
                     return GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(context, Place.routeName,
-                            arguments: [pd[index]]);
+                            arguments: [[pd[index]],(wishlistPlaceIdList.contains(
+                                                                pd[index].sId))
+                                                        ? true
+                                                        : false]);
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width / 1.4,

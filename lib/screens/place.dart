@@ -92,8 +92,11 @@ class _PlaceState extends State<Place> {
 
   @override
   Widget build(BuildContext context) {
-    List<Places2> placeList =
-        ModalRoute.of(context)!.settings.arguments as List<Places2>;
+    ValueNotifier<bool> isListed = ValueNotifier<bool>(false);
+    final List<dynamic> arguments =
+        ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+    List<Places2> placeList = arguments[0] as List<Places2>;
+    isListed.value = arguments[1];
     currentPlace = placeList;
     weatherLatAPI = placeList.first.location.coordinates[1].toString();
     weatherLongAPI = placeList.first.location.coordinates[0].toString();
@@ -103,7 +106,7 @@ class _PlaceState extends State<Place> {
     final controller = CarouselController();
     double userRating = 0;
     String message = '';
-    bool isListed = false;
+    //bool isListed = false;
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -164,8 +167,25 @@ class _PlaceState extends State<Place> {
               ),
               GestureDetector(
                 onTap: () async {
-                  if (isListed) {
-                    isListed = false;
+                  HapticFeedback.mediumImpact();
+                  if (isListed.value) {
+                    await APIService.deleteFromWishlist(placeList.first.sId)
+                        .then((value) {
+                      message = value;
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                          message,
+                          style: const TextStyle(
+                              fontFamily: fontRegular, fontSize: 12),
+                          textAlign: TextAlign.center,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 3,
+                        ),
+                        backgroundColor: Colors.blue,
+                      ));
+                    });
+                    isListed.value = false;
                   } else {
                     await APIService.addToWishlist(placeList.first.sId)
                         .then((value) {
@@ -184,24 +204,29 @@ class _PlaceState extends State<Place> {
                       ));
                     });
 
-                    isListed = true;
+                    isListed.value = true;
                   }
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(right: 20),
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
-                    child: (isListed == true)
-                        ? const Icon(
-                            MdiIcons.heartOutline,
-                            color: Colors.black,
-                            size: 24,
-                          )
-                        : const Icon(
-                            MdiIcons.heartOutline,
-                            color: Colors.black,
-                            size: 24,
-                          ),
+                    child: ValueListenableBuilder(
+                      valueListenable: isListed,
+                      builder: (context, value, child) {
+                        return (isListed.value)
+                            ? const Icon(
+                                MdiIcons.heart,
+                                color: Color.fromARGB(255, 244, 54, 70),
+                                size: 24,
+                              )
+                            : const Icon(
+                                MdiIcons.heartOutline,
+                                color: Colors.black,
+                                size: 24,
+                              );
+                      },
+                    ),
                   ),
                 ),
               ),

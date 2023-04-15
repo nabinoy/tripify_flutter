@@ -19,19 +19,24 @@ class PlaceRecommendationByPlace extends StatefulWidget {
 class _PlaceRecommendationByPlaceState
     extends State<PlaceRecommendationByPlace> {
   List<Places2> pd = [];
-  late Future dataFuture;
+  late List<Future> dataFuture;
+  List<String> wishlistPlaceIdList = [];
 
   @override
   void initState() {
     super.initState();
-    dataFuture = APIService.placeRecommendationByPlace(widget.placeId)
-        .then((value) => {pd = value});
+    dataFuture = [
+      APIService.placeRecommendationByPlace(widget.placeId)
+          .then((value) => {pd = value}),
+      APIService.checkUserWishlist()
+          .then((value) => {wishlistPlaceIdList.addAll(value)})
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: dataFuture,
+      future: Future.wait(dataFuture),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (pd.isEmpty) {
@@ -68,7 +73,12 @@ class _PlaceRecommendationByPlaceState
                     return GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(context, Place.routeName,
-                            arguments: [pd[index]]);
+                            arguments: [
+                              [pd[index]],
+                              (wishlistPlaceIdList.contains(pd[index].sId))
+                                  ? true
+                                  : false
+                            ]);
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width / 1.4,

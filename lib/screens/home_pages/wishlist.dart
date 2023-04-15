@@ -19,6 +19,7 @@ class _WishlistState extends State<Wishlist> {
   @override
   Widget build(BuildContext context) {
     List<Places2> pd = [];
+    List<String> wishlistPlaceIdList = [];
     String message = '';
 
     return Scaffold(
@@ -36,8 +37,11 @@ class _WishlistState extends State<Wishlist> {
             ],
           ),
           FutureBuilder(
-            future:
-                APIService.userWishlist().then((value) => {pd.addAll(value)}),
+            future: Future.wait([
+              APIService.userWishlist().then((value) => {pd.addAll(value)}),
+              APIService.checkUserWishlist()
+                  .then((value) => {wishlistPlaceIdList.addAll(value)})
+            ]),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return (pd.isEmpty)
@@ -152,7 +156,14 @@ class _WishlistState extends State<Wishlist> {
                                             onPressed: () {
                                               Navigator.pushNamed(
                                                   context, Place.routeName,
-                                                  arguments: [pd[index]]);
+                                                  arguments: [
+                                                    [pd[index]],
+                                                    (wishlistPlaceIdList
+                                                            .contains(
+                                                                pd[index].sId))
+                                                        ? true
+                                                        : false
+                                                  ]);
                                             },
                                             color: Colors.lightBlue[600],
                                             shape: RoundedRectangleBorder(
@@ -228,7 +239,11 @@ class _WishlistState extends State<Wishlist> {
                         ),
                       );
               } else {
-                return const LoadingScreen();
+                return const Expanded(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               }
             },
           ),
