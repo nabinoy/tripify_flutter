@@ -3,24 +3,25 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:tripify/models/place_response_model.dart';
+import 'package:tripify/models/hotel_response_model.dart';
+import 'package:tripify/screens/home_services/hotel_details.dart';
 import 'package:tripify/screens/place.dart';
 import 'package:tripify/services/api_service.dart';
 
-class SearchPage extends StatefulWidget {
-  static const String routeName = '/search_page';
-  const SearchPage({super.key});
+class SearchHotel extends StatefulWidget {
+  static const String routeName = '/search_hotel';
+  const SearchHotel({super.key});
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  State<SearchHotel> createState() => _SearchHotelState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchHotelState extends State<SearchHotel> {
   final FocusNode _searchFocusNode = FocusNode();
   final TextEditingController _searchController = TextEditingController();
 
   final StreamController<String> _streamController = StreamController<String>();
 
-  List<Places2> pd = [];
+  List<Hotels> hotel = [];
 
   bool _isEditingText = false;
 
@@ -37,9 +38,9 @@ class _SearchPageState extends State<SearchPage> {
     });
 
     _streamController.stream.listen((query) {
-      APIService.placeBySearch(query).then((value) {
+      APIService.hotelBySearch(query).then((value) {
         setState(() {
-          pd = value;
+          hotel = value;
           _isEditingText = false;
         });
       });
@@ -67,7 +68,7 @@ class _SearchPageState extends State<SearchPage> {
           },
           autofocus: true,
           decoration: const InputDecoration(
-            hintText: 'Search places',
+            hintText: 'Search hotels',
             border: InputBorder.none,
           ),
         ),
@@ -84,7 +85,7 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   const SizedBox(height: 16.0),
                   Text(
-                    'Search for a place',
+                    'Search for a hotel',
                     style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.grey[400],
@@ -93,7 +94,7 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
             )
-          : (pd.isEmpty)
+          : (hotel.isEmpty)
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -105,7 +106,7 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                       const SizedBox(height: 16.0),
                       Text(
-                        'No place found',
+                        'No hotel found',
                         style: TextStyle(
                           fontSize: 18.0,
                           color: Colors.grey[400],
@@ -115,12 +116,13 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 )
               : ListView.builder(
-                  itemCount: pd.length,
+                  itemCount: hotel.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, Place.routeName,
-                            arguments: [pd[index]]);
+                        Navigator.pushNamed(
+                                  context, HotelDetailsPage.routeName,
+                                  arguments: [hotel[index]]);
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -148,7 +150,7 @@ class _SearchPageState extends State<SearchPage> {
                               child: CachedNetworkImage(
                                 height: 60,
                                 width: 60,
-                                imageUrl: pd[index].images.first.secureUrl,
+                                imageUrl: hotel[index].images.first.secureUrl,
                                 placeholder: (context, url) => Image.memory(
                                   kTransparentImage,
                                   fit: BoxFit.cover,
@@ -172,7 +174,7 @@ class _SearchPageState extends State<SearchPage> {
                                       width: MediaQuery.of(context).size.width *
                                           .65,
                                       child: Text(
-                                        pd[index].name,
+                                        hotel[index].name,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -195,7 +197,7 @@ class _SearchPageState extends State<SearchPage> {
                                       width: MediaQuery.of(context).size.width *
                                           .6,
                                       child: Text(
-                                        pd[index].address.city,
+                                        hotel[index].address.city,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
                                             fontSize: 12,
@@ -217,13 +219,13 @@ class _SearchPageState extends State<SearchPage> {
                                     Row(
                                       children: [
                                         Text(
-                                          pd[index].ratings.toString(),
+                                          hotel[index].ratings.toString(),
                                           style: const TextStyle(
                                               fontSize: 12,
                                               color: Colors.black54),
                                         ),
                                         Text(
-                                          ' (${pd[index].reviews.length})',
+                                          ' (${hotel[index].reviews.length})',
                                           style: const TextStyle(
                                               fontSize: 9,
                                               color: Colors.black45),
@@ -238,9 +240,6 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                       ),
                     );
-                    // return ListTile(
-                    //   title: Text(pd[index].name),
-                    // );
                   },
                 ),
     );

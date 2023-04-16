@@ -7,6 +7,7 @@ import 'package:tripify/loader/loader_hotel_card.dart';
 import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/hotel_response_model.dart';
 import 'package:tripify/screens/home_services/hotel_details.dart';
+import 'package:tripify/screens/search_hotel.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/shared_service.dart';
 
@@ -76,7 +77,7 @@ class _HotelScreenState extends State<HotelScreen> {
             ),
             GestureDetector(
               onTap: () {
-                //Navigator.pushNamed(context, SearchPage.routeName);
+                Navigator.pushNamed(context, SearchHotel.routeName);
               },
               child: Container(
                 margin: const EdgeInsets.all(16),
@@ -180,7 +181,6 @@ class _HotelScreenState extends State<HotelScreen> {
               ),
             ),
 
-            // images hotel
             FutureBuilder(
               future: dataFuture,
               builder: (context, snapshot) {
@@ -223,7 +223,7 @@ class _HotelScreenState extends State<HotelScreen> {
                             onTap: () {
                               Navigator.pushNamed(
                                   context, HotelDetailsPage.routeName,
-                                  arguments: [hd.first]);
+                                  arguments: [hd[index]]);
                             },
                             child: Container(
                               width: 250,

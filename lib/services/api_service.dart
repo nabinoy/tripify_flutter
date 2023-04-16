@@ -170,9 +170,36 @@ class APIService {
       for (var i = 0; i < data.length; i++) {
         Places2 p2 = Places2.fromJson(data[i]);
         pd.add(p2);
-        print(pd[i].name);
       }
       return pd;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<List<Hotels>> hotelBySearch(String search) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {'search': search};
+    var url = Uri.https(Config.apiURL, Config.hotelAllAPI, queryParameters);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['hotels'];
+      List<Hotels> h = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Hotels h2 = Hotels.fromJson(data[i]);
+        h.add(h2);
+      }
+      return h;
     } else {
       throw Exception('Failed to load person details');
     }

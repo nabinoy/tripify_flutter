@@ -14,7 +14,7 @@ import 'package:tripify/screens/home_services/hotel.dart';
 import 'package:tripify/screens/home_services/tour_operator.dart';
 import 'package:tripify/screens/island.dart';
 import 'package:tripify/screens/location_weather.dart';
-import 'package:tripify/screens/search_page.dart';
+import 'package:tripify/screens/search_place.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/geocoding.dart';
@@ -31,6 +31,7 @@ List<IslandAll> ia = [];
 List<ServiceAll> sa = [];
 List<LatLng> islandCoords = [];
 List<Places2> pa = [];
+List<String> wishlistPlaceIdList = [];
 
 class HomeMain extends StatefulWidget {
   const HomeMain({super.key});
@@ -68,6 +69,8 @@ class _HomeMainState extends State<HomeMain> {
         APIService.islandAll().then((value) => {ia = value}),
         APIService.serviceAll().then((value) => {sa = value}),
         APIService.placeRecommendationByUser().then((value) => {pa = value}),
+        APIService.checkUserWishlist()
+                  .then((value) => {wishlistPlaceIdList.addAll(value)}),
         getCurrentLocation(),
         SharedService.getSharedLogin(),
       ]),
@@ -191,7 +194,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
               1.3,
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, SearchPage.routeName);
+                  Navigator.pushNamed(context, SearchPlace.routeName,arguments: [wishlistPlaceIdList]);
                 },
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 30),

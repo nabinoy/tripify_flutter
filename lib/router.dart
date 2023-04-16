@@ -15,7 +15,8 @@ import 'package:tripify/screens/onboard.dart';
 import 'package:tripify/screens/place.dart';
 import 'package:tripify/screens/map_webview.dart';
 import 'package:tripify/screens/review_all.dart';
-import 'package:tripify/screens/search_page.dart';
+import 'package:tripify/screens/search_hotel.dart';
+import 'package:tripify/screens/search_place.dart';
 import 'package:tripify/screens/signup.dart';
 import 'package:tripify/screens/weather_details.dart';
 import 'package:tripify/screens/welcome.dart';
@@ -76,8 +77,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case TourOperatorSceen.routeName:
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const TourOperatorSceen(),);
 
-    case SearchPage.routeName:
-      return MaterialPageRoute(settings : routeSettings,builder: (_) => const SearchPage(),);
+    case SearchPlace.routeName:
+      return MaterialPageRoute(settings : routeSettings,builder: (_) => const SearchPlace(),);
+
+      case SearchHotel.routeName:
+      return MaterialPageRoute(settings : routeSettings,builder: (_) => const SearchHotel(),);
 
     case HotelDetailsPage.routeName:
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const HotelDetailsPage(),);
