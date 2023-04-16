@@ -137,15 +137,15 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.location_pin,
                         size: 23,
-                        color: Colors.lightBlue,
+                        color: Colors.lightBlue[700],
                       ),
                       Text(
                         currentPlace,
-                        style: const TextStyle(
-                            color: Colors.lightBlue, fontSize: 14),
+                        style: TextStyle(
+                            color: Colors.lightBlue[700], fontSize: 14),
                       ),
                     ],
                   ),
@@ -196,7 +196,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 30),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(.1),
+                    color: Colors.lightBlue.shade200.withOpacity(0.3),
                     borderRadius: const BorderRadius.all(
                       Radius.circular(50),
                     ),

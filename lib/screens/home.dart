@@ -233,71 +233,76 @@ class _HomepageState extends State<Homepage> {
         onTap: _onItemTapped,
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
-              child: FutureBuilder(
-                future: SharedService.getSharedLogin(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return const DrawerItem();
-                  } else {
-                    return const LoadingScreen();
-                  }
-                },
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: ListTile(
-                title: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Icon(
-                        MdiIcons.weatherPartlyCloudy,
-                        color: Colors.grey[800],
-                        size: 30,
-                      ),
-                    ),
-                    const Text('Weather'),
-                  ],
+            Column(
+              children: [
+                DrawerHeader(
+                  child: FutureBuilder(
+                    future: SharedService.getSharedLogin(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return const DrawerItem();
+                      } else {
+                        return const LoadingScreen();
+                      }
+                    },
+                  ),
                 ),
-                onTap: () {
-                  HapticFeedback.mediumImpact();
-                  Navigator.pushNamed(
-                    context,
-                    WeatherDetails.routeName,
-                    arguments: ['Current', 'Location'],
-                  );
-                },
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: ListTile(
-                title: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Icon(
-                        MdiIcons.callMade,
-                        color: Colors.grey[800],
-                        size: 30,
-                      ),
+                Container(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Icon(
+                            MdiIcons.weatherPartlyCloudy,
+                            color: Colors.grey[800],
+                            size: 30,
+                          ),
+                        ),
+                        const Text('Weather'),
+                      ],
                     ),
-                    const Text('Helpline'),
-                  ],
+                    onTap: () {
+                      HapticFeedback.mediumImpact();
+                      Navigator.pushNamed(
+                        context,
+                        WeatherDetails.routeName,
+                        arguments: ['Current', 'Location'],
+                      );
+                    },
+                  ),
                 ),
-                onTap: () {
-                  HapticFeedback.mediumImpact();
-                  Navigator.pushNamed(
-                    context,
-                    Helpline.routeName,
-                  );
-                },
-              ),
+                Container(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Icon(
+                            MdiIcons.callMade,
+                            color: Colors.grey[800],
+                            size: 30,
+                          ),
+                        ),
+                        const Text('Helpline'),
+                      ],
+                    ),
+                    onTap: () {
+                      HapticFeedback.mediumImpact();
+                      Navigator.pushNamed(
+                        context,
+                        Helpline.routeName,
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
             Column(
               children: [

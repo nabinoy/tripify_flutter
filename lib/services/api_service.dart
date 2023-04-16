@@ -208,6 +208,35 @@ class APIService {
     }
   }
 
+  static Future<List<Hotels>> hotelById(String id) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {
+      'island': id,
+    };
+    var url = Uri.https(Config.apiURL, Config.hotelAllAPI, queryParameters);
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['hotels'];
+      List<Hotels> h = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Hotels h2 = Hotels.fromJson(data[i]);
+        h.add(h2);
+      }
+      return h;
+    } else {
+      throw Exception('Failed to load hotel by id details');
+    }
+  }
+
   static Future<List<Hotels>> hotelAll() async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
