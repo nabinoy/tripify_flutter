@@ -149,7 +149,7 @@ class _HotelScreenState extends State<HotelScreen> {
                           APIService.hotelAll().then((value) => {hd = value});
                       setState(() {});
                     } else {
-                      dataFuture = APIService.hotelById(ia[value - 1].sId)
+                      dataFuture = APIService.hotelByIslandId(ia[value - 1].sId)
                           .then((value) => {hd = value});
                       setState(() {});
                     }

@@ -3,6 +3,7 @@ import 'package:tripify/models/forgot_password_request_model.dart';
 import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/hotel_response_model.dart';
 import 'package:tripify/models/login_request_model.dart';
+import 'package:tripify/models/nearby_request_model.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/models/otp_request_model.dart';
 import 'package:tripify/models/review_rating_model.dart';
@@ -235,7 +236,34 @@ class APIService {
     }
   }
 
-  static Future<List<Hotels>> hotelById(String id) async {
+  static Future<List<Hotels>> nearbyHotel(NearbyModel model) async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+
+    var url = Uri.https(Config.apiURL, Config.hotelAllAPI);
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['hotels'];
+      List<Hotels> h = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Hotels h2 = Hotels.fromJson(data[i]);
+        h.add(h2);
+      }
+      return h;
+    } else {
+      throw Exception('Failed to load hotel by id details');
+    }
+  }
+
+  static Future<List<Hotels>> hotelByIslandId(String id) async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
     };
