@@ -115,7 +115,6 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 )
               : ListView.builder(
-                  //shrinkWrap: true,
                   itemCount: pd.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
@@ -140,7 +139,7 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                         padding: const EdgeInsets.all(8),
                         margin: const EdgeInsets.only(
-                            top: 30.0, left: 12.0, bottom: 5.0, right: 12.0),
+                            top: 12.0, left: 12.0, right: 12.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -178,6 +177,7 @@ class _SearchPageState extends State<SearchPage> {
                                       ),
                                     ),
                                     const Icon(Icons.arrow_forward_outlined,
+                                        size: 18,
                                         color: Color.fromARGB(255, 0, 0, 0))
                                   ],
                                 ),

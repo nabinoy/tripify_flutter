@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tripify/models/tour_operator_response_model.dart';
 import 'package:tripify/services/api_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TourOperatorSceen extends StatefulWidget {
   static const String routeName = '/tour_operator';
@@ -12,6 +13,27 @@ class TourOperatorSceen extends StatefulWidget {
 
 class _TourOperatorSceenState extends State<TourOperatorSceen> {
   List<TourOperators> tourOp = [];
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
+
+  void _launchEmail(String email) async {
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: email,
+    );
+    await launchUrl(params);
+  }
+
+  void _launchWeb(String website) async {
+    await launchUrl(Uri.parse(website), mode: LaunchMode.externalApplication);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,7 +144,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                 Text(
                                   tourOp.first.contact.name,
                                   style: TextStyle(
-                                    color: Colors.grey[700],
+                                    color: Colors.grey[800],
                                     fontSize: 14,
                                   ),
                                 ),
@@ -137,7 +159,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                 Text(
                                   tourOp.first.contact.phone,
                                   style: TextStyle(
-                                    color: Colors.grey[700],
+                                    color: Colors.grey[800],
                                     fontSize: 14,
                                   ),
                                 ),
@@ -152,7 +174,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                 Text(
                                   tourOp.first.contact.email,
                                   style: TextStyle(
-                                    color: Colors.grey[700],
+                                    color: Colors.grey[800],
                                     fontSize: 14,
                                   ),
                                 ),
@@ -164,7 +186,9 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                               children: [
                                 MaterialButton(
                                   elevation: 0,
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _makePhoneCall(tourOp.first.contact.phone);
+                                  },
                                   color: Colors.green[600],
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50)),
@@ -190,7 +214,9 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                 ),
                                 MaterialButton(
                                   elevation: 0,
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _launchEmail(tourOp.first.contact.email);
+                                  },
                                   color: Colors.deepOrange[400],
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50)),
@@ -216,7 +242,10 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                 ),
                                 MaterialButton(
                                   elevation: 0,
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _launchWeb(
+                                        tourOp.first.tariffDocument.secureUrl);
+                                  },
                                   color: Colors.lightBlue[600],
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50)),
