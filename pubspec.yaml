@@ -111,17 +111,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/onboard/
-    # - assets/onboard/onboard_image1.json
-    # - assets/onboard/onboard_image2.json
-    # - assets/onboard/onboard_image3.json
     - assets/lottie/
-    # - assets/lottie/forgot_password.json
-    # - assets/lottie/chatbot.json
     - assets/images/
-    # - assets/images/background.png
-    # - assets/images/illustration.png
-    # - assets/images/chatbot_profile.png
-  #   - images/a_dot_ham.jpeg
+    - assets/json_data/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

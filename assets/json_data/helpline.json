@@ -1,0 +1,14 @@
+{
+    "numbers": [
+        {
+            "icon": "",
+            "name": "Example",
+            "phone": "+919933212345"
+        },
+        {
+            "icon": "",
+            "name": "Example2",
+            "phone": "+919933123456"
+        }
+    ]
+}

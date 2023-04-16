@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/models/tour_operator_response_model.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -76,8 +78,13 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                         backgroundColor: Colors.transparent,
                         child: ClipOval(
                           child: SizedBox(
-                            child: Image.network(
-                              tourOp.first.image.secureUrl,
+                            child: CachedNetworkImage(
+                              imageUrl: tourOp.first.image.secureUrl,
+                              placeholder: (context, url) => Image.memory(
+                                kTransparentImage,
+                                fit: BoxFit.cover,
+                              ),
+                              fadeInDuration: const Duration(milliseconds: 200),
                               fit: BoxFit.cover,
                             ),
                           ),
