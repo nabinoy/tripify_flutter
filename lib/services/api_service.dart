@@ -9,8 +9,8 @@ import 'package:tripify/models/review_rating_model.dart';
 import 'package:tripify/models/signup_request_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:tripify/constants/config.dart';
+import 'package:tripify/models/tour_operator_response_model.dart';
 import 'package:tripify/models/user_review_model.dart';
-import 'package:tripify/screens/home_pages/wishlist.dart';
 import 'shared_service.dart';
 
 class APIService {
@@ -233,6 +233,36 @@ class APIService {
         h.add(h2);
       }
       return h;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<List<TourOperators>> tourOperatorAll() async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    var url = Uri.https(
+      Config.apiURL,
+      Config.tourOperatorAllAPI,
+    );
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['tourOperators'];
+      List<TourOperators> t = [];
+
+      for (var i = 0; i < data.length; i++) {
+        TourOperators t2 = TourOperators.fromJson(data[i]);
+        t.add(t2);
+      }
+      return t;
     } else {
       throw Exception('Failed to load person details');
     }
