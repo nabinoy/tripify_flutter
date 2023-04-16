@@ -9,6 +9,11 @@
             "icon": "",
             "name": "Example2",
             "phone": "+919933123456"
+        },
+        {
+            "icon": "",
+            "name": "Example3",
+            "phone": "+919933123456"
         }
     ]
 }
