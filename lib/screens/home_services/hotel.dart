@@ -6,6 +6,7 @@ import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/loader/loader_hotel_card.dart';
 import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/hotel_response_model.dart';
+import 'package:tripify/models/nearby_request_model.dart';
 import 'package:tripify/screens/home_services/hotel_details.dart';
 import 'package:tripify/screens/search_hotel.dart';
 import 'package:tripify/services/api_service.dart';
@@ -21,13 +22,19 @@ class HotelScreen extends StatefulWidget {
 
 class _HotelScreenState extends State<HotelScreen> {
   List<Hotels> hd = [];
+  List<Hotels> nearbyHd = [];
   List<IslandAll> ia = [];
   late Future dataFuture;
+  late Future dataNearby;
 
   @override
   void initState() {
     super.initState();
+    NearbyModel model =
+        NearbyModel(lat: '11.6762', long: '92.7468', maxRad: '5000');
     dataFuture = APIService.hotelAll().then((value) => {hd = value});
+    dataNearby =
+        APIService.nearbyHotel(model).then((value) => {nearbyHd = value});
   }
 
   @override
@@ -366,7 +373,6 @@ class _HotelScreenState extends State<HotelScreen> {
               margin: const EdgeInsets.only(top: 10, right: 20, left: 20),
               width: double.infinity,
               height: 50,
-              // color: Colors.black,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
@@ -387,290 +393,158 @@ class _HotelScreenState extends State<HotelScreen> {
               ),
             ),
 
-            // image list tile
-            // Container(
-            //   margin: const EdgeInsets.only(bottom: 20),
-            //   child: ListTile(
-            //     title: const Text(
-            //       'Orchad House',
-            //       style: TextStyle(
-            //         fontWeight: FontWeight.w500,
-            //         fontSize: 16,
-            //       ),
-            //     ),
-            //     subtitle: Column(
-            //       mainAxisAlignment: MainAxisAlignment.start,
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Padding(
-            //           padding: const EdgeInsets.symmetric(vertical: 4),
-            //           child: Text(
-            //             '₹2,500 / Day',
-            //             style: TextStyle(
-            //               fontSize: 13,
-            //               color: Colors.lightBlue.withOpacity(0.7),
-            //             ),
-            //           ),
-            //         ),
-            //         Row(
-            //           // mainAxisAlignment: MainAxisAlignment.,
-            //           children: [
-            //             Row(
-            //               children: const [
-            //                 Icon(Icons.bed),
-            //                 Padding(
-            //                   padding: EdgeInsets.only(left: 5),
-            //                   child: Text('6 Bedroom'),
-            //                 ),
-            //               ],
-            //             ),
-            //             Container(
-            //               margin: const EdgeInsets.only(left: 10),
-            //               child: Row(
-            //                 children: const [
-            //                   Icon(Icons.bathroom),
-            //                   Padding(
-            //                     padding: EdgeInsets.only(left: 5),
-            //                     child: Text('3 Bathroom'),
-            //                   ),
-            //                 ],
-            //               ),
-            //             ),
-            //           ],
-            //         )
-            //       ],
-            //     ),
-            //     isThreeLine: true,
-            //     leading: Container(
-            //       height: 90,
-            //       width: 90,
-            //       decoration: BoxDecoration(
-            //         color: Colors.lightBlue,
-            //         borderRadius: BorderRadius.circular(10),
-            //         image: DecorationImage(
-            //           colorFilter: ColorFilter.mode(
-            //             Colors.black.withOpacity(0.2),
-            //             BlendMode.darken,
-            //           ),
-            //           fit: BoxFit.cover,
-            //           image: NetworkImage(hd.first.images.first.secureUrl),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-
-            Container(
-              margin: const EdgeInsets.only(bottom: 20),
-              child: ListTile(
-                title: const Text(
-                  'Open House',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20,
-                  ),
-                ),
-                subtitle: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        'Rp. 2.500.000.000 / Year',
-                        style: TextStyle(
-                          color: Colors.lightBlue.withOpacity(0.7),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      // mainAxisAlignment: MainAxisAlignment.,
-                      children: [
-                        Row(
-                          children: const [
-                            Icon(Icons.bed),
-                            Padding(
-                              padding: EdgeInsets.only(left: 5),
-                              child: Text('6 Bedroom'),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 10),
-                          child: Row(
-                            children: const [
-                              Icon(Icons.bathroom),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5),
-                                child: Text('3 Bathroom'),
+            FutureBuilder(
+              future: dataNearby,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Column(
+                    //margin: const EdgeInsets.only(left: 20, top: 20),
+                    //width: 100,
+                    //height: 250,
+                    children: [
+                      Wrap(
+                        children: nearbyHd.map((widget) {
+                          return GestureDetector(
+                            // onTap: () {
+                            //   Navigator.pushNamed(
+                            //       context, HotelDetailsPage.routeName,
+                            //       arguments: [hd[index]]);
+                            // },
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 2.0,
+                                    blurRadius: 5.0,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                                color: Colors.white,
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                isThreeLine: true,
-                leading: Container(
-                  height: 200,
-                  width: 90,
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue,
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.2),
-                        BlendMode.darken,
-                      ),
-                      fit: BoxFit.cover,
-                      image: const AssetImage('assets/images/home-8.jpg'),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            Container(
-              margin: const EdgeInsets.only(bottom: 20),
-              child: ListTile(
-                title: const Text(
-                  'Majapahit House',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20,
-                  ),
-                ),
-                subtitle: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        'Rp. 2.500.000.000 / Year',
-                        style: TextStyle(
-                          color: Colors.lightBlue.withOpacity(0.7),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      // mainAxisAlignment: MainAxisAlignment.,
-                      children: [
-                        Row(
-                          children: const [
-                            Icon(Icons.bed),
-                            Padding(
-                              padding: EdgeInsets.only(left: 5),
-                              child: Text('6 Bedroom'),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 10),
-                          child: Row(
-                            children: const [
-                              Icon(Icons.bathroom),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5),
-                                child: Text('3 Bathroom'),
+                              width: double.infinity,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.all(12),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      child: CachedNetworkImage(
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                .25,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .25,
+                                        imageUrl: widget.images.first.secureUrl,
+                                        placeholder: (context, url) =>
+                                            Image.memory(
+                                          kTransparentImage,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        fadeInDuration:
+                                            const Duration(milliseconds: 200),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 6,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .55,
+                                        child: Text(
+                                          widget.name,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .55,
+                                        child: Text(widget.address.city,
+                                            style:
+                                                const TextStyle(fontSize: 12)),
+                                      ),
+                                      const SizedBox(
+                                        height: 3,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          MaterialButton(
+                                            elevation: 0,
+                                            onPressed: () {
+                                              // Navigator.pushNamed(
+                                              //     context, Place.routeName,
+                                              //     arguments: [
+                                              //       [pd[index]],
+                                              //       (wishlistPlaceIdList
+                                              //               .contains(
+                                              //                   pd[index].sId))
+                                              //           ? true
+                                              //           : false
+                                              //     ]);
+                                            },
+                                            color: Colors.lightBlue[600],
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50)),
+                                            child: Row(
+                                              children: const [
+                                                Text(
+                                                  'Visit',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                                SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Icon(
+                                                  Icons.arrow_forward_sharp,
+                                                  size: 16,
+                                                  color: Colors.white,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                isThreeLine: true,
-                leading: Container(
-                  height: 200,
-                  width: 90,
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue,
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.2),
-                        BlendMode.darken,
-                      ),
-                      fit: BoxFit.cover,
-                      image: const AssetImage('assets/images/home-6.jpg'),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            Container(
-              margin: const EdgeInsets.only(bottom: 20),
-              child: ListTile(
-                title: const Text(
-                  'Charis House',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20,
-                  ),
-                ),
-                subtitle: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        'Rp. 2.500.000.000 / Year',
-                        style: TextStyle(
-                          color: Colors.lightBlue.withOpacity(0.7),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      // mainAxisAlignment: MainAxisAlignment.,
-                      children: [
-                        Row(
-                          children: const [
-                            Icon(Icons.bed),
-                            Padding(
-                              padding: EdgeInsets.only(left: 5),
-                              child: Text('6 Bedroom'),
                             ),
-                          ],
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 10),
-                          child: Row(
-                            children: const [
-                              Icon(Icons.bathroom),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5),
-                                child: Text('3 Bathroom'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                isThreeLine: true,
-                leading: Container(
-                  height: 200,
-                  width: 90,
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue,
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.2),
-                        BlendMode.darken,
+                          );
+                        }).toList(),
                       ),
-                      fit: BoxFit.cover,
-                      image: const AssetImage('assets/images/home-7.jpg'),
-                    ),
-                  ),
-                ),
-              ),
+                    ],
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
             ),
           ],
         ));

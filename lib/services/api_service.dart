@@ -241,13 +241,12 @@ class APIService {
       'Content-Type': 'application/json',
     };
 
-    var url = Uri.https(Config.apiURL, Config.hotelAllAPI);
+    var url = Uri.https(Config.apiURL, Config.hotelNearbyAPI);
     var response = await client.post(
       url,
       headers: requestHeaders,
       body: jsonEncode(model.toJson()),
     );
-
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       data = data['hotels'];
