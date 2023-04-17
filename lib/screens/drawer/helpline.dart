@@ -14,7 +14,7 @@ class HelplineModel {
   factory HelplineModel.fromJson(Map<String, dynamic> json) {
     return HelplineModel(
       name: json['name'],
-      phone: json['price'],
+      phone: json['phone'],
     );
   }
 }
@@ -45,6 +45,11 @@ class _HelplineState extends State<Helpline> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: bgColor,
+          title: const Text(
+            'Helpline',
+            style: TextStyle(fontSize: 16),
+          ),
+          centerTitle: true,
           leading: IconButton(
             onPressed: () async {
               HapticFeedback.mediumImpact();
@@ -76,23 +81,13 @@ class _HelplineState extends State<Helpline> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(helpline[index].name),
-                  //subtitle: Text('\$${helpline[index].price.toStringAsFixed(2)}'),
+                  leading: const Icon(Icons.call),
+                  subtitle: Text(helpline[index].phone),
+                  trailing: const Icon(Icons.arrow_forward_ios),
                 );
               },
             );
           },
-        )
-        // SingleChildScrollView(
-        //   child: Row(children: [
-        //     const Text('Call here'),
-        //     ElevatedButton(
-        //       onPressed: () {
-        //         _makePhoneCall('+919531839056');
-        //       },
-        //       child: const Text('Call'),
-        //     )
-        //   ]),
-        // ),
-        );
+        ));
   }
 }

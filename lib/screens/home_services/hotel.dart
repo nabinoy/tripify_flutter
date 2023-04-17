@@ -57,7 +57,6 @@ class _HotelScreenState extends State<HotelScreen> {
         ),
         body: ListView(
           children: [
-            // header text
             Container(
               padding: const EdgeInsets.only(
                   top: 10, left: 16, right: 16, bottom: 8),
@@ -67,7 +66,6 @@ class _HotelScreenState extends State<HotelScreen> {
                 children: [
                   Text(
                     'Hello, ${SharedService.name.split(' ').firstWhere((name) => name.length > 2)}',
-                    //' ${SharedService.name}',
                     style:
                         const TextStyle(fontSize: 16.0, color: Colors.black87),
                   ),
@@ -524,7 +522,8 @@ class _HotelScreenState extends State<HotelScreen> {
                                           Text(
                                               ' (${widget.reviews.length} reviews)',
                                               style: const TextStyle(
-                                                  fontSize: 11)),
+                                                  fontSize: 11,
+                                                  color: Colors.black54)),
                                           const SizedBox(
                                             width: 10,
                                           ),
