@@ -10,6 +10,7 @@ import 'package:tripify/loader/loader_review_all.dart';
 import 'package:tripify/loader/loader_review_user.dart';
 import 'package:tripify/models/hotel_response_model.dart';
 import 'package:tripify/models/review_rating_model.dart';
+import 'package:tripify/models/user_hotel_review_model.dart';
 import 'package:tripify/models/user_review_model.dart';
 import 'package:tripify/models/weather_model.dart';
 import 'package:tripify/screens/review_all.dart';
@@ -20,7 +21,7 @@ import 'package:tripify/widget/direction_map.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:math' as math;
 
-late List<Hotels> currentHotel;
+late Hotels currentHotel;
 
 class HotelDetailsPage extends StatefulWidget {
   static const String routeName = '/hotel_details';
@@ -68,6 +69,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
     Hotels hotel = arguments[0];
     weatherLatAPI = hotel.location.coordinates[1].toString();
     weatherLongAPI = hotel.location.coordinates[0].toString();
+    currentHotel = hotel;
     late ReviewRatings r;
     double userRating = 0;
     return Scaffold(
@@ -1345,8 +1347,7 @@ class _UserReviewWidgetState extends State<UserReviewWidget> {
                           builder: (context) => EditReviewDialog(widget.ru),
                         );
                       } else if (value == 'delete') {
-                        APIService.deleteUserHotelReview(
-                            currentHotel.first.sId);
+                        APIService.deleteUserHotelReview(currentHotel.sId);
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                           content: Text(
@@ -1518,8 +1519,8 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
               currentFocus.unfocus();
             }
             if (_formKey.currentState!.validate()) {
-              UserReviewModel model = UserReviewModel(
-                  placeId: currentHotel.first.sId,
+              UserHotelReviewModel model = UserHotelReviewModel(
+                  hotelId: currentHotel.sId,
                   rating: rating.toInt(),
                   comment: _controller.text);
               APIService.userHotelReview(model).then(
@@ -1704,8 +1705,8 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
             }
             if (_formKey.currentState!.validate()) {
               isLoading = true;
-              UserReviewModel model = UserReviewModel(
-                placeId: currentHotel.first.sId,
+              UserHotelReviewModel model = UserHotelReviewModel(
+                hotelId: currentHotel.sId,
                 rating: userRating.toInt(),
                 comment: (_nameNotifier.value == '')
                     ? widget.ru.comment

@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:georange/georange.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
@@ -21,6 +23,7 @@ class HotelScreen extends StatefulWidget {
 }
 
 class _HotelScreenState extends State<HotelScreen> {
+  GeoRange georange = GeoRange();
   List<Hotels> hd = [];
   List<Hotels> nearbyHd = [];
   List<IslandAll> ia = [];
@@ -398,21 +401,27 @@ class _HotelScreenState extends State<HotelScreen> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Column(
-                    //margin: const EdgeInsets.only(left: 20, top: 20),
                     //width: 100,
                     //height: 250,
                     children: [
                       Wrap(
                         children: nearbyHd.map((widget) {
+                          Point point1 =
+                              Point(latitude: 11.7762, longitude: 92.7468);
+                          Point point2 = Point(
+                              latitude: widget.location.coordinates[1],
+                              longitude: widget.location.coordinates[0]);
+
+                          var distance = georange.distance(point1, point2);
                           return GestureDetector(
-                            // onTap: () {
-                            //   Navigator.pushNamed(
-                            //       context, HotelDetailsPage.routeName,
-                            //       arguments: [hd[index]]);
-                            // },
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, HotelDetailsPage.routeName,
+                                  arguments: [widget]);
+                            },
                             child: Container(
                               margin: const EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 10),
+                                  vertical: 8.0, horizontal: 16),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20.0),
                                 boxShadow: [
@@ -488,48 +497,70 @@ class _HotelScreenState extends State<HotelScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          MaterialButton(
-                                            elevation: 0,
-                                            onPressed: () {
-                                              // Navigator.pushNamed(
-                                              //     context, Place.routeName,
-                                              //     arguments: [
-                                              //       [pd[index]],
-                                              //       (wishlistPlaceIdList
-                                              //               .contains(
-                                              //                   pd[index].sId))
-                                              //           ? true
-                                              //           : false
-                                              //     ]);
-                                            },
-                                            color: Colors.lightBlue[600],
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(50)),
-                                            child: Row(
-                                              children: const [
-                                                Text(
-                                                  'Visit',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                                SizedBox(
-                                                  width: 4,
-                                                ),
-                                                Icon(
-                                                  Icons.arrow_forward_sharp,
-                                                  size: 16,
-                                                  color: Colors.white,
-                                                )
-                                              ],
+                                          RatingBar.builder(
+                                            initialRating:
+                                                widget.ratings.toDouble(),
+                                            ignoreGestures: true,
+                                            minRating: 1,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: true,
+                                            itemCount: 5,
+                                            itemSize: 16,
+                                            itemBuilder: (context, _) =>
+                                                const Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
                                             ),
+                                            onRatingUpdate: (rating) {},
                                           ),
+                                          const SizedBox(
+                                            width: 4,
+                                          ),
+                                          Text(
+                                            widget.ratings.toString(),
+                                            style:
+                                                const TextStyle(fontSize: 13),
+                                          ),
+                                          Text(
+                                              ' (${widget.reviews.length} reviews)',
+                                              style: const TextStyle(
+                                                  fontSize: 11)),
                                           const SizedBox(
                                             width: 10,
                                           ),
                                         ],
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 3, horizontal: 8),
+                                        decoration: BoxDecoration(
+                                          color: Colors.lightBlue[700],
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.location_on,
+                                              size: 15,
+                                              color: Colors.white,
+                                            ),
+                                            const SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text(
+                                              (distance >= 1000.0)
+                                                  ? '${(distance / 1000).toStringAsFixed(1)}km away'
+                                                  : '${distance.toStringAsFixed(0)}m away',
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.white),
+                                            ),
+                                          ],
+                                        ),
                                       )
                                     ],
                                   ),

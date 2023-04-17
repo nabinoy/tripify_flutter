@@ -11,6 +11,7 @@ import 'package:tripify/models/signup_request_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:tripify/constants/config.dart';
 import 'package:tripify/models/tour_operator_response_model.dart';
+import 'package:tripify/models/user_hotel_review_model.dart';
 import 'package:tripify/models/user_review_model.dart';
 import 'shared_service.dart';
 
@@ -96,7 +97,7 @@ class APIService {
     }
   }
 
-  static Future<String> userHotelReview(UserReviewModel model) async {
+  static Future<String> userHotelReview(UserHotelReviewModel model) async {
     var userToken = '';
     await SharedService.getSecureUserToken().then((String? data) {
       String? token = data.toString();
