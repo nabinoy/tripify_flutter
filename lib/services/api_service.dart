@@ -237,6 +237,32 @@ class APIService {
     }
   }
 
+  static Future<List<Places2>> nearbyPlace(NearbyModel model) async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+
+    var url = Uri.https(Config.apiURL, Config.placeNearbyAPI);
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['places'];
+      List<Places2> pd = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Places2 p2 = Places2.fromJson(data[i]);
+        pd.add(p2);
+      }
+      return pd;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
   static Future<List<Hotels>> nearbyHotel(NearbyModel model) async {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',

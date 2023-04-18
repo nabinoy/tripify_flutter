@@ -18,6 +18,7 @@ class Config {
   static const placeRecommendationByUserAPI = "/api/v1/user/recomendPlaces";
   static const hotelAllAPI = "/api/v1/hotels/all";
   static const hotelNearbyAPI = "/api/v1/hotels/nearby";
+  static const placeNearbyAPI = "/api/v1/places/nearby";
   static const tourOperatorAllAPI = "/api/v1/touropertor/all";
   static const forgotPasswordAPI = '/api/v1/forgotPassword';
   static const regenerateOTPAPI = '/api/v1/regenerate/otp';

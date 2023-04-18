@@ -2,18 +2,23 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:georange/georange.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/loader/loader_home_main.dart';
 import 'package:tripify/models/home_main_model.dart';
+import 'package:tripify/models/nearby_request_model.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/screens/category.dart';
 import 'package:tripify/screens/home_services/hotel.dart';
 import 'package:tripify/screens/home_services/tour_operator.dart';
 import 'package:tripify/screens/island.dart';
 import 'package:tripify/screens/location_weather.dart';
+import 'package:tripify/screens/map_webview.dart';
 import 'package:tripify/screens/search_place.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
@@ -32,6 +37,7 @@ List<ServiceAll> sa = [];
 List<LatLng> islandCoords = [];
 List<Places2> pa = [];
 List<String> wishlistPlaceIdList = [];
+List<Places2> nearbyPd = [];
 
 class HomeMain extends StatefulWidget {
   const HomeMain({super.key});
@@ -56,6 +62,10 @@ class _HomeMainState extends State<HomeMain> {
 
   @override
   Widget build(BuildContext context) {
+    NearbyModel model = NearbyModel(
+        lat: currentLocation.latitude!.toString(),
+        long: currentLocation.longitude!.toString(),
+        maxRad: '5000');
     if (currentHour < 12) {
       greet = 'Good morning,';
     } else if (currentHour < 17) {
@@ -69,8 +79,9 @@ class _HomeMainState extends State<HomeMain> {
         APIService.islandAll().then((value) => {ia = value}),
         APIService.serviceAll().then((value) => {sa = value}),
         APIService.placeRecommendationByUser().then((value) => {pa = value}),
+        APIService.nearbyPlace(model).then((value) => {nearbyPd = value}),
         APIService.checkUserWishlist()
-                  .then((value) => {wishlistPlaceIdList.addAll(value)}),
+            .then((value) => {wishlistPlaceIdList.addAll(value)}),
         getCurrentLocation(),
         SharedService.getSharedLogin(),
       ]),
@@ -94,11 +105,14 @@ class HomeMainScreen extends StatefulWidget {
 }
 
 class _HomeMainScreenState extends State<HomeMainScreen> {
+  GeoRange georange = GeoRange();
+
   @override
   void initState() {
     super.initState();
     getCurrentLocation();
     SharedService.getSharedLogin();
+
     locationSubscription = location.onLocationChanged.listen((value) {
       setState(() {
         getPlaceNameFromCoordinate(
@@ -194,7 +208,8 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
               1.3,
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, SearchPlace.routeName,arguments: [wishlistPlaceIdList]);
+                  Navigator.pushNamed(context, SearchPlace.routeName,
+                      arguments: [wishlistPlaceIdList]);
                 },
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 30),
@@ -405,7 +420,236 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                   ],
                 )),
             FadeAnimation(
-              1.8,
+                1.9,
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: const Text(
+                        'Nearby place',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    (nearbyPd.isEmpty)
+                        ? Container(
+                            padding: const EdgeInsets.symmetric(vertical: 60),
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  MdiIcons.alertCircleOutline,
+                                  size: 58,
+                                  color: Theme.of(context).disabledColor,
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'No places found!',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).disabledColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              Wrap(
+                                children: nearbyPd.map((widget) {
+                                  Point point1 = Point(
+                                      latitude: currentLocation.latitude!,
+                                      longitude: currentLocation.longitude!);
+                                  Point point2 = Point(
+                                      latitude: widget.location.coordinates[1],
+                                      longitude:
+                                          widget.location.coordinates[0]);
+
+                                  var distance =
+                                      georange.distance(point1, point2);
+                                  return GestureDetector(
+                                    // onTap: () {
+                                    //   Navigator.pushNamed(
+                                    //       context, HotelDetailsPage.routeName,
+                                    //       arguments: [widget]);
+                                    // },
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                        vertical: 8.0,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.3),
+                                            spreadRadius: 2.0,
+                                            blurRadius: 5.0,
+                                            offset: const Offset(0, 3),
+                                          ),
+                                        ],
+                                        color: Colors.white,
+                                      ),
+                                      width: double.infinity,
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.all(12),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              child: CachedNetworkImage(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .25,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .25,
+                                                imageUrl: widget
+                                                    .images.first.secureUrl,
+                                                placeholder: (context, url) =>
+                                                    Image.memory(
+                                                  kTransparentImage,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                                fadeInDuration: const Duration(
+                                                    milliseconds: 200),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 6,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .55,
+                                                child: Text(
+                                                  widget.name,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .55,
+                                                child: Text(widget.address.city,
+                                                    style: const TextStyle(
+                                                        fontSize: 12)),
+                                              ),
+                                              const SizedBox(
+                                                height: 3,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  RatingBar.builder(
+                                                    initialRating: widget
+                                                        .ratings
+                                                        .toDouble(),
+                                                    ignoreGestures: true,
+                                                    minRating: 1,
+                                                    direction: Axis.horizontal,
+                                                    allowHalfRating: true,
+                                                    itemCount: 5,
+                                                    itemSize: 16,
+                                                    itemBuilder: (context, _) =>
+                                                        const Icon(
+                                                      Icons.star,
+                                                      color: Colors.amber,
+                                                    ),
+                                                    onRatingUpdate: (rating) {},
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 4,
+                                                  ),
+                                                  Text(
+                                                    widget.ratings.toString(),
+                                                    style: const TextStyle(
+                                                        fontSize: 13),
+                                                  ),
+                                                  Text(
+                                                      ' (${widget.reviews.length} reviews)',
+                                                      style: const TextStyle(
+                                                          fontSize: 11,
+                                                          color:
+                                                              Colors.black54)),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 3,
+                                                        horizontal: 8),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.lightBlue[700],
+                                                  borderRadius:
+                                                      BorderRadius.circular(40),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.location_on,
+                                                      size: 15,
+                                                      color: Colors.white,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 4,
+                                                    ),
+                                                    Text(
+                                                      '${distance.toStringAsFixed(1)}km away',
+                                                      style: const TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          )
+                  ],
+                )),
+            FadeAnimation(
+              2.0,
               Container(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: const Text(
@@ -441,6 +685,9 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                         if (index == 1) {
                           Navigator.pushNamed(
                               context, TourOperatorSceen.routeName);
+                        }
+                        if (index == 2) {
+                          Navigator.pushNamed(context, MapWebView.routeName);
                         }
                         // Navigator.pushNamed(context, HotelScreen.routeName,
                         //     arguments: c);
