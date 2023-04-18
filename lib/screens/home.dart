@@ -285,7 +285,7 @@ class _HomepageState extends State<Homepage> {
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: Icon(
-                            MdiIcons.callMade,
+                            Icons.call,
                             color: Colors.grey[800],
                             size: 30,
                           ),

@@ -79,12 +79,77 @@ class _HelplineState extends State<Helpline> {
             return ListView.builder(
               itemCount: helpline.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(helpline[index].name),
-                  leading: const Icon(Icons.call),
-                  subtitle: Text(helpline[index].phone),
-                  trailing: const Icon(Icons.arrow_forward_ios),
+                return Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.call,
+                            size: 27,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * .5,
+                                child: Text(
+                                  helpline[index].name,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              Text(helpline[index].phone)
+                            ],
+                          ),
+                        ],
+                      ),
+                      MaterialButton(
+                        elevation: 0,
+                        onPressed: () {
+                          _makePhoneCall(helpline[index].phone);
+                        },
+                        color: Colors.green[600],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Row(
+                          children: const [
+                            Icon(
+                              Icons.call,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              'Call',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 );
+                // return ListTile(
+                //   title: Text(helpline[index].name),
+                //   leading: const Icon(Icons.call),
+                //   subtitle: Text(helpline[index].phone),
+                //   trailing: const Icon(Icons.arrow_forward_ios),
+                // );
               },
             );
           },
