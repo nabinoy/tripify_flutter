@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:random_avatar/random_avatar.dart';
+import 'package:tripify/services/shared_service.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -10,103 +11,107 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   @override
+  void initState() {
+    super.initState();
+    SharedService.getSharedLogin();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
           SizedBox(
-            height: 115,
-            width: 115,
-            child: Stack(
-              fit: StackFit.expand,
-              clipBehavior: Clip.none,
-              children: [
-                randomAvatar('SharedService.name', height: 70, width: 70),
-                Positioned(
-                  right: -16,
-                  bottom: 0,
-                  child: SizedBox(
-                    height: 46,
-                    width: 46,
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            side: const BorderSide(color: Colors.white),
-                          ),
-                          backgroundColor: const Color(0xFFF5F6F9),
-                        ),
-                        onPressed: () {},
-                        child: const Icon(Icons.camera_outlined)),
-                  ),
-                )
-              ],
+            height: 90,
+            width: 90,
+            child: randomAvatar(SharedService.name, height: 70, width: 70),
+          ),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              SharedService.name,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 18),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              SharedService.email,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Color.fromARGB(255, 100, 100, 100)),
             ),
           ),
           const SizedBox(height: 20),
-          ProfileMenu(
-            text: "My Account",
-            icon: "assets/icons/User Icon.svg",
-            press: () => {},
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: TextButton(
+              style: TextButton.styleFrom(
+                  padding: const EdgeInsets.all(18),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50)),
+                  backgroundColor: const Color.fromARGB(255, 240, 240, 240),
+                  foregroundColor: const Color.fromARGB(194, 0, 0, 0)),
+              onPressed: () {},
+              child: Row(
+                children: const [
+                  Icon(Icons.person),
+                  SizedBox(width: 20),
+                  Expanded(child: Text('Edit name')),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
+                  ),
+                ],
+              ),
+            ),
           ),
-          ProfileMenu(
-            text: "Notifications",
-            icon: "assets/icons/Bell.svg",
-            press: () {},
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: TextButton(
+              style: TextButton.styleFrom(
+                  padding: const EdgeInsets.all(18),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50)),
+                  backgroundColor: const Color.fromARGB(255, 240, 240, 240),
+                  foregroundColor: const Color.fromARGB(194, 0, 0, 0)),
+              onPressed: () {},
+              child: Row(
+                children: const [
+                  Icon(Icons.lock_reset_outlined),
+                  SizedBox(width: 20),
+                  Expanded(child: Text('Change password')),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
+                  ),
+                ],
+              ),
+            ),
           ),
-          ProfileMenu(
-            text: "Settings",
-            icon: "assets/icons/Settings.svg",
-            press: () {},
-          ),
-          ProfileMenu(
-            text: "Help Center",
-            icon: "assets/icons/Question mark.svg",
-            press: () {},
-          ),
-          ProfileMenu(
-            text: "Log Out",
-            icon: "assets/icons/Log out.svg",
-            press: () {},
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: TextButton(
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(18),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)),
+                backgroundColor: const Color.fromARGB(255, 240, 240, 240),
+                foregroundColor: const Color.fromARGB(194, 0, 0, 0),
+              ),
+              onPressed: () {},
+              child: Row(
+                children: const [
+                  Icon(Icons.logout),
+                  SizedBox(width: 20),
+                  Expanded(child: Text('Log out')),
+                ],
+              ),
+            ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class ProfileMenu extends StatelessWidget {
-  const ProfileMenu({
-    Key? key,
-    required this.text,
-    required this.icon,
-    this.press,
-  }) : super(key: key);
-
-  final String text, icon;
-  final VoidCallback? press;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: TextButton(
-        style: TextButton.styleFrom(
-          padding: const EdgeInsets.all(20),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          backgroundColor: const Color(0xFFF5F6F9),
-        ),
-        onPressed: press,
-        child: Row(
-          children: [
-            const Icon(Icons.search),
-            const SizedBox(width: 20),
-            Expanded(child: Text(text)),
-            const Icon(Icons.arrow_forward_ios),
-          ],
-        ),
       ),
     );
   }
