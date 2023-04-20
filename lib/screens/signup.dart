@@ -1,8 +1,10 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:tripify/animation/FadeAnimation.dart';
+import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/signup_request_model.dart';
 import 'package:tripify/screens/otp_form.dart';
 import 'package:tripify/screens/login.dart';
@@ -230,7 +232,9 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                         specialCharCount: 1,
                         width: 400,
                         height: 140,
-                        onSuccess: () {},
+                        onSuccess: () {
+                          isVisiblepw = false;
+                        },
                       ),
                     ),
                   ),
@@ -316,27 +320,63 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                                   setState(() {
                                     isApiCallProcess = false;
                                   });
+                                  if (response['notVerified'] ==
+                                      true) {
+                                        isLoading = false;
+                                    final snackBar = SnackBar(
+                                      width: double.infinity,
+                                      dismissDirection: DismissDirection.down,
+                                      elevation: 0,
+                                      behavior: SnackBarBehavior.floating,
+                                      backgroundColor: Colors.transparent,
+                                      content: DefaultTextStyle(
+                                        style: const TextStyle(
+                                          fontFamily: fontRegular,
+                                        ),
+                                        child: AwesomeSnackbarContent(
+                                          title: 'Warning!',
+                                          message: 'User with $email is already in our database but it is not verified. Please verify this email.',
+                                          contentType: ContentType.warning,
+                                        ),
+                                      ),
+                                    );
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(snackBar);
+                                    Navigator.pushNamed(
+                                        context, OtpForm.routeName,
+                                        arguments: email);
+                                  }
 
                                   if (response['success'].toString() ==
                                       'true') {
-                                    isLoading = false;
                                     Navigator.pushNamed(
                                         context, OtpForm.routeName,
                                         arguments: email);
                                   } else {
                                     isLoading = false;
+                                    final snackBar = SnackBar(
+                                      width: double.infinity,
+                                      dismissDirection: DismissDirection.down,
+                                      elevation: 0,
+                                      behavior: SnackBarBehavior.floating,
+                                      backgroundColor: Colors.transparent,
+                                      content: DefaultTextStyle(
+                                        style: const TextStyle(
+                                          fontFamily: fontRegular,
+                                        ),
+                                        child: AwesomeSnackbarContent(
+                                          title: 'Warning!',
+                                          message: response['message'],
+                                          contentType: ContentType.warning,
+                                        ),
+                                      ),
+                                    );
+                                    // ignore: use_build_context_synchronously
                                     ScaffoldMessenger.of(context)
-                                        .showSnackBar(const SnackBar(
-                                      content: Text(
-                                        'Error! Please try again!',
-                                        style: TextStyle(fontSize: 14),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 3,
-                                      ),
-                                      backgroundColor: Colors.red,
-                                    ));
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(snackBar);
                                   }
                                 },
                               );

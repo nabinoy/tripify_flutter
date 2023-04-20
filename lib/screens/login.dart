@@ -249,7 +249,6 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                                     isApiCallProcess = false;
                                   });
                                   if (response) {
-                                    isLoading = false;
                                     SharedService.setSharedHomeAfter(true);
                                     Navigator.pushNamedAndRemoveUntil(
                                       context,

@@ -328,7 +328,7 @@ class _HomepageState extends State<Homepage> {
                       SharedService.setSharedLogOut();
                       Navigator.pushReplacementNamed(
                         context,
-                        Welcome.routeName,
+                        Home.routeName,
                       );
                     },
                   ),

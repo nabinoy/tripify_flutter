@@ -64,9 +64,7 @@ class APIService {
       body: jsonEncode(model.toJson()),
     );
     final data = jsonDecode(response.body);
-    if (response.statusCode == 200) {
-      return data;
-    }
+    return data;
   }
 
   static Future<dynamic> updateName(
@@ -95,11 +93,45 @@ class APIService {
       body: jsonEncode(model.toJson()),
     );
 
-    print(response.statusCode);
     var data = jsonDecode(response.body);
     if (response.statusCode == 200) {
       return data;
+    } else {
+      throw Exception('Failed to load details');
     }
+  }
+
+  static Future<dynamic> updatePassword(
+    UpdatePasswordModel model,
+  ) async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    var url = Uri.https(
+      Config.apiURL,
+      Config.updatePasswordAPI,
+    );
+
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+
+    var data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      SharedService.setSharedLogin(data);
+    }
+    return data;
   }
 
   static Future<String> userReview(UserReviewModel model) async {

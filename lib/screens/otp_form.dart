@@ -110,11 +110,6 @@ class _OtpFormState extends State<OtpForm> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Image.asset(
-              //   'assets/img1.png',
-              //   width: 150,
-              //   height: 150,
-              // ),
               const SizedBox(
                 height: 25,
               ),
@@ -172,7 +167,11 @@ class _OtpFormState extends State<OtpForm> {
                       if (response['success'].toString() == 'true') {
                         isLoading = false;
                         SharedService.setSharedHomeAfter(true);
-                        Navigator.pushReplacementNamed(context, Home.routeName);
+                        Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      Home.routeName,
+                                      (route) => false,
+                                    );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
