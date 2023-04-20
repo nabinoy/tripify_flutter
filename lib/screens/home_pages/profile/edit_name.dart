@@ -1,9 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:random_avatar/random_avatar.dart';
 import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/constants/global_variables.dart';
@@ -22,11 +18,8 @@ class EditName extends StatefulWidget {
 class _EditNameState extends State<EditName> {
   bool isLoading = false;
   bool isApiCallProcess = false;
-  bool _isVisible = false;
   bool isVisiblepw = false;
   String name = "";
-  String email = "";
-  String password = "";
   final TextEditingController pass = TextEditingController();
   final TextEditingController confirmPass = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -49,31 +42,35 @@ class _EditNameState extends State<EditName> {
                   height: 90,
                   width: 90,
                   child:
-                      randomAvatar(SharedService.name, height: 70, width: 70),
+                      FadeAnimation(1,randomAvatar(SharedService.name, height: 70, width: 70)),
                 ),
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    '${SharedService.name} (Current name)',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 18),
+                  child: FadeAnimation(1.1,
+                    Text(
+                      '${SharedService.name} (Current name)',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 18),
+                    ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    SharedService.email,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 100, 100, 100)),
+                  child: FadeAnimation(1.2,
+                    Text(
+                      SharedService.email,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          color: Color.fromARGB(255, 100, 100, 100)),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 Column(
                   children: const <Widget>[
                     FadeAnimation(
-                        1,
+                        1.3,
                         Text(
                           "Edit name",
                           style: TextStyle(
@@ -91,7 +88,7 @@ class _EditNameState extends State<EditName> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16),
                         child: FadeAnimation(
-                          1.1,
+                          1.4,
                           TextFormField(
                             onTap: () {
                               isVisiblepw = false;

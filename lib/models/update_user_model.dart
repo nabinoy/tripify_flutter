@@ -9,3 +9,18 @@ class UpdateNameModel {
     return data;
   }
 }
+
+class UpdatePasswordModel {
+  String oldPassword;
+  String password;
+
+  UpdatePasswordModel({required this.oldPassword, required this.password});
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['oldPassword'] = oldPassword;
+    data['password'] = password;
+    return data;
+  }
+}
+

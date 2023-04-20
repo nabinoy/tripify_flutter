@@ -1,6 +1,11 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:random_avatar/random_avatar.dart';
+import 'package:tripify/constants/global_variables.dart';
+import 'package:tripify/screens/home.dart';
 import 'package:tripify/screens/home_pages/profile/edit_name.dart';
+import 'package:tripify/screens/home_pages/profile/edit_password.dart';
 import 'package:tripify/services/shared_service.dart';
 
 class Profile extends StatefulWidget {
@@ -56,6 +61,7 @@ class _ProfileState extends State<Profile> {
                   backgroundColor: const Color.fromARGB(255, 240, 240, 240),
                   foregroundColor: const Color.fromARGB(194, 0, 0, 0)),
               onPressed: () {
+                HapticFeedback.mediumImpact();
                 Navigator.pushNamed(context, EditName.routeName);
               },
               child: Row(
@@ -80,7 +86,10 @@ class _ProfileState extends State<Profile> {
                       borderRadius: BorderRadius.circular(50)),
                   backgroundColor: const Color.fromARGB(255, 240, 240, 240),
                   foregroundColor: const Color.fromARGB(194, 0, 0, 0)),
-              onPressed: () {},
+              onPressed: () {
+                HapticFeedback.mediumImpact();
+                Navigator.pushNamed(context, EditPassword.routeName);
+              },
               child: Row(
                 children: const [
                   Icon(Icons.lock_reset_outlined),
@@ -104,7 +113,36 @@ class _ProfileState extends State<Profile> {
                 backgroundColor: const Color.fromARGB(255, 240, 240, 240),
                 foregroundColor: const Color.fromARGB(194, 0, 0, 0),
               ),
-              onPressed: () {},
+              onPressed: () {
+                HapticFeedback.mediumImpact();
+                SharedService.setSharedLogOut();
+                final snackBar = SnackBar(
+                  width: double.infinity,
+                  dismissDirection: DismissDirection.down,
+                  elevation: 0,
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  content: DefaultTextStyle(
+                    style: const TextStyle(
+                      fontFamily: fontRegular,
+                    ),
+                    child: AwesomeSnackbarContent(
+                      title: 'Successful!',
+                      message: 'Successfully log out!',
+                      contentType: ContentType.success,
+                    ),
+                  ),
+                );
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(snackBar);
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  Home.routeName,
+                  (route) => false,
+                );
+              },
               child: Row(
                 children: const [
                   Icon(Icons.logout),
