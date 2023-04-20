@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:random_avatar/random_avatar.dart';
+import 'package:tripify/screens/home_pages/profile/edit_name.dart';
 import 'package:tripify/services/shared_service.dart';
 
 class Profile extends StatefulWidget {
@@ -54,7 +55,9 @@ class _ProfileState extends State<Profile> {
                       borderRadius: BorderRadius.circular(50)),
                   backgroundColor: const Color.fromARGB(255, 240, 240, 240),
                   foregroundColor: const Color.fromARGB(194, 0, 0, 0)),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, EditName.routeName);
+              },
               child: Row(
                 children: const [
                   Icon(Icons.person),

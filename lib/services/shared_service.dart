@@ -37,6 +37,13 @@ class SharedService {
     setSharedUserToken(true);
   }
 
+  static Future<void> setUserName(String data) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    const keyName = 'name';
+    final valueName = data;
+    prefs.setString(keyName, valueName);
+  }
+
   static String name = '';
   static String email = '';
   static String id = '';

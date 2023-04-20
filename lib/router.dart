@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tripify/screens/chatbot.dart';
+import 'package:tripify/screens/home_pages/profile/edit_name.dart';
 import 'package:tripify/screens/home_services/hotel.dart';
 import 'package:tripify/screens/home_services/hotel_details.dart';
 import 'package:tripify/screens/home_services/tour_operator.dart';
@@ -85,6 +86,9 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     case HotelDetailsPage.routeName:
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const HotelDetailsPage(),);
+
+    case EditName.routeName:
+      return MaterialPageRoute(settings : routeSettings,builder: (_) => const EditName(),);
   
     default: 
       return MaterialPageRoute(settings : routeSettings,builder: (_) => const Scaffold(
