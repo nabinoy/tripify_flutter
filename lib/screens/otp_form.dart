@@ -242,7 +242,7 @@ class _OtpFormState extends State<OtpForm> {
                                 isTimeOut = false;
                                 _seconds = 60;
                                 startTimer();
-                              } else {}
+                              }
                             },
                           );
                         });
