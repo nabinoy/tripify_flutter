@@ -544,7 +544,7 @@ class APIService {
 
           pd.add(p2);
         } else {
-          throw Exception('Failed to load place details');
+          return pd;
         }
       }
       return pd;

@@ -401,26 +401,30 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                 ],
               ),
             ),
-            FadeAnimation(
-                1.8,
-                Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: const Text(
-                        'Recommendations for you',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+            (SharedService.id == '')
+                ? const SizedBox(
+                    height: 2,
+                  )
+                : FadeAnimation(
+                    1.8,
+                    Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: const Text(
+                            'Recommendations for you',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.width / 1.58,
-                        child: PlaceRecommendationByUser(pa)),
-                    //PlaceHorizontal(item.sId, islandDetails.sId)
-                  ],
-                )),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.width / 1.58,
+                            child: PlaceRecommendationByUser(pa)),
+                        //PlaceHorizontal(item.sId, islandDetails.sId)
+                      ],
+                    )),
             FadeAnimation(
                 1.9,
                 Column(
