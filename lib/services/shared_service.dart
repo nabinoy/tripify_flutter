@@ -55,7 +55,7 @@ class SharedService {
     const keyEmail = 'email';
     email = prefs.getString(keyEmail) ?? 'Login with your email';
     const keyId = 'id';
-    id = prefs.getString(keyId)!;
+    id = prefs.getString(keyId) ?? '';
   }
 
   static Future<String?> getSecureUserToken() async {

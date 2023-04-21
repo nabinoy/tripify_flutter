@@ -2,10 +2,13 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:random_avatar/random_avatar.dart';
+import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/screens/home.dart';
 import 'package:tripify/screens/home_pages/profile/edit_name.dart';
 import 'package:tripify/screens/home_pages/profile/edit_password.dart';
+import 'package:tripify/screens/login.dart';
+import 'package:tripify/screens/signup.dart';
 import 'package:tripify/services/shared_service.dart';
 
 class Profile extends StatefulWidget {
@@ -51,107 +54,177 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(18),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50)),
-                  backgroundColor: const Color.fromARGB(255, 240, 240, 240),
-                  foregroundColor: const Color.fromARGB(194, 0, 0, 0)),
-              onPressed: () {
-                HapticFeedback.mediumImpact();
-                Navigator.pushNamed(context, EditName.routeName);
-              },
-              child: Row(
-                children: const [
-                  Icon(Icons.person),
-                  SizedBox(width: 20),
-                  Expanded(child: Text('Edit name')),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(18),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50)),
-                  backgroundColor: const Color.fromARGB(255, 240, 240, 240),
-                  foregroundColor: const Color.fromARGB(194, 0, 0, 0)),
-              onPressed: () {
-                HapticFeedback.mediumImpact();
-                Navigator.pushNamed(context, EditPassword.routeName);
-              },
-              child: Row(
-                children: const [
-                  Icon(Icons.lock_reset_outlined),
-                  SizedBox(width: 20),
-                  Expanded(child: Text('Change password')),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.all(18),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50)),
-                backgroundColor: const Color.fromARGB(255, 240, 240, 240),
-                foregroundColor: const Color.fromARGB(194, 0, 0, 0),
-              ),
-              onPressed: () {
-                HapticFeedback.mediumImpact();
-                SharedService.setSharedLogOut();
-                final snackBar = SnackBar(
-                  width: double.infinity,
-                  dismissDirection: DismissDirection.down,
-                  elevation: 0,
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.transparent,
-                  content: DefaultTextStyle(
-                    style: const TextStyle(
-                      fontFamily: fontRegular,
+          (SharedService.id == '')
+              ? Column(
+                  children: <Widget>[
+                    FadeAnimation(
+                        1,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: MaterialButton(
+                            minWidth: double.infinity,
+                            height: 60,
+                            onPressed: () {
+                              HapticFeedback.mediumImpact();
+                              Navigator.pushNamed(context, LoginPage.routeName);
+                            },
+                            shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    width: 2,
+                                    color: Color.fromRGBO(2, 119, 189, 1)),
+                                borderRadius: BorderRadius.circular(50)),
+                            child: const Text(
+                              "Login",
+                              style: TextStyle(
+                                  color: Color.fromRGBO(2, 119, 189, 1),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18),
+                            ),
+                          ),
+                        )),
+                    const SizedBox(
+                      height: 20,
                     ),
-                    child: AwesomeSnackbarContent(
-                      title: 'Successful!',
-                      message: 'Successfully log out!',
-                      contentType: ContentType.success,
+                    FadeAnimation(
+                        1.1,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: MaterialButton(
+                            minWidth: double.infinity,
+                            height: 60,
+                            onPressed: () {
+                              HapticFeedback.mediumImpact();
+                              Navigator.pushNamed(
+                                  context, SignupPage.routeName);
+                            },
+                            color: Colors.lightBlue[800],
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                            child: const Text(
+                              "Sign up",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18),
+                            ),
+                          ),
+                        ))
+                  ],
+                )
+              : Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                            padding: const EdgeInsets.all(18),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                            backgroundColor:
+                                const Color.fromARGB(255, 240, 240, 240),
+                            foregroundColor:
+                                const Color.fromARGB(194, 0, 0, 0)),
+                        onPressed: () {
+                          HapticFeedback.mediumImpact();
+                          Navigator.pushNamed(context, EditName.routeName);
+                        },
+                        child: Row(
+                          children: const [
+                            Icon(Icons.person),
+                            SizedBox(width: 20),
+                            Expanded(child: Text('Edit name')),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 20,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                );
-                // ignore: use_build_context_synchronously
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(snackBar);
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  Home.routeName,
-                  (route) => false,
-                );
-              },
-              child: Row(
-                children: const [
-                  Icon(Icons.logout),
-                  SizedBox(width: 20),
-                  Expanded(child: Text('Log out')),
-                ],
-              ),
-            ),
-          ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                            padding: const EdgeInsets.all(18),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                            backgroundColor:
+                                const Color.fromARGB(255, 240, 240, 240),
+                            foregroundColor:
+                                const Color.fromARGB(194, 0, 0, 0)),
+                        onPressed: () {
+                          HapticFeedback.mediumImpact();
+                          Navigator.pushNamed(context, EditPassword.routeName);
+                        },
+                        child: Row(
+                          children: const [
+                            Icon(Icons.lock_reset_outlined),
+                            SizedBox(width: 20),
+                            Expanded(child: Text('Change password')),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(18),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50)),
+                          backgroundColor:
+                              const Color.fromARGB(255, 240, 240, 240),
+                          foregroundColor: const Color.fromARGB(194, 0, 0, 0),
+                        ),
+                        onPressed: () {
+                          HapticFeedback.mediumImpact();
+                          SharedService.setSharedLogOut();
+                          final snackBar = SnackBar(
+                            width: double.infinity,
+                            dismissDirection: DismissDirection.down,
+                            elevation: 0,
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.transparent,
+                            content: DefaultTextStyle(
+                              style: const TextStyle(
+                                fontFamily: fontRegular,
+                              ),
+                              child: AwesomeSnackbarContent(
+                                title: 'Successful!',
+                                message: 'Successfully log out!',
+                                contentType: ContentType.success,
+                              ),
+                            ),
+                          );
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(snackBar);
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            Home.routeName,
+                            (route) => false,
+                          );
+                        },
+                        child: Row(
+                          children: const [
+                            Icon(Icons.logout),
+                            SizedBox(width: 20),
+                            Expanded(child: Text('Log out')),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
         ],
       ),
     );
