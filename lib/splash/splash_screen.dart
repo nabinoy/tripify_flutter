@@ -3,12 +3,11 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/screens/onboard.dart';
-import 'package:tripify/screens/welcome.dart';
 import 'package:tripify/services/shared_service.dart';
 import '../screens/home.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -23,6 +22,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   bool value = true;
   bool userToken = false;
+  DateTime now = DateTime.now();
 
   Future<PageTransition> loadFromFuture() async {
     return PageTransition(
@@ -46,6 +46,13 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       userToken = true;
       SharedService.setSharedUserToken(userToken);
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(userValue);
+      DateTime expiryTokenDate =
+          DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] * 1000);
+      if (now.isAfter(expiryTokenDate)){
+        SharedService.setSharedLogOut();
+        SharedService.setSessionExpire(true);
+      }
     }
   }
 
@@ -100,11 +107,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ],
               ),
-              nextScreen: (value)
-                  ? const OnBoardingScreen()
-                  : (userToken)
-                      ? const Home()
-                      : const Welcome(),
+              nextScreen: (value) ? const OnBoardingScreen() : const Home(),
               splashTransition: SplashTransition.fadeTransition,
               pageTransitionType: PageTransitionType.fade,
               backgroundColor: Colors.white);

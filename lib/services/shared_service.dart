@@ -64,6 +64,19 @@ class SharedService {
     return userToken;
   }
 
+  static Future<void> setSessionExpire(bool value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    const keyAfter = 'is_session_expired';
+    final valueAfter = value;
+    prefs.setBool(keyAfter, valueAfter);
+  }
+
+  static Future<bool> getSessionExpire() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    const keyAfter = 'is_session_expired';
+    return prefs.getBool(keyAfter) ?? false;
+  }
+
   static Future<void> setSharedHomeAfter(bool value) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     const keyAfter = 'is_home_after_login';

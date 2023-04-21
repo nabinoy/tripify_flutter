@@ -70,6 +70,31 @@ class _HomepageState extends State<Homepage> {
     SharedService.getSharedLogin();
     bool flag = false;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (await SharedService.getSessionExpire() == true) {
+        SharedService.setSessionExpire(false);
+        final snackBar = SnackBar(
+          width: double.infinity,
+          dismissDirection: DismissDirection.down,
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          content: DefaultTextStyle(
+            style: const TextStyle(
+              fontFamily: fontRegular,
+            ),
+            child: AwesomeSnackbarContent(
+              title: 'Session expired!',
+              message: 'Your session has timed out. Please log in again.',
+              contentType: ContentType.warning,
+            ),
+          ),
+        );
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(snackBar);
+      }
+
       if (await SharedService.getSharedHomeAfter() == true) {
         SharedService.setSharedHomeAfter(false);
         final snackBar = SnackBar(
