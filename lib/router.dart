@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tripify/screens/chatbot.dart';
+import 'package:tripify/screens/filter_page/place_filter.dart';
 import 'package:tripify/screens/home_pages/profile/edit_name.dart';
 import 'package:tripify/screens/home_services/hotel.dart';
 import 'package:tripify/screens/home_services/hotel_details.dart';
@@ -162,6 +163,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const EditPassword(),
+      );
+
+    case FilterPlace.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const FilterPlace(),
       );
 
     default:

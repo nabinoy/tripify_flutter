@@ -14,6 +14,7 @@ import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/nearby_request_model.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/screens/category.dart';
+import 'package:tripify/screens/filter_page/place_filter.dart';
 import 'package:tripify/screens/home_services/hotel.dart';
 import 'package:tripify/screens/home_services/tour_operator.dart';
 import 'package:tripify/screens/island.dart';
@@ -208,14 +209,15 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
             ),
             FadeAnimation(
               1.3,
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, SearchPlace.routeName,
-                      arguments: [wishlistPlaceIdList]);
-                },
-                child: Row(
-                  children: [
-                    Container(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, SearchPlace.routeName,
+                          arguments: [wishlistPlaceIdList]);
+                    },
+                    child: Container(
                       margin: const EdgeInsets.only(bottom: 30),
                       decoration: BoxDecoration(
                         color: Colors.lightBlue.shade200.withOpacity(0.3),
@@ -232,23 +234,66 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                             const SizedBox(
                               width: 5,
                             ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: MediaQuery.of(context).size.height *
-                                      .0145),
-                              height: MediaQuery.of(context).size.height * .06,
-                              child: const Text(
-                                'Search Places',
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.black54),
-                              ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical:
+                                          MediaQuery.of(context).size.height *
+                                              .0143),
+                                  height: 50,
+                                  //height: MediaQuery.of(context).size.height * .06,
+                                  width: MediaQuery.of(context).size.width * .5,
+                                  child: const Text(
+                                    'Search Places',
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.black54),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 30),
+                    child: MaterialButton(
+                      elevation: 0,
+                      height: 48,
+                      minWidth: MediaQuery.of(context).size.width * .2,
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          FilterPlace.routeName,
+                        );
+                      },
+                      color: Colors.lightBlue[600],
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Row(
+                        children: const [
+                          Icon(
+                            Icons.filter_list_outlined,
+                            size: 16,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            'Filter',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             FadeAnimation(
