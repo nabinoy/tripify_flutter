@@ -213,37 +213,41 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                   Navigator.pushNamed(context, SearchPlace.routeName,
                       arguments: [wishlistPlaceIdList]);
                 },
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 30),
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue.shade200.withOpacity(0.3),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(50),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.search_outlined,
-                            color: Color.fromARGB(221, 55, 55, 55)),
-                        const SizedBox(
-                          width: 5,
+                child: Row(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 30),
+                      decoration: BoxDecoration(
+                        color: Colors.lightBlue.shade200.withOpacity(0.3),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(50),
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical:
-                                  MediaQuery.of(context).size.height * .0145),
-                          height: MediaQuery.of(context).size.height * .06,
-                          child: const Text(
-                            'Search Places',
-                            style:
-                                TextStyle(fontSize: 16, color: Colors.black54),
-                          ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.search_outlined,
+                                color: Color.fromARGB(221, 55, 55, 55)),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: MediaQuery.of(context).size.height *
+                                      .0145),
+                              height: MediaQuery.of(context).size.height * .06,
+                              child: const Text(
+                                'Search Places',
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black54),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
