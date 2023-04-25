@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tripify/models/home_main_model.dart';
+
+late List<String> _selectedCategoryChips;
+late List<String> _selectedIslandChips;
 
 class FilterPlace extends StatefulWidget {
   static const String routeName = '/filter_place';
@@ -13,6 +15,20 @@ class FilterPlace extends StatefulWidget {
 class _FilterPlaceState extends State<FilterPlace> {
   double _startValue = 2;
   double _endValue = 4;
+
+  @override
+  void initState() {
+    _selectedCategoryChips = [];
+    _selectedIslandChips = [];
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _selectedCategoryChips.clear();
+    _selectedIslandChips.clear();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +78,16 @@ class _FilterPlaceState extends State<FilterPlace> {
                                 return FilterChip(
                                   selectedColor: Colors.lightBlue[300],
                                   label: Text(item.name),
-                                  onSelected: (bool value) {},
+                                  selected: _selectedCategoryChips
+                                      .contains(item.name),
+                                  onSelected: (_) => setState(() {
+                                    if (_selectedCategoryChips
+                                        .contains(item.name)) {
+                                      _selectedCategoryChips.remove(item.name);
+                                    } else {
+                                      _selectedCategoryChips.add(item.name);
+                                    }
+                                  }),
                                 );
                               }).toList(),
                             ),
@@ -80,7 +105,16 @@ class _FilterPlaceState extends State<FilterPlace> {
                                 return FilterChip(
                                   selectedColor: Colors.lightBlue[300],
                                   label: Text(item.name),
-                                  onSelected: (bool value) {},
+                                  selected:
+                                      _selectedIslandChips.contains(item.name),
+                                  onSelected: (_) => setState(() {
+                                    if (_selectedIslandChips
+                                        .contains(item.name)) {
+                                      _selectedIslandChips.remove(item.name);
+                                    } else {
+                                      _selectedIslandChips.add(item.name);
+                                    }
+                                  }),
                                 );
                               }).toList(),
                             ),
