@@ -37,6 +37,14 @@ class _FilterPlaceState extends State<FilterPlace> {
     List<CategoryAll> c = arguments[0] as List<CategoryAll>;
     List<IslandAll> ia = arguments[1] as List<IslandAll>;
 
+    IslandAll tempIs = IslandAll(
+        image: IslandImage(id: "id", secureUrl: "url"),
+        sId: "sId",
+        name: "All",
+        description: "description",
+        createdAt: "createdAt",
+        iV: 02);
+    ia.insert(0, tempIs);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -100,22 +108,25 @@ class _FilterPlaceState extends State<FilterPlace> {
                             ),
                             Wrap(
                               spacing: 8.0,
-                              children: ia.map((item) {
-                                return FilterChip(
-                                  selectedColor: Colors.lightBlue[300],
-                                  label: Text(item.name),
-                                  selected:
-                                      _selectedIslandChips.contains(item.name),
-                                  onSelected: (_) => setState(() {
-                                    if (_selectedIslandChips
-                                        .contains(item.name)) {
-                                      _selectedIslandChips.remove(item.name);
-                                    } else {
-                                      _selectedIslandChips.add(item.name);
-                                    }
-                                  }),
-                                );
-                              }).toList(),
+                              children: ia.map(
+                                (item) {
+                                  return FilterChip(
+                                    selectedColor: Colors.lightBlue[300],
+                                    label: Text(item.name),
+                                    selected: _selectedIslandChips
+                                        .contains(item.name),
+                                    onSelected: (_) => setState(() {
+                                      if (_selectedIslandChips
+                                          .contains(item.name)) {
+                                        _selectedIslandChips.remove(item.name);
+                                      } else {
+                                        _selectedIslandChips.clear();
+                                        _selectedIslandChips.add(item.name);
+                                      }
+                                    }),
+                                  );
+                                },
+                              ).toList(),
                             ),
                             const SizedBox(
                               height: 6,
@@ -193,6 +204,7 @@ class _FilterPlaceState extends State<FilterPlace> {
                                       onPressed: () {
                                         setState(
                                           () {
+                                            ia.clear();
                                             _selectedCategoryChips.clear();
                                             _selectedIslandChips.clear();
                                             _startValue = 2;
