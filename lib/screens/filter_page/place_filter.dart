@@ -50,8 +50,7 @@ class _FilterPlaceState extends State<FilterPlace> {
               useSafeArea: true,
               context: context,
               builder: (BuildContext context) {
-                return StatefulBuilder(
-                    builder: (BuildContext context, StateSetter setState) {
+                return StatefulBuilder(builder: (context, setState) {
                   return SingleChildScrollView(
                     child: Container(
                         color: Colors.white,
@@ -192,9 +191,14 @@ class _FilterPlaceState extends State<FilterPlace> {
                                               .4,
                                       height: 40,
                                       onPressed: () {
-                                        // HapticFeedback.mediumImpact();
-                                        // Navigator.pushNamed(
-                                        //     context, LoginPage.routeName);
+                                        setState(
+                                          () {
+                                            _selectedCategoryChips.clear();
+                                            _selectedIslandChips.clear();
+                                            _startValue = 2;
+                                            _endValue = 4;
+                                          },
+                                        );
                                       },
                                       shape: RoundedRectangleBorder(
                                           side: const BorderSide(
