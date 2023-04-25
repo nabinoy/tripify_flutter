@@ -438,14 +438,14 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                           children: [
                             Container(
                               height: 150.0,
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(20.0),
                                   topRight: Radius.circular(20.0),
                                 ),
                                 image: DecorationImage(
                                   image: NetworkImage(
-                                      'https://via.placeholder.com/150'),
+                                      hotelRoomTypeImages[room.roomType]!),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -464,7 +464,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                       SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                .6,
+                                                .8,
                                         child: Text(
                                           room.roomType,
                                           style: const TextStyle(
@@ -472,10 +472,6 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                      ),
-                                      Text(
-                                        'Quantity: ${room.beds.quantity.toString()}',
-                                        style: const TextStyle(fontSize: 14.0),
                                       ),
                                     ],
                                   ),
@@ -486,7 +482,42 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                   ),
                                   const SizedBox(height: 10.0),
                                   const Text(
-                                    'Amenities:',
+                                    'Bed type',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            hotelBedIcons[room.beds.bedType],
+                                            color: Colors.lightBlue[800],
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            room.beds.bedType,
+                                            style:
+                                                const TextStyle(fontSize: 14),
+                                          )
+                                        ],
+                                      ),
+                                      Text(
+                                        'Quantity: ${room.beds.quantity.toString()}',
+                                        style: const TextStyle(fontSize: 14.0),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10.0),
+                                  const Text(
+                                    'Amenities',
                                     style:
                                         TextStyle(fontWeight: FontWeight.w600),
                                   ),
