@@ -268,6 +268,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                         Navigator.pushNamed(
                           context,
                           FilterPlace.routeName,
+                          arguments: [c,ia]
                         );
                       },
                       color: Colors.lightBlue[600],
