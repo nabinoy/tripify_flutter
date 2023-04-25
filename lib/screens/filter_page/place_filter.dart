@@ -37,14 +37,6 @@ class _FilterPlaceState extends State<FilterPlace> {
     List<CategoryAll> c = arguments[0] as List<CategoryAll>;
     List<IslandAll> ia = arguments[1] as List<IslandAll>;
 
-    IslandAll tempIs = IslandAll(
-        image: IslandImage(id: "id", secureUrl: "url"),
-        sId: "sId",
-        name: "All",
-        description: "description",
-        createdAt: "createdAt",
-        iV: 02);
-    ia.insert(0, tempIs);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -108,25 +100,67 @@ class _FilterPlaceState extends State<FilterPlace> {
                             ),
                             Wrap(
                               spacing: 8.0,
-                              children: ia.map(
-                                (item) {
-                                  return FilterChip(
-                                    selectedColor: Colors.lightBlue[300],
-                                    label: Text(item.name),
-                                    selected: _selectedIslandChips
-                                        .contains(item.name),
-                                    onSelected: (_) => setState(() {
-                                      if (_selectedIslandChips
-                                          .contains(item.name)) {
-                                        _selectedIslandChips.remove(item.name);
-                                      } else {
-                                        _selectedIslandChips.clear();
-                                        _selectedIslandChips.add(item.name);
-                                      }
-                                    }),
-                                  );
-                                },
-                              ).toList(),
+                              children: List.generate(
+                                  ia.length + 1,
+                                  (index) => (index == 0)
+                                      ? FilterChip(
+                                          showCheckmark: false,
+                                          selectedColor: Colors.green[300],
+                                          label: Text("All"),
+                                          selected: _selectedIslandChips
+                                              .contains("All"),
+                                          onSelected: (_) => setState(() {
+                                            if (_selectedIslandChips
+                                                .contains("All")) {
+                                              _selectedIslandChips
+                                                  .remove("All");
+                                            } else {
+                                              _selectedIslandChips.clear();
+                                              _selectedIslandChips.add("All");
+                                            }
+                                            print(_selectedIslandChips);
+                                          }),
+                                        )
+                                      : FilterChip(
+                                          showCheckmark: false,
+                                          selectedColor: Colors.green[300],
+                                          label: Text(ia[index - 1].name),
+                                          selected: _selectedIslandChips
+                                              .contains(ia[index - 1].sId),
+                                          onSelected: (_) => setState(() {
+                                            if (_selectedIslandChips
+                                                .contains(ia[index - 1].sId)) {
+                                              _selectedIslandChips
+                                                  .remove(ia[index - 1].sId);
+                                            } else {
+                                              _selectedIslandChips.clear();
+                                              _selectedIslandChips
+                                                  .add(ia[index - 1].sId);
+                                            }
+                                            print(_selectedIslandChips);
+                                          }),
+                                        )),
+                              // children: ia.map(
+                              //   (item) {
+                              //     return FilterChip(
+                              //       showCheckmark: false,
+                              //       selectedColor: Colors.green[300],
+                              //       label: Text(item.name),
+                              //       selected: _selectedIslandChips
+                              //           .contains(item.name),
+                              //       onSelected: (_) => setState(() {
+                              //         if (_selectedIslandChips
+                              //             .contains(item.name)) {
+                              //           _selectedIslandChips.remove(item.name);
+                              //         } else {
+                              //           _selectedIslandChips.clear();
+                              //           _selectedIslandChips.add(item.name);
+                              //         }
+                              //         print(_selectedIslandChips);
+                              //       }),
+                              //     );
+                              //   },
+                              // ).toList(),
                             ),
                             const SizedBox(
                               height: 6,
@@ -204,7 +238,6 @@ class _FilterPlaceState extends State<FilterPlace> {
                                       onPressed: () {
                                         setState(
                                           () {
-                                            ia.clear();
                                             _selectedCategoryChips.clear();
                                             _selectedIslandChips.clear();
                                             _startValue = 2;
