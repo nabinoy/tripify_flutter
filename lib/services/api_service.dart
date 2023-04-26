@@ -638,6 +638,27 @@ class APIService {
     }
   }
 
+  static Future<int> placeCount() async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    //final queryParameters = {'category': categoryId, 'island': islandID};
+    var url = Uri.https(Config.apiURL, Config.placeAllAPI);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data['filteredPlaceNumber'];
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
   static Future<String> addToWishlist(String id) async {
     var userToken = '';
     await SharedService.getSecureUserToken().then((String? data) {

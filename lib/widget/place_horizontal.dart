@@ -34,8 +34,8 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
           .then((value) => {placeCount = value}),
       APIService.placeByCategoryIsland(widget.catId, widget.islandId)
           .then((value) => {pd = value}),
-          APIService.checkUserWishlist()
-                  .then((value) => {wishlistPlaceIdList.addAll(value)})
+      APIService.checkUserWishlist()
+          .then((value) => {wishlistPlaceIdList.addAll(value)})
     ];
     controller.addListener(() {
       if (controller.position.maxScrollExtent == controller.offset) {
@@ -106,10 +106,12 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
                     return GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(context, Place.routeName,
-                            arguments: [[pd[index]],(wishlistPlaceIdList.contains(
-                                                                pd[index].sId))
-                                                        ? true
-                                                        : false]);
+                            arguments: [
+                              [pd[index]],
+                              (wishlistPlaceIdList.contains(pd[index].sId))
+                                  ? true
+                                  : false
+                            ]);
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width / 1.4,
