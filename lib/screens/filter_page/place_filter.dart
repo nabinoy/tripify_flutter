@@ -72,8 +72,8 @@ class _FilterPlaceState extends State<FilterPlace> {
   Future fetchWithFilter() async {
     List<Places2> temp = [];
     page++;
-    await APIService.placeFilter(
-            _selectedCategoryChips, _selectedIslandChips.first, page.toString(),_startValue,_endValue)
+    await APIService.placeFilter(_selectedCategoryChips,
+            _selectedIslandChips.first, page.toString(), _startValue, _endValue)
         .then((value) => {temp = value});
     setState(() {
       pd.addAll(temp);
@@ -310,7 +310,9 @@ class _FilterPlaceState extends State<FilterPlace> {
                                             await APIService.placeCountFilter(
                                                     _selectedCategoryChips,
                                                     _selectedIslandChips.first,
-                                                    page.toString(),_startValue,_endValue)
+                                                    page.toString(),
+                                                    _startValue,
+                                                    _endValue)
                                                 .then((value) async => {
                                                       placeCount = value,
                                                       isInit = false,
@@ -318,7 +320,9 @@ class _FilterPlaceState extends State<FilterPlace> {
                                                               _selectedCategoryChips,
                                                               _selectedIslandChips
                                                                   .first,
-                                                              page.toString(),_startValue,_endValue)
+                                                              page.toString(),
+                                                              _startValue,
+                                                              _endValue)
                                                           .then((value) => {
                                                                 placeTemp =
                                                                     value,
@@ -370,19 +374,24 @@ class _FilterPlaceState extends State<FilterPlace> {
                 );
               },
               child: Container(
-                  padding: const EdgeInsets.all(16),
+                  margin: const EdgeInsets.all(12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.lightBlue[800],
+                  ),
                   child: Row(
-                    children: [
+                    children: const [
                       Text(
                         'Filter',
-                        style: TextStyle(
-                            fontSize: 16, color: Colors.lightBlue[800]),
+                        style: TextStyle(fontSize: 14, color: Colors.white),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 4,
                       ),
                       Icon(Icons.filter_list_outlined,
-                          size: 19, color: Colors.lightBlue[800])
+                          size: 16, color: Colors.white)
                     ],
                   )),
             )
