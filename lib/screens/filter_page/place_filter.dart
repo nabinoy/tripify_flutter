@@ -19,6 +19,7 @@ class FilterPlace extends StatefulWidget {
 }
 
 class _FilterPlaceState extends State<FilterPlace> {
+  bool isInit = true;
   double _startValue = 1;
   double _endValue = 5;
   int page = 1;
@@ -26,6 +27,7 @@ class _FilterPlaceState extends State<FilterPlace> {
   late List<Future> dataFuture;
   int placeCount = 1;
   List<Places2> pd = [];
+  List<Places2> placeTemp = [];
   final controller = ScrollController();
 
   @override
@@ -38,7 +40,11 @@ class _FilterPlaceState extends State<FilterPlace> {
     _selectedIslandChips = [];
     controller.addListener(() {
       if (controller.position.maxScrollExtent == controller.offset) {
-        fetch();
+        if (isInit) {
+          fetch();
+        } else {
+          fetchWithFilter();
+        }
       }
     });
     super.initState();
@@ -55,13 +61,29 @@ class _FilterPlaceState extends State<FilterPlace> {
   Future fetch() async {
     List<Places2> temp = [];
     page++;
-    //print(page);
-    // await APIService.placePagination(
-    //         widget.catId, widget.islandId, page.toString())
-    //     .then((value) => {temp = value});
-    // setState(() {
-    //   pd.addAll(temp);
-    // });
+    await APIService.singlePlacePagination(page.toString())
+        .then((value) => {temp = value});
+    setState(() {
+      pd.addAll(temp);
+    });
+  }
+
+  Future fetchWithFilter() async {
+    List<Places2> temp = [];
+    page++;
+    await APIService.placeFilter(
+            _selectedCategoryChips, _selectedIslandChips.first, page.toString())
+        .then((value) => {temp = value});
+    setState(() {
+      pd.addAll(temp);
+    });
+  }
+
+  Future setData() async {
+    setState(() {
+      pd.clear();
+      pd = placeTemp;
+    });
   }
 
   @override
@@ -291,30 +313,28 @@ class _FilterPlaceState extends State<FilterPlace> {
                                                   .width *
                                               .4,
                                           height: 40,
-                                          onPressed: () {
-                                            print(_selectedCategoryChips);
-                                            print(_selectedIslandChips);
-                                            print(_startValue);
-                                            print(_endValue);
-                                            if (_selectedCategoryChips.isEmpty) {
-                                              //call without cateogry
-                                              if (_selectedIslandChips.contains('All')) {
-                                                //call without island
-                                              }
-                                              else{
-
-                                              }
-                                            } else {
-                                              if (_selectedIslandChips.contains('All')) {
-                                                //call without island
-                                              }
-                                              else{
-                                                
-                                              }
-                                            }
+                                          onPressed: () async {
+                                            page = 1;
+                                            isEndLoading = 1;
+                                            await APIService.placeCountFilter(
+                                                    _selectedCategoryChips,
+                                                    _selectedIslandChips.first,
+                                                    page.toString())
+                                                .then((value) => {
+                                                      placeCount = value,
+                                                      isInit = false,
+                                                    });
+                                            await APIService.placeFilter(
+                                                    _selectedCategoryChips,
+                                                    _selectedIslandChips.first,
+                                                    page.toString())
+                                                .then((value) => {
+                                                      placeTemp = value,
+                                                      setData()
+                                                    });
+                                            // ignore: use_build_context_synchronously
+                                            Navigator.pop(context);
                                             // HapticFeedback.mediumImpact();
-                                            // Navigator.pushNamed(
-                                            //     context, SignupPage.routeName);
                                           },
                                           color: Colors.lightBlue[800],
                                           elevation: 0,
