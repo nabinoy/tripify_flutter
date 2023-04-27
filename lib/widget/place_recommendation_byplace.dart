@@ -19,24 +19,22 @@ class PlaceRecommendationByPlace extends StatefulWidget {
 class _PlaceRecommendationByPlaceState
     extends State<PlaceRecommendationByPlace> {
   List<Places2> pd = [];
-  late List<Future> dataFuture;
+  late Future dataFuture;
   List<String> wishlistPlaceIdList = [];
 
   @override
   void initState() {
     super.initState();
-    dataFuture = [
+    dataFuture = 
       APIService.placeRecommendationByPlace(widget.placeId)
-          .then((value) => {pd = value}),
-      APIService.checkUserWishlist()
-          .then((value) => {wishlistPlaceIdList.addAll(value)})
-    ];
+          .then((value) async => {pd = value,await APIService.checkUserWishlist()
+          .then((value) => {wishlistPlaceIdList.addAll(value)})});
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Future.wait(dataFuture),
+      future: dataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (pd.isEmpty) {

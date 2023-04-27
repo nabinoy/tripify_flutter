@@ -22,21 +22,24 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
   int page = 1;
   int isEndLoading = 1;
   final controller = ScrollController();
-  late List<Future> dataFuture;
+  late Future dataFuture;
   int placeCount = 1;
   List<String> wishlistPlaceIdList = [];
 
   @override
   void initState() {
     super.initState();
-    dataFuture = [
-      APIService.islandPlaceCount(widget.catId, widget.islandId)
-          .then((value) => {placeCount = value}),
-      APIService.placeByCategoryIsland(widget.catId, widget.islandId)
-          .then((value) => {pd = value}),
-      APIService.checkUserWishlist()
-          .then((value) => {wishlistPlaceIdList.addAll(value)})
-    ];
+    dataFuture = APIService.islandPlaceCount(widget.catId, widget.islandId)
+        .then((value) async => {
+              placeCount = value,
+              await APIService.placeByCategoryIsland(
+                      widget.catId, widget.islandId)
+                  .then((value) async => {
+                        pd = value,
+                      }),
+              await APIService.checkUserWishlist()
+                  .then((value) => {wishlistPlaceIdList.addAll(value)})
+            });
     controller.addListener(() {
       if (controller.position.maxScrollExtent == controller.offset) {
         fetch();
@@ -65,7 +68,7 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Future.wait(dataFuture),
+      future: dataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (pd.isEmpty) {

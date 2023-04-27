@@ -24,20 +24,21 @@ class _FilterPlaceState extends State<FilterPlace> {
   double _endValue = 5;
   int page = 1;
   int isEndLoading = 1;
-  late List<Future> dataFuture;
+  late Future dataFuture;
   int placeCount = 1;
   List<Places2> pd = [];
   List<Places2> placeTemp = [];
   final controller = ScrollController();
+  bool isLoading = false;
 
   @override
   void initState() {
-    dataFuture = [
-      APIService.placeAll().then((value) => {pd = value}),
-      APIService.placeCount().then((value) => {placeCount = value})
-    ];
+    dataFuture = APIService.placeCount().then((value) async => {
+          placeCount = value,
+          await APIService.placeAll().then((value) => {pd = value}),
+        });
     _selectedCategoryChips = [];
-    _selectedIslandChips = [];
+    _selectedIslandChips = ['All'];
     controller.addListener(() {
       if (controller.position.maxScrollExtent == controller.offset) {
         if (isInit) {
@@ -169,15 +170,8 @@ class _FilterPlaceState extends State<FilterPlace> {
                                               selected: _selectedIslandChips
                                                   .contains("All"),
                                               onSelected: (_) => setState(() {
-                                                if (_selectedIslandChips
-                                                    .contains("All")) {
-                                                  _selectedIslandChips
-                                                      .remove("All");
-                                                } else {
-                                                  _selectedIslandChips.clear();
-                                                  _selectedIslandChips
-                                                      .add("All");
-                                                }
+                                                _selectedIslandChips.clear();
+                                                _selectedIslandChips.add("All");
                                               }),
                                             )
                                           : FilterChip(
@@ -187,16 +181,9 @@ class _FilterPlaceState extends State<FilterPlace> {
                                               selected: _selectedIslandChips
                                                   .contains(ia[index - 1].sId),
                                               onSelected: (_) => setState(() {
-                                                if (_selectedIslandChips
-                                                    .contains(
-                                                        ia[index - 1].sId)) {
-                                                  _selectedIslandChips.remove(
-                                                      ia[index - 1].sId);
-                                                } else {
-                                                  _selectedIslandChips.clear();
-                                                  _selectedIslandChips
-                                                      .add(ia[index - 1].sId);
-                                                }
+                                                _selectedIslandChips.clear();
+                                                _selectedIslandChips
+                                                    .add(ia[index - 1].sId);
                                               }),
                                             )),
                                 ),
@@ -285,7 +272,7 @@ class _FilterPlaceState extends State<FilterPlace> {
                                             setState(
                                               () {
                                                 _selectedCategoryChips.clear();
-                                                _selectedIslandChips.clear();
+                                                _selectedIslandChips = ['All'];
                                                 _startValue = 1;
                                                 _endValue = 5;
                                               },
@@ -316,22 +303,33 @@ class _FilterPlaceState extends State<FilterPlace> {
                                           onPressed: () async {
                                             page = 1;
                                             isEndLoading = 1;
+                                            setState(() {
+                                              isLoading = true;
+                                            });
+
                                             await APIService.placeCountFilter(
                                                     _selectedCategoryChips,
                                                     _selectedIslandChips.first,
                                                     page.toString())
-                                                .then((value) => {
+                                                .then((value) async => {
                                                       placeCount = value,
                                                       isInit = false,
+                                                      await APIService.placeFilter(
+                                                              _selectedCategoryChips,
+                                                              _selectedIslandChips
+                                                                  .first,
+                                                              page.toString())
+                                                          .then((value) => {
+                                                                placeTemp =
+                                                                    value,
+                                                                setData(),
+                                                                setState(() {
+                                                                  isLoading =
+                                                                      false;
+                                                                })
+                                                              })
                                                     });
-                                            await APIService.placeFilter(
-                                                    _selectedCategoryChips,
-                                                    _selectedIslandChips.first,
-                                                    page.toString())
-                                                .then((value) => {
-                                                      placeTemp = value,
-                                                      setData()
-                                                    });
+
                                             // ignore: use_build_context_synchronously
                                             Navigator.pop(context);
                                             // HapticFeedback.mediumImpact();
@@ -341,13 +339,24 @@ class _FilterPlaceState extends State<FilterPlace> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(50)),
-                                          child: const Text(
-                                            "Apply",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 15),
-                                          ),
+                                          child: isLoading
+                                              ? const SizedBox(
+                                                  height: 20.0,
+                                                  width: 20.0,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    strokeWidth: 3,
+                                                    color: Colors.white,
+                                                  ),
+                                                )
+                                              : const Text(
+                                                  "Apply",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 15),
+                                                ),
                                         )
                                       ],
                                     )
@@ -380,7 +389,7 @@ class _FilterPlaceState extends State<FilterPlace> {
           ],
         ),
         body: FutureBuilder(
-          future: Future.wait(dataFuture),
+          future: dataFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (pd.isEmpty) {
