@@ -782,13 +782,17 @@ class APIService {
     }
   }
 
-  static Future<int> placeCountFilter(
-      List<String> categories, String islandID, String page) async {
+  static Future<int> placeCountFilter(List<String> categories, String islandID,
+      String page, double start, double end) async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
     };
 
-    Map<String, dynamic> queryParameters = {'page': page};
+    Map<String, dynamic> queryParameters = {
+      'page': page,
+      'ratings[gte]': start.toString(),
+      'ratings[lte]': end.toString()
+    };
 
     if (!islandID.contains('All')) {
       queryParameters['island'] = islandID;
@@ -815,13 +819,17 @@ class APIService {
     }
   }
 
-  static Future<List<Places2>> placeFilter(
-      List<String> categories, String islandID, String page) async {
+  static Future<List<Places2>> placeFilter(List<String> categories,
+      String islandID, String page, double start, double end) async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
     };
 
-    Map<String, dynamic> queryParameters = {'page': page};
+    Map<String, dynamic> queryParameters = {
+      'page': page,
+      'ratings[gte]': start.toString(),
+      'ratings[lte]': end.toString()
+    };
 
     if (!islandID.contains('All')) {
       queryParameters['island'] = islandID;

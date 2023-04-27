@@ -73,7 +73,7 @@ class _FilterPlaceState extends State<FilterPlace> {
     List<Places2> temp = [];
     page++;
     await APIService.placeFilter(
-            _selectedCategoryChips, _selectedIslandChips.first, page.toString())
+            _selectedCategoryChips, _selectedIslandChips.first, page.toString(),_startValue,_endValue)
         .then((value) => {temp = value});
     setState(() {
       pd.addAll(temp);
@@ -310,7 +310,7 @@ class _FilterPlaceState extends State<FilterPlace> {
                                             await APIService.placeCountFilter(
                                                     _selectedCategoryChips,
                                                     _selectedIslandChips.first,
-                                                    page.toString())
+                                                    page.toString(),_startValue,_endValue)
                                                 .then((value) async => {
                                                       placeCount = value,
                                                       isInit = false,
@@ -318,7 +318,7 @@ class _FilterPlaceState extends State<FilterPlace> {
                                                               _selectedCategoryChips,
                                                               _selectedIslandChips
                                                                   .first,
-                                                              page.toString())
+                                                              page.toString(),_startValue,_endValue)
                                                           .then((value) => {
                                                                 placeTemp =
                                                                     value,
