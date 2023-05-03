@@ -15,7 +15,7 @@ import 'package:tripify/screens/location_weather.dart';
 import 'package:tripify/screens/login.dart';
 import 'package:tripify/screens/onboard.dart';
 import 'package:tripify/screens/place.dart';
-import 'package:tripify/screens/map_webview.dart';
+import 'package:tripify/screens/home_services/map_webview.dart';
 import 'package:tripify/screens/review_all.dart';
 import 'package:tripify/screens/search_hotel.dart';
 import 'package:tripify/screens/search_place.dart';
@@ -61,6 +61,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const MapWebView(),
+      );
+
+    case ToiletMapWebView.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const ToiletMapWebView(),
       );
 
     case Island.routeName:

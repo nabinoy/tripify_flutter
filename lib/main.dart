@@ -4,7 +4,10 @@ import 'package:tripify/router.dart';
 import 'package:tripify/splash/splash_screen.dart';
 import 'constants/global_variables.dart';
 
-void main() => runApp(const Tripify());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const Tripify());
+}
 
 class Tripify extends StatelessWidget {
   const Tripify({super.key});

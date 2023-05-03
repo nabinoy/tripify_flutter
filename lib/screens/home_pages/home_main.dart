@@ -19,7 +19,7 @@ import 'package:tripify/screens/home_services/hotel.dart';
 import 'package:tripify/screens/home_services/tour_operator.dart';
 import 'package:tripify/screens/island.dart';
 import 'package:tripify/screens/location_weather.dart';
-import 'package:tripify/screens/map_webview.dart';
+import 'package:tripify/screens/home_services/map_webview.dart';
 import 'package:tripify/screens/place.dart';
 import 'package:tripify/screens/search_place.dart';
 import 'package:tripify/services/api_service.dart';
