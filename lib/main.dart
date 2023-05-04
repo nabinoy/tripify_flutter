@@ -5,7 +5,6 @@ import 'package:tripify/splash/splash_screen.dart';
 import 'constants/global_variables.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(const Tripify());
 }
 
