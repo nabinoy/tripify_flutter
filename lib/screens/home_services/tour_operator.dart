@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/models/tour_operator_response_model.dart';
 import 'package:tripify/services/api_service.dart';
@@ -53,238 +54,278 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
               APIService.tourOperatorAll().then((value) => {tourOp = value}),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return ListView(children: [
-                Container(
-                  margin: const EdgeInsets.all(16),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 18, horizontal: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2.0,
-                        blurRadius: 5.0,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                    color: Colors.white,
-                  ),
+              if (tourOp.isEmpty) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(vertical: 85),
+                  alignment: Alignment.center,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CircleAvatar(
-                        radius: MediaQuery.of(context).size.width * .13,
-                        backgroundColor: Colors.transparent,
-                        child: ClipOval(
-                          child: SizedBox(
-                            child: CachedNetworkImage(
-                              imageUrl: tourOp.first.image.secureUrl,
-                              placeholder: (context, url) => Image.memory(
-                                kTransparentImage,
-                                fit: BoxFit.cover,
-                              ),
-                              fadeInDuration: const Duration(milliseconds: 200),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                      Icon(
+                        MdiIcons.alertCircleOutline,
+                        size: 58,
+                        color: Theme.of(context).disabledColor,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No tour operators found!',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).disabledColor,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                    ],
+                  ),
+                );
+              } else {
+                return Column(children: [
+                  Wrap(
+                    children: tourOp.map((widget) {
+                      return Container(
+                        margin: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 18, horizontal: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2.0,
+                              blurRadius: 5.0,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                          color: Colors.white,
+                        ),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Center(
-                              child: Text(
-                                tourOp.first.name,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+                            CircleAvatar(
+                              radius: MediaQuery.of(context).size.width * .13,
+                              backgroundColor: Colors.transparent,
+                              child: ClipOval(
+                                child: SizedBox(
+                                  child: CachedNetworkImage(
+                                    imageUrl: tourOp.first.image.secureUrl,
+                                    placeholder: (context, url) => Image.memory(
+                                      kTransparentImage,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    fadeInDuration:
+                                        const Duration(milliseconds: 200),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 5),
-                            Text(
-                              tourOp.first.description,
-                              textAlign: TextAlign.justify,
-                            ),
-                            const SizedBox(height: 10),
-                            const Text(
-                              'Address',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                const Icon(Icons.location_on,
-                                    color: Colors.blue, size: 18),
-                                const SizedBox(width: 5),
-                                Expanded(
-                                  child: Text(
-                                    '${tourOp.first.address.street}, ${tourOp.first.address.city}, ${tourOp.first.address.state} ${tourOp.first.address.zip}',
-                                    style: TextStyle(
-                                      color: Colors.grey[900],
-                                      fontSize: 14,
+                            const SizedBox(height: 8),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      tourOp.first.name,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
                                     ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            const Text(
-                              'Contact',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                const Icon(Icons.person,
-                                    color: Colors.lightBlue, size: 18),
-                                const SizedBox(width: 5),
-                                Text(
-                                  tourOp.first.contact.name,
-                                  style: TextStyle(
-                                    color: Colors.grey[800],
-                                    fontSize: 14,
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    tourOp.first.description,
+                                    textAlign: TextAlign.justify,
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 5),
-                            Row(
-                              children: [
-                                const Icon(Icons.phone,
-                                    color: Colors.green, size: 18),
-                                const SizedBox(width: 5),
-                                Text(
-                                  tourOp.first.contact.phone,
-                                  style: TextStyle(
-                                    color: Colors.grey[800],
-                                    fontSize: 14,
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    'Address',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 5),
-                            Row(
-                              children: [
-                                const Icon(Icons.email,
-                                    color: Colors.redAccent, size: 18),
-                                const SizedBox(width: 5),
-                                Text(
-                                  tourOp.first.contact.email,
-                                  style: TextStyle(
-                                    color: Colors.grey[800],
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                MaterialButton(
-                                  elevation: 0,
-                                  onPressed: () {
-                                    _makePhoneCall(tourOp.first.contact.phone);
-                                  },
-                                  color: Colors.green[600],
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50)),
-                                  child: Row(
-                                    children: const [
-                                      Icon(
-                                        Icons.call,
-                                        size: 20,
-                                        color: Colors.white,
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.location_on,
+                                          color: Colors.blue, size: 18),
+                                      const SizedBox(width: 5),
+                                      Expanded(
+                                        child: Text(
+                                          '${tourOp.first.address.street}, ${tourOp.first.address.city}, ${tourOp.first.address.state} ${tourOp.first.address.zip}',
+                                          style: TextStyle(
+                                            color: Colors.grey[900],
+                                            fontSize: 14,
+                                          ),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                      Text(
-                                        'Call',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600),
-                                      )
                                     ],
                                   ),
-                                ),
-                                MaterialButton(
-                                  elevation: 0,
-                                  onPressed: () {
-                                    _launchEmail(tourOp.first.contact.email);
-                                  },
-                                  color: Colors.deepOrange[400],
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50)),
-                                  child: Row(
-                                    children: const [
-                                      Icon(
-                                        Icons.mail,
-                                        size: 20,
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    'Contact',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.person,
+                                          color: Colors.lightBlue, size: 18),
+                                      const SizedBox(width: 5),
                                       Text(
-                                        'Mail',
+                                        tourOp.first.contact.name,
                                         style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600),
-                                      )
+                                          color: Colors.grey[800],
+                                          fontSize: 14,
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                ),
-                                MaterialButton(
-                                  elevation: 0,
-                                  onPressed: () {
-                                    _launchWeb(
-                                        tourOp.first.tariffDocument.secureUrl);
-                                  },
-                                  color: Colors.lightBlue[600],
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50)),
-                                  child: Row(
-                                    children: const [
-                                      Icon(
-                                        Icons.picture_as_pdf,
-                                        size: 20,
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
+                                  const SizedBox(height: 5),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.phone,
+                                          color: Colors.green, size: 18),
+                                      const SizedBox(width: 5),
                                       Text(
-                                        'View tarrif',
+                                        tourOp.first.contact.phone,
                                         style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600),
-                                      )
+                                          color: Colors.grey[800],
+                                          fontSize: 14,
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(height: 5),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.email,
+                                          color: Colors.redAccent, size: 18),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        tourOp.first.contact.email,
+                                        style: TextStyle(
+                                          color: Colors.grey[800],
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      MaterialButton(
+                                        elevation: 0,
+                                        onPressed: () {
+                                          _makePhoneCall(
+                                              tourOp.first.contact.phone);
+                                        },
+                                        color: Colors.green[600],
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50)),
+                                        child: Row(
+                                          children: const [
+                                            Icon(
+                                              Icons.call,
+                                              size: 20,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text(
+                                              'Call',
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      MaterialButton(
+                                        elevation: 0,
+                                        onPressed: () {
+                                          _launchEmail(
+                                              tourOp.first.contact.email);
+                                        },
+                                        color: Colors.deepOrange[400],
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50)),
+                                        child: Row(
+                                          children: const [
+                                            Icon(
+                                              Icons.mail,
+                                              size: 20,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text(
+                                              'Mail',
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      MaterialButton(
+                                        elevation: 0,
+                                        onPressed: () {
+                                          _launchWeb(tourOp
+                                              .first.tariffDocument.secureUrl);
+                                        },
+                                        color: Colors.lightBlue[600],
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50)),
+                                        child: Row(
+                                          children: const [
+                                            Icon(
+                                              Icons.picture_as_pdf,
+                                              size: 20,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text(
+                                              'View tarrif',
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                      );
+                    }).toList(),
                   ),
-                ),
-              ]);
+                ]);
+              }
             } else {
               return const Center(
                 child: CircularProgressIndicator(),

@@ -48,7 +48,6 @@ class HomeMain extends StatefulWidget {
 }
 
 class _HomeMainState extends State<HomeMain> {
-
   @override
   Widget build(BuildContext context) {
     if (currentHour < 12) {
@@ -253,11 +252,8 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                       height: 48,
                       minWidth: MediaQuery.of(context).size.width * .2,
                       onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          FilterPlace.routeName,
-                          arguments: [c,ia]
-                        );
+                        Navigator.pushNamed(context, FilterPlace.routeName,
+                            arguments: [c, ia]);
                       },
                       color: Colors.lightBlue[600],
                       shape: RoundedRectangleBorder(
@@ -293,8 +289,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                   itemBuilder: (context, index, realIndex) {
                     final urlImage = ia[index].image.secureUrl;
                     final urlImageText = ia[index].name;
-                    return buildImage(context, urlImage, urlImageText, index
-                        );
+                    return buildImage(context, urlImage, urlImageText, index);
                   },
                   options: CarouselOptions(
                       height: 200,
@@ -438,7 +433,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                 ],
               ),
             ),
-            (SharedService.id == '')
+            (SharedService.id == '' || pa.isEmpty)
                 ? const SizedBox(
                     height: 2,
                   )
@@ -777,7 +772,8 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                           Navigator.pushNamed(context, MapWebView.routeName);
                         }
                         if (index == 3) {
-                          Navigator.pushNamed(context, ToiletMapWebView.routeName);
+                          Navigator.pushNamed(
+                              context, ToiletMapWebView.routeName);
                         }
                       },
                       child: ClipRRect(
@@ -799,7 +795,8 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                           Text(
                             sa[index].name,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 13, color: Colors.black),
+                            style: const TextStyle(
+                                fontSize: 13, color: Colors.black),
                           ),
                         ]),
                       ),

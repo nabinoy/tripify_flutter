@@ -428,13 +428,12 @@ class _HotelScreenState extends State<HotelScreen> {
                           children: nearbyHd.map((widget) {
                             Point point1 = Point(
                                 latitude: currentLocation.latitude!,
-                                longitude: currentLocation.latitude!);
+                                longitude: currentLocation.longitude!);
                             Point point2 = Point(
                                 latitude: widget.location.coordinates[1],
                                 longitude: widget.location.coordinates[0]);
 
                             var distance = georange.distance(point1, point2);
-                            print(distance);
                             return GestureDetector(
                               onTap: () {
                                 Navigator.pushNamed(
@@ -583,9 +582,6 @@ class _HotelScreenState extends State<HotelScreen> {
                                               ),
                                               Text(
                                                 '${distance.toStringAsFixed(1)}km away',
-                                                // (distance >= 1000.0)
-                                                //     ? '${(distance / 1000).toStringAsFixed(1)}km away'
-                                                //     : '${distance.toStringAsFixed(0)}m away',
                                                 style: const TextStyle(
                                                     fontSize: 12,
                                                     color: Colors.white),
