@@ -118,21 +118,23 @@ class _PlaceState extends State<Place> {
             pinned: true,
             elevation: 0,
             flexibleSpace: FlexibleSpaceBar(
-                background: CarouselSlider.builder(
-                    carouselController: controller,
-                    itemCount: placeList.first.images.length,
-                    itemBuilder: (context, index, realIndex) {
-                      final urlImage = placeList.first.images[index].secureUrl;
-                      return buildImage(context, urlImage, index);
-                    },
-                    options: CarouselOptions(
-                      height: 400,
-                      viewportFraction: 1,
-                      autoPlay: true,
-                      enableInfiniteScroll: true,
-                      autoPlayAnimationDuration: const Duration(seconds: 1),
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                    ))),
+                background: SafeArea(
+              child: CarouselSlider.builder(
+                  carouselController: controller,
+                  itemCount: placeList.first.images.length,
+                  itemBuilder: (context, index, realIndex) {
+                    final urlImage = placeList.first.images[index].secureUrl;
+                    return buildImage(context, urlImage, index);
+                  },
+                  options: CarouselOptions(
+                    height: 400,
+                    viewportFraction: 1,
+                    autoPlay: true,
+                    enableInfiniteScroll: true,
+                    autoPlayAnimationDuration: const Duration(seconds: 1),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                  )),
+            )),
             leading: GestureDetector(
               onTap: () {
                 HapticFeedback.mediumImpact();
@@ -1449,18 +1451,25 @@ class _UserReviewWidgetState extends State<UserReviewWidget> {
 }
 
 Widget buildImage(BuildContext context, String urlImage, int index) {
-  return ClipRRect(
-    child: CachedNetworkImage(
-      height: 600,
-      width: MediaQuery.of(context).size.width,
-      alignment: Alignment.bottomCenter,
-      imageUrl: urlImage,
-      placeholder: (context, url) => Image.memory(
-        kTransparentImage,
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 10),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: CachedNetworkImage(
+        height: 600,
+        width: MediaQuery.of(context).size.width,
+        alignment: Alignment.bottomCenter,
+        imageUrl: urlImage,
+        placeholder: (context, url) => Image.memory(
+          kTransparentImage,
+          fit: BoxFit.cover,
+        ),
+        fadeInDuration: const Duration(milliseconds: 200),
         fit: BoxFit.cover,
       ),
-      fadeInDuration: const Duration(milliseconds: 200),
-      fit: BoxFit.cover,
     ),
   );
 }

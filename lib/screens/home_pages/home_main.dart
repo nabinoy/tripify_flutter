@@ -48,18 +48,6 @@ class HomeMain extends StatefulWidget {
 }
 
 class _HomeMainState extends State<HomeMain> {
-  List<LatLng> islandCoords = [];
-
-  Future<List<LatLng>> fetchIslandLocation(List<IslandAll> ia) async {
-    List<LatLng> islandCoords = [];
-    LatLng cameraTarget = const LatLng(0, 0);
-    for (var i = 0; i < ia.length; i++) {
-      await getCoordinatesFromPace('(andaman and nicobar island) ${ia[i].name}')
-          .then((value) => {cameraTarget = value});
-      islandCoords.add(cameraTarget);
-    }
-    return islandCoords;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -306,7 +294,6 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                     final urlImage = ia[index].image.secureUrl;
                     final urlImageText = ia[index].name;
                     return buildImage(context, urlImage, urlImageText, index
-                        // widget.islandCoords[index]
                         );
                   },
                   options: CarouselOptions(
@@ -472,7 +459,6 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                         SizedBox(
                             height: MediaQuery.of(context).size.width / 1.58,
                             child: PlaceRecommendationByUser(pa)),
-                        //PlaceHorizontal(item.sId, islandDetails.sId)
                       ],
                     )),
             FadeAnimation(
@@ -721,9 +707,6 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                                                           ),
                                                           Text(
                                                             '${distance.toStringAsFixed(1)}km away',
-                                                            // (distance >= 1000.0)
-                                                            //     ? '${(distance / 1000).toStringAsFixed(1)}km away'
-                                                            //     : '${distance.toStringAsFixed(0)}m away',
                                                             style:
                                                                 const TextStyle(
                                                                     fontSize:
@@ -793,6 +776,9 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                         if (index == 2) {
                           Navigator.pushNamed(context, MapWebView.routeName);
                         }
+                        if (index == 3) {
+                          Navigator.pushNamed(context, ToiletMapWebView.routeName);
+                        }
                       },
                       child: ClipRRect(
                         child: Column(children: [
@@ -810,10 +796,10 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          const SizedBox(height: 10.0),
                           Text(
                             sa[index].name,
-                            style: const TextStyle(color: Colors.black),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 13, color: Colors.black),
                           ),
                         ]),
                       ),
