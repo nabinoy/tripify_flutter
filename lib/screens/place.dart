@@ -244,15 +244,12 @@ class _PlaceState extends State<Place> {
                     Text(
                       placeList.first.name,
                       style: const TextStyle(
-                        fontSize: 20,
-                      ),
+                          fontSize: 22, fontWeight: FontWeight.w600),
                     ),
                     Row(
                       children: [
-                        const Icon(
-                          Icons.location_pin,
-                          size: 18,
-                        ),
+                        const Icon(Icons.location_pin,
+                            size: 16, color: Colors.black54),
                         Text(
                           placeList.first.address.city,
                           textAlign: TextAlign.left,
@@ -296,20 +293,29 @@ class _PlaceState extends State<Place> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     'Activities',
                     style: TextStyle(
                       fontSize: 18,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
-                  Text(
-                    'scuba diving',
-                    style: TextStyle(color: Colors.black54),
-                  )
+                  Wrap(
+                    spacing: 8.0,
+                    children: placeList.first.activities.map((item) {
+                      return Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.lightBlue[300],
+                        ),
+                        child: Text(item),
+                      );
+                    }).toList(),
+                  ),
                 ],
               ),
             ),
@@ -396,13 +402,20 @@ class _PlaceState extends State<Place> {
                           ...placeList.first.doS.map((d) => Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Icon(
-                                    MdiIcons.checkCircleOutline,
-                                    color: Colors.green,
-                                    size: 18,
+                                  Column(
+                                    children: const [
+                                      SizedBox(
+                                        height: 2,
+                                      ),
+                                      Icon(
+                                        MdiIcons.checkCircleOutline,
+                                        color: Colors.green,
+                                        size: 16,
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(
-                                    width: 2,
+                                    width: 4,
                                   ),
                                   Expanded(
                                     child: Text(
@@ -424,13 +437,20 @@ class _PlaceState extends State<Place> {
                           ...placeList.first.dontS.map((d) => Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Icon(
-                                    MdiIcons.closeCircleOutline,
-                                    color: Colors.red,
-                                    size: 18,
+                                  Column(
+                                    children: const [
+                                      SizedBox(
+                                        height: 2,
+                                      ),
+                                      Icon(
+                                        MdiIcons.checkCircleOutline,
+                                        color: Colors.red,
+                                        size: 16,
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(
-                                    width: 2,
+                                    width: 4,
                                   ),
                                   Expanded(
                                     child: Text(
@@ -1479,13 +1499,11 @@ class WriteReviewDialog extends StatefulWidget {
   const WriteReviewDialog(this.rating, {Key? key}) : super(key: key);
 
   @override
-  // ignore: no_logic_in_create_state
-  State<WriteReviewDialog> createState() => _WriteReviewDialogState(rating);
+  State<WriteReviewDialog> createState() => _WriteReviewDialogState();
 }
 
 class _WriteReviewDialogState extends State<WriteReviewDialog> {
-  final double rating;
-  _WriteReviewDialogState(this.rating);
+  _WriteReviewDialogState();
   final TextEditingController _controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -1517,7 +1535,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
                     //mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       RatingBar.builder(
-                        initialRating: rating,
+                        initialRating: widget.rating,
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: false,
@@ -1588,7 +1606,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
             if (_formKey.currentState!.validate()) {
               UserReviewModel model = UserReviewModel(
                   placeId: currentPlace.first.sId,
-                  rating: rating.toInt(),
+                  rating: widget.rating.toInt(),
                   comment: _controller.text);
               APIService.userReview(model).then(
                 (response) {
