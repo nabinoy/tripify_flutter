@@ -19,6 +19,12 @@ Map<String, Icon> hotelFacilityIcons = {};
 
 Map<String, IconData> hotelBedIcons = {
   "King": MdiIcons.bedKing,
+  "Single": MdiIcons.bedSingle,
+  "Queen": MdiIcons.bedQueen,
+  "Double": MdiIcons.bedDouble,
+  "Super King": Icons.king_bed,
+  "Bunk King": MdiIcons.bunkBed,
+  "Sofa Bed": MdiIcons.sofaSingle,
 };
 
 Map<String, String> hotelRoomTypeImages = {
