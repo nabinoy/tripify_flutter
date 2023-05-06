@@ -1472,7 +1472,7 @@ class _UserReviewWidgetState extends State<UserReviewWidget> {
 
 Widget buildImage(BuildContext context, String urlImage, int index) {
   return Container(
-    margin: const EdgeInsets.symmetric(horizontal: 10),
+    margin: const EdgeInsets.symmetric(horizontal: 12),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
     ),
