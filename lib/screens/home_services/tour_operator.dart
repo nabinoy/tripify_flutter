@@ -69,7 +69,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'No tour operators found!',
+                        'No tour operator found!',
                         style: TextStyle(
                           fontSize: 16,
                           color: Theme.of(context).disabledColor,
@@ -107,7 +107,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                               child: ClipOval(
                                 child: SizedBox(
                                   child: CachedNetworkImage(
-                                    imageUrl: tourOp.first.image.secureUrl,
+                                    imageUrl: widget.image.secureUrl,
                                     placeholder: (context, url) => Image.memory(
                                       kTransparentImage,
                                       fit: BoxFit.cover,
@@ -128,7 +128,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                 children: [
                                   Center(
                                     child: Text(
-                                      tourOp.first.name,
+                                      widget.name,
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
@@ -138,7 +138,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    tourOp.first.description,
+                                    widget.description,
                                     textAlign: TextAlign.justify,
                                   ),
                                   const SizedBox(height: 10),
@@ -156,7 +156,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                       const SizedBox(width: 5),
                                       Expanded(
                                         child: Text(
-                                          '${tourOp.first.address.street}, ${tourOp.first.address.city}, ${tourOp.first.address.state} ${tourOp.first.address.zip}',
+                                          '${widget.address.street}, ${widget.address.city}, ${widget.address.state} ${widget.address.zip}',
                                           style: TextStyle(
                                             color: Colors.grey[900],
                                             fontSize: 14,
@@ -181,7 +181,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                           color: Colors.lightBlue, size: 18),
                                       const SizedBox(width: 5),
                                       Text(
-                                        tourOp.first.contact.name,
+                                        widget.contact.name,
                                         style: TextStyle(
                                           color: Colors.grey[800],
                                           fontSize: 14,
@@ -196,7 +196,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                           color: Colors.green, size: 18),
                                       const SizedBox(width: 5),
                                       Text(
-                                        tourOp.first.contact.phone,
+                                        widget.contact.phone,
                                         style: TextStyle(
                                           color: Colors.grey[800],
                                           fontSize: 14,
@@ -211,7 +211,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                           color: Colors.redAccent, size: 18),
                                       const SizedBox(width: 5),
                                       Text(
-                                        tourOp.first.contact.email,
+                                        widget.contact.email,
                                         style: TextStyle(
                                           color: Colors.grey[800],
                                           fontSize: 14,
@@ -227,8 +227,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                       MaterialButton(
                                         elevation: 0,
                                         onPressed: () {
-                                          _makePhoneCall(
-                                              tourOp.first.contact.phone);
+                                          _makePhoneCall(widget.contact.phone);
                                         },
                                         color: Colors.green[600],
                                         shape: RoundedRectangleBorder(
@@ -257,8 +256,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                       MaterialButton(
                                         elevation: 0,
                                         onPressed: () {
-                                          _launchEmail(
-                                              tourOp.first.contact.email);
+                                          _launchEmail(widget.contact.email);
                                         },
                                         color: Colors.deepOrange[400],
                                         shape: RoundedRectangleBorder(
