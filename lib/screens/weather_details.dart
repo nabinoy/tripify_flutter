@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/weather_model.dart';
-import 'package:tripify/router.dart';
 import 'package:tripify/services/current_location.dart';
+import 'package:tripify/services/geocoding.dart';
 import 'package:tripify/widget/day_forcast.dart';
 import 'package:tripify/widget/hour_forecast.dart';
 import 'package:tripify/widget/main_weather.dart';
@@ -36,6 +36,7 @@ class _WeatherDetailsState extends State<WeatherDetails> {
       weatherLatAPI = placeList[0];
       weatherLongAPI = placeList[1];
     }
+    String weatherLocationName = '';
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -76,13 +77,16 @@ class _WeatherDetailsState extends State<WeatherDetails> {
         ),
         body: FutureBuilder(
           future: Future.wait([
+            getNameFromCoordinate(
+                    double.parse(weatherLatAPI), double.parse(weatherLongAPI))
+                .then((value) => {weatherLocationName = value}),
             getWeatherInfo(),
             getForcastInfo(),
             getDayForcastInfo(),
           ]),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return const WeatherScreen();
+              return WeatherScreen(weatherLocationName);
             } else {
               return const LoadingScreen();
             }
@@ -94,7 +98,8 @@ class _WeatherDetailsState extends State<WeatherDetails> {
 }
 
 class WeatherScreen extends StatefulWidget {
-  const WeatherScreen({super.key});
+  final String weatherLocationName;
+  const WeatherScreen(this.weatherLocationName, {super.key});
 
   @override
   State<WeatherScreen> createState() => _WeatherScreenState();
@@ -120,7 +125,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             Container(
               height: screenHeight / 2 * 0.8,
               padding: const EdgeInsets.fromLTRB(10, 2, 10, 10),
-              child: MainWeather(),
+              child: MainWeather(widget.weatherLocationName),
             ),
             FadeAnimation(
               1.7,

@@ -3,18 +3,25 @@ import 'package:intl/intl.dart';
 import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/models/weather_model.dart';
 
-class MainWeather extends StatelessWidget {
+class MainWeather extends StatefulWidget {
+  final String weatherLocationName;
+  const MainWeather(this.weatherLocationName, {super.key});
+
+  @override
+  State<MainWeather> createState() => _MainWeatherState();
+}
+
+class _MainWeatherState extends State<MainWeather> {
   final TextStyle _style1 = const TextStyle(
     fontWeight: FontWeight.w500,
     fontSize: 18,
   );
+
   final TextStyle _style2 = TextStyle(
     fontWeight: FontWeight.w400,
     color: Colors.grey[700],
     fontSize: 14,
   );
-
-  MainWeather({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +35,7 @@ class MainWeather extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.location_on_outlined),
-                Text(placeName,
+                Text(widget.weatherLocationName,
                     style: _style1.copyWith(fontWeight: FontWeight.w600)),
               ],
             ),
