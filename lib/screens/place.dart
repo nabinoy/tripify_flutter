@@ -308,16 +308,20 @@ class _PlaceState extends State<Place> {
                   const SizedBox(
                     height: 5,
                   ),
-                  Wrap(
-                    spacing: 8.0,
+                  Column(
                     children: placeList.first.activities.map((item) {
-                      return Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.lightBlue[300],
+                      return Card(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
                         ),
-                        child: Text(item),
+                        color: const Color.fromARGB(255, 233, 238, 240),
+                        child: ListTile(
+                          title: Text(
+                            item,
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                        ),
                       );
                     }).toList(),
                   ),
@@ -349,7 +353,7 @@ class _PlaceState extends State<Place> {
                     children: [
                       TableRow(
                         decoration: BoxDecoration(
-                          color: Colors.lightBlue[200],
+                          color: Colors.lightBlue[100],
                         ),
                         children: const [
                           Center(
@@ -390,7 +394,7 @@ class _PlaceState extends State<Place> {
                       ...List.generate(
                         placeList.first.timings.length,
                         (rowIndex) => TableRow(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.white,
                           ),
                           children: [
