@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -141,7 +142,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                 ),
                               ),
                               Text(
-                                '${hotel.address.street},${hotel.address.city}',
+                                '${hotel.address.street}, ${hotel.address.city}',
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
@@ -149,91 +150,91 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                 ),
                               ),
                               Text(
-                                '${hotel.address.state},${hotel.address.zip}',
+                                '${hotel.address.state}, ${hotel.address.zip}',
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              Container(
-                                margin: const EdgeInsets.only(top: 20),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          margin:
-                                              const EdgeInsets.only(right: 10),
-                                          width: 30,
-                                          height: 30,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color:
-                                                Colors.white.withOpacity(0.4),
-                                          ),
-                                          child: const Icon(
-                                            Icons.bed,
-                                            color: Colors.white,
-                                            size: 20,
-                                          ),
-                                        ),
-                                        const Text(
-                                          "4 Bedroom",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            // fontWeight: FontWeight.w400,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: 30,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          margin:
-                                              const EdgeInsets.only(right: 10),
-                                          width: 30,
-                                          height: 30,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color:
-                                                Colors.white.withOpacity(0.4),
-                                          ),
-                                          child: const Icon(
-                                            Icons.bathroom,
-                                            color: Colors.white,
-                                            size: 20,
-                                          ),
-                                        ),
-                                        const Text(
-                                          "3 Bathroom",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            // fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
+                              // Container(
+                              //   margin: const EdgeInsets.only(top: 20),
+                              //   child: Row(
+                              //     mainAxisAlignment:
+                              //         MainAxisAlignment.spaceBetween,
+                              //     children: [
+                              //       Row(
+                              //         mainAxisAlignment:
+                              //             MainAxisAlignment.center,
+                              //         crossAxisAlignment:
+                              //             CrossAxisAlignment.center,
+                              //         children: [
+                              //           Container(
+                              //             margin:
+                              //                 const EdgeInsets.only(right: 10),
+                              //             width: 30,
+                              //             height: 30,
+                              //             decoration: BoxDecoration(
+                              //               borderRadius:
+                              //                   BorderRadius.circular(10),
+                              //               color:
+                              //                   Colors.white.withOpacity(0.4),
+                              //             ),
+                              //             child: const Icon(
+                              //               Icons.bed,
+                              //               color: Colors.white,
+                              //               size: 20,
+                              //             ),
+                              //           ),
+                              //           const Text(
+                              //             "4 Bedroom",
+                              //             style: TextStyle(
+                              //               color: Colors.white,
+                              //               // fontWeight: FontWeight.w400,
+                              //               fontSize: 14,
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //       const SizedBox(
+                              //         width: 30,
+                              //       ),
+                              //       Row(
+                              //         mainAxisAlignment:
+                              //             MainAxisAlignment.center,
+                              //         crossAxisAlignment:
+                              //             CrossAxisAlignment.center,
+                              //         children: [
+                              //           Container(
+                              //             margin:
+                              //                 const EdgeInsets.only(right: 10),
+                              //             width: 30,
+                              //             height: 30,
+                              //             decoration: BoxDecoration(
+                              //               borderRadius:
+                              //                   BorderRadius.circular(10),
+                              //               color:
+                              //                   Colors.white.withOpacity(0.4),
+                              //             ),
+                              //             child: const Icon(
+                              //               Icons.bathroom,
+                              //               color: Colors.white,
+                              //               size: 20,
+                              //             ),
+                              //           ),
+                              //           const Text(
+                              //             "3 Bathroom",
+                              //             style: TextStyle(
+                              //               color: Colors.white,
+                              //               // fontWeight: FontWeight.w500,
+                              //               fontSize: 14,
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       )
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -245,7 +246,6 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
 
               // description
               Container(
-                // color: Colors.amber,
                 margin: const EdgeInsets.only(
                     left: 20, right: 20, top: 25, bottom: 10),
                 child: Column(
@@ -261,14 +261,58 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                         ),
                       ),
                     ),
-                    Text(
+                    ExpandableText(
                       hotel.description,
-                      textAlign: TextAlign.justify,
-                      style: const TextStyle(
-                        color: Colors.black54,
-                        height: 1.4,
-                        fontWeight: FontWeight.w400,
+                      animation: true,
+                      expandText: 'show more',
+                      collapseText: 'show less',
+                      maxLines: 5,
+                      linkColor: Colors.blue,
+                    ),
+                  ],
+                ),
+              ),
+
+              Container(
+                margin: const EdgeInsets.only(
+                    left: 20, right: 20, top: 25, bottom: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        'Facilities',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 23,
+                        ),
                       ),
+                    ),
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 10.0,
+                      crossAxisSpacing: 10.0,
+                      children: hotel.facilities.map((facility) {
+                        return Card(
+                          color: Colors.lightBlue[200],
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text(facility,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600)),
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ],
                 ),
