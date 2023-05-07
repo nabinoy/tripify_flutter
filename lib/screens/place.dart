@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -114,7 +115,7 @@ class _PlaceState extends State<Place> {
         slivers: [
           SliverAppBar(
             backgroundColor: Colors.white,
-            expandedHeight: 300,
+            expandedHeight: 350,
             pinned: true,
             elevation: 0,
             flexibleSpace: FlexibleSpaceBar(
@@ -244,7 +245,7 @@ class _PlaceState extends State<Place> {
                     Text(
                       placeList.first.name,
                       style: const TextStyle(
-                          fontSize: 22, fontWeight: FontWeight.w600),
+                          fontSize: 26, fontWeight: FontWeight.w600),
                     ),
                     Row(
                       children: [
@@ -272,18 +273,19 @@ class _PlaceState extends State<Place> {
                 children: [
                   const Text(
                     'Description',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
                     height: 5,
                   ),
-                  Text(
+                  ExpandableText(
                     placeList.first.description,
-                    textAlign: TextAlign.justify,
-                    style: const TextStyle(color: Colors.black54),
-                  )
+                    animation: true,
+                    expandText: 'show more',
+                    collapseText: 'show less',
+                    maxLines: 6,
+                    linkColor: Colors.blue,
+                  ),
                 ],
               ),
             ),
@@ -296,9 +298,7 @@ class _PlaceState extends State<Place> {
                 children: [
                   const Text(
                     'Activities',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
                     height: 5,
@@ -328,9 +328,7 @@ class _PlaceState extends State<Place> {
                 children: [
                   const Text(
                     'Timing',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
                     height: 10,
@@ -386,9 +384,7 @@ class _PlaceState extends State<Place> {
                 children: [
                   const Text(
                     'Dos and Don\'ts',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
                     height: 5,
@@ -443,7 +439,7 @@ class _PlaceState extends State<Place> {
                                         height: 2,
                                       ),
                                       Icon(
-                                        MdiIcons.checkCircleOutline,
+                                        MdiIcons.cancel,
                                         color: Colors.red,
                                         size: 16,
                                       ),
@@ -473,19 +469,39 @@ class _PlaceState extends State<Place> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     'Cost',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
-                  Text(
-                    'No fees required',
-                    style: TextStyle(color: Colors.black54),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(
+                          Icons.attach_money,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 8.0),
+                        Text(
+                          "Entry free",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -499,9 +515,7 @@ class _PlaceState extends State<Place> {
                 children: const [
                   Text(
                     'Direction',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
@@ -548,9 +562,7 @@ class _PlaceState extends State<Place> {
                 children: [
                   const Text(
                     'Address',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
                     height: 5,
@@ -574,9 +586,8 @@ class _PlaceState extends State<Place> {
                   children: [
                     const Text(
                       'Weather Forecast',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -624,8 +635,7 @@ class _PlaceState extends State<Place> {
                           const Text(
                             'Rate this place',
                             style: TextStyle(
-                              fontSize: 18,
-                            ),
+                                fontSize: 18, fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(
                             height: 12,
@@ -722,8 +732,8 @@ class _PlaceState extends State<Place> {
                                       const Text(
                                         'Rate this place',
                                         style: TextStyle(
-                                          fontSize: 18,
-                                        ),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600),
                                       ),
                                       const SizedBox(
                                         height: 12,
@@ -807,8 +817,8 @@ class _PlaceState extends State<Place> {
                                       const Text(
                                         'Your review',
                                         style: TextStyle(
-                                          fontSize: 18,
-                                        ),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600),
                                       ),
                                       const SizedBox(
                                         height: 12,
@@ -830,9 +840,7 @@ class _PlaceState extends State<Place> {
                 children: [
                   const Text(
                     'Ratings and reviews',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
                     height: 5,
@@ -1061,9 +1069,7 @@ class _PlaceState extends State<Place> {
                 children: [
                   const Text(
                     'Similar places',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
                       height: MediaQuery.of(context).size.width / 1.58,
@@ -1080,9 +1086,7 @@ class _PlaceState extends State<Place> {
                 children: const [
                   Text(
                     'External links',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
                     height: 5,
@@ -1102,8 +1106,7 @@ class _PlaceState extends State<Place> {
 }
 
 class PlaceCategory extends StatefulWidget {
-  // ignore: prefer_typing_uninitialized_variables
-  final ratingsAverage;
+  final double ratingsAverage;
   const PlaceCategory(this.ratingsAverage, {super.key});
 
   @override

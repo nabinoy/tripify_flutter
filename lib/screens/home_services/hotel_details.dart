@@ -11,7 +11,6 @@ import 'package:tripify/loader/loader_review_user.dart';
 import 'package:tripify/models/hotel_response_model.dart';
 import 'package:tripify/models/review_rating_model.dart';
 import 'package:tripify/models/user_hotel_review_model.dart';
-import 'package:tripify/models/user_review_model.dart';
 import 'package:tripify/models/weather_model.dart';
 import 'package:tripify/screens/review_all.dart';
 import 'package:tripify/services/api_service.dart';
@@ -303,7 +302,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                       color: Colors.black87,
                     ),
                   ),
-                  subtitle: const Text('Owner'),
+                  subtitle: const Text('Hotel'),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
