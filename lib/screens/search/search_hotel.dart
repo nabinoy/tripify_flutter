@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/models/hotel_response_model.dart';
 import 'package:tripify/screens/home_services/hotel_details.dart';
-import 'package:tripify/screens/place.dart';
 import 'package:tripify/services/api_service.dart';
 
 class SearchHotel extends StatefulWidget {

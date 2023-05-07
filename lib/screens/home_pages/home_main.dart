@@ -21,7 +21,7 @@ import 'package:tripify/screens/island.dart';
 import 'package:tripify/screens/location_weather.dart';
 import 'package:tripify/screens/home_services/map_webview.dart';
 import 'package:tripify/screens/place.dart';
-import 'package:tripify/screens/search_place.dart';
+import 'package:tripify/screens/search/search_place.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/geocoding.dart';

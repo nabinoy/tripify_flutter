@@ -273,6 +273,35 @@ class APIService {
     }
   }
 
+  static Future<List<TourOperators>> tourOperatorBySearch(String search) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {'search': search};
+    var url =
+        Uri.https(Config.apiURL, Config.tourOperatorAllAPI, queryParameters);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['tourOperators'];
+      List<TourOperators> t = [];
+
+      for (var i = 0; i < data.length; i++) {
+        TourOperators t2 = TourOperators.fromJson(data[i]);
+        t.add(t2);
+      }
+      return t;
+    } else {
+      throw Exception('Failed to load tour operator details');
+    }
+  }
+
   static Future<List<Places2>> placeAll() async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',

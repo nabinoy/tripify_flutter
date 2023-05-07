@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/models/tour_operator_response_model.dart';
+import 'package:tripify/screens/search/search_tour_operator.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,7 +20,7 @@ class TourOperatorSceen extends StatefulWidget {
 class _TourOperatorSceenState extends State<TourOperatorSceen> {
   List<TourOperators> tourOp = [];
 
-  Future<void> _makePhoneCall(String phoneNumber) async {
+  void _makePhoneCall(String phoneNumber) async {
     final Uri launchUri = Uri(
       scheme: 'tel',
       path: phoneNumber,
@@ -80,7 +81,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
             ),
             GestureDetector(
               onTap: () {
-                //Navigator.pushNamed(context, SearchHotel.routeName);
+                Navigator.pushNamed(context, SearchTourOperator.routeName);
               },
               child: Container(
                 margin: const EdgeInsets.all(16),

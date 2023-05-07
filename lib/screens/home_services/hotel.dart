@@ -10,7 +10,7 @@ import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/hotel_response_model.dart';
 import 'package:tripify/models/nearby_request_model.dart';
 import 'package:tripify/screens/home_services/hotel_details.dart';
-import 'package:tripify/screens/search_hotel.dart';
+import 'package:tripify/screens/search/search_hotel.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/shared_service.dart';
