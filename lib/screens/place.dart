@@ -26,6 +26,7 @@ import 'package:tripify/widget/hour_forecast.dart';
 import 'dart:math' as math;
 
 import 'package:tripify/widget/place_recommendation_byplace.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 late PlaceDetails placeDetails;
 late List<Places2> currentPlace;
@@ -89,6 +90,10 @@ class _PlaceState extends State<Place> {
     googleMapController.dispose();
     polylineCoordinates.clear();
     super.dispose();
+  }
+
+  void _launchWeb(String website) async {
+    await launchUrl(Uri.parse(website), mode: LaunchMode.externalApplication);
   }
 
   @override
@@ -1091,69 +1096,70 @@ class _PlaceState extends State<Place> {
                   const SizedBox(
                     height: 5,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25.0),
-                        color: const Color.fromARGB(255, 233, 238, 240)),
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          placeList.first.externalLinks.first.title,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Column(
+                    children: placeList.first.externalLinks.map((externalLink) {
+                      return Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25.0),
+                            color: const Color.fromARGB(255, 233, 238, 240)),
+                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.55,
-                                child: Text(
-                                  placeList.first.externalLinks.first.link,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      color: Colors.black54, fontSize: 13),
-                                )),
-                            MaterialButton(
-                              elevation: 0,
-                              onPressed: () {
-                                // if (await canLaunch(url)) {
-                                //   await launch(url);
-                                // } else {
-                                //   throw 'Could not launch $url';
-                                // }
-                              },
-                              color: Colors.lightBlue[600],
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: Row(
-                                children: const [
-                                  Text(
-                                    'Open',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Icon(
-                                    Icons.open_in_new_outlined,
-                                    size: 18,
-                                    color: Colors.white,
-                                  )
-                                ],
+                            Text(
+                              externalLink.title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16.0,
                               ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.55,
+                                    child: Text(
+                                      externalLink.link,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                          color: Colors.black54, fontSize: 13),
+                                    )),
+                                MaterialButton(
+                                  elevation: 0,
+                                  onPressed: () {
+                                    _launchWeb(externalLink.link);
+                                  },
+                                  color: Colors.lightBlue[600],
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: Row(
+                                    children: const [
+                                      Text(
+                                        'Open',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Icon(
+                                        Icons.open_in_new_outlined,
+                                        size: 18,
+                                        color: Colors.white,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  )
+                      );
+                    }).toList(),
+                  ),
                 ],
               ),
             ),
