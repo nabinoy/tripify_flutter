@@ -1,8 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:random_avatar/random_avatar.dart';
 import 'package:tripify/animation/FadeAnimation.dart';

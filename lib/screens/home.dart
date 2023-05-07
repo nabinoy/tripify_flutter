@@ -15,7 +15,6 @@ import 'package:tripify/screens/home_pages/wishlist.dart';
 import 'package:tripify/screens/login.dart';
 import 'package:tripify/screens/signup.dart';
 import 'package:tripify/screens/weather_details.dart';
-import 'package:tripify/screens/welcome.dart';
 import 'package:tripify/services/shared_service.dart';
 
 class Home extends StatelessWidget {

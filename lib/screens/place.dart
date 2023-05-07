@@ -626,7 +626,9 @@ class _PlaceState extends State<Place> {
                     height: 5,
                   ),
                   Text(
-                    '${placeList.first.address.street}\n${placeList.first.address.landmark}\n${placeList.first.address.zip}\n${placeList.first.address.city}\n${placeList.first.address.state}\n${placeList.first.address.country}',
+                    (placeList.first.address.landmark == "null")
+                        ? '${placeList.first.address.street}\n${placeList.first.address.zip}\n${placeList.first.address.city}\n${placeList.first.address.state}\n${placeList.first.address.country}'
+                        : '${placeList.first.address.street}\n${placeList.first.address.landmark}\n${placeList.first.address.zip}\n${placeList.first.address.city}\n${placeList.first.address.state}\n${placeList.first.address.country}',
                     style: const TextStyle(color: Colors.black54),
                   )
                 ],

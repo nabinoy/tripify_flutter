@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:tripify/constants/config.dart';
 import 'package:tripify/screens/place.dart';
-import 'package:tripify/services/geocoding.dart';
 
 String weatherLatAPI = '';
 String weatherLongAPI = '';

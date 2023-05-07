@@ -150,10 +150,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
                             if (response) {
                               isLoading = false;
-                              print('Success email:$email');
                             } else {
                               isLoading = false;
-                              print('failed email:$email');
                             }
                           },
                         );

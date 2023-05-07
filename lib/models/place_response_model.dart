@@ -134,7 +134,7 @@ class Address {
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
       street: json['street'],
-      landmark: json['landmark'],
+      landmark: json['landmark']??'null',
       city: json['city'],
       state: json['state'],
       zip: json['zip'],
