@@ -44,9 +44,10 @@ class _PlaceRecommendationByUserState extends State<PlaceRecommendationByUser> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No places found!',
+                  'We don\'t have any place recommendations for you yet, but don\'t worry! We\'re still getting to know your preferences. Keep using the app to help us learn more about what you\'re interested in.',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     color: Theme.of(context).disabledColor,
                   ),
                 ),
@@ -76,6 +77,7 @@ class _PlaceRecommendationByUserState extends State<PlaceRecommendationByUser> {
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width / 1.4,
+                            height: MediaQuery.of(context).size.width / 1.58,
                             margin: const EdgeInsets.fromLTRB(8, 8, 8, 16),
                             decoration: BoxDecoration(
                               boxShadow: [

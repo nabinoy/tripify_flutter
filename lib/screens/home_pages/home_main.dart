@@ -253,7 +253,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                       minWidth: MediaQuery.of(context).size.width * .2,
                       onPressed: () {
                         Navigator.pushNamed(context, FilterPlace.routeName,
-                            arguments: [c, ia,wishlistPlaceIdList]);
+                            arguments: [c, ia, wishlistPlaceIdList]);
                       },
                       color: Colors.lightBlue[600],
                       shape: RoundedRectangleBorder(
@@ -433,7 +433,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                 ],
               ),
             ),
-            (SharedService.id == '' || pa.isEmpty)
+            (SharedService.id == '')
                 ? const SizedBox(
                     height: 2,
                   )
@@ -451,9 +451,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.width / 1.58,
-                            child: PlaceRecommendationByUser(pa)),
+                        PlaceRecommendationByUser(pa),
                       ],
                     )),
             FadeAnimation(
