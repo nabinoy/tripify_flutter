@@ -625,11 +625,24 @@ class _PlaceState extends State<Place> {
                   const SizedBox(
                     height: 5,
                   ),
-                  Text(
-                    (placeList.first.address.landmark == "null")
-                        ? '${placeList.first.address.street}\n${placeList.first.address.zip}\n${placeList.first.address.city}\n${placeList.first.address.state}\n${placeList.first.address.country}'
-                        : '${placeList.first.address.street}\n${placeList.first.address.landmark}\n${placeList.first.address.zip}\n${placeList.first.address.city}\n${placeList.first.address.state}\n${placeList.first.address.country}',
-                    style: const TextStyle(color: Colors.black54),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.location_pin,
+                        size: 23,
+                        color: Colors.black54,
+                      ),
+                      const SizedBox(width: 5),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.83,
+                        child: Text(
+                          (placeList.first.address.landmark == "null")
+                              ? '${placeList.first.address.street}, ${placeList.first.address.zip}, ${placeList.first.address.city}, ${placeList.first.address.state}, ${placeList.first.address.country}'
+                              : '${placeList.first.address.street}, ${placeList.first.address.landmark}, ${placeList.first.address.zip}, ${placeList.first.address.city}, ${placeList.first.address.state}, ${placeList.first.address.country}',
+                          style: const TextStyle(color: Colors.black54),
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),

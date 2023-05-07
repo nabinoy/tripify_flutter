@@ -172,7 +172,6 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                     ),
                     Text(
                       ' ${SharedService.name.split(' ').firstWhere((name) => name.length > 2)}',
-                      //' ${SharedService.name}',
                       style: const TextStyle(fontSize: 16.0),
                     ),
                   ],
