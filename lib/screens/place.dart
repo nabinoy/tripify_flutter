@@ -245,7 +245,7 @@ class _PlaceState extends State<Place> {
                     Text(
                       placeList.first.name,
                       style: const TextStyle(
-                          fontSize: 26, fontWeight: FontWeight.w600),
+                          fontSize: 24, fontWeight: FontWeight.w600),
                     ),
                     Row(
                       children: [
@@ -1083,17 +1083,65 @@ class _PlaceState extends State<Place> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     'External links',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
-                  Text(
+                  const Text(
                     'https://www.example.com',
                     style: TextStyle(color: Colors.black54),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade400),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          placeList.first.externalLinks.first.title,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        const SizedBox(height: 8.0),
+                        Row(
+                          children: [
+                            // SvgPicture.network(
+                            //   logoUrl,
+                            //   height: 24.0,
+                            //   width: 24.0,
+                            // ),
+                            SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                child: Text(
+                                  placeList.first.externalLinks.first.link,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(color: Colors.black54),
+                                )),
+                            const Spacer(),
+                            ElevatedButton(
+                              onPressed: () async {
+                                // if (await canLaunch(url)) {
+                                //   await launch(url);
+                                // } else {
+                                //   throw 'Could not launch $url';
+                                // }
+                              },
+                              child: const Text('Open'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),

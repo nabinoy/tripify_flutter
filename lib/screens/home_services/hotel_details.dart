@@ -308,6 +308,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                               child: Text(facility,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w600)),
                             ),
                           ),
@@ -315,135 +316,6 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                       }).toList(),
                     ),
                   ],
-                ),
-              ),
-
-              // owner hotel
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-                child: ListTile(
-                  leading: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: CachedNetworkImage(
-                          alignment: Alignment.bottomCenter,
-                          imageUrl: hotel.images.first.secureUrl,
-                          placeholder: (context, url) => Image.memory(
-                            kTransparentImage,
-                            fit: BoxFit.cover,
-                          ),
-                          fadeInDuration: const Duration(milliseconds: 200),
-                          fit: BoxFit.cover,
-                        ),
-                      )),
-                  title: Text(
-                    hotel.name,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  subtitle: const Text('Hotel'),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          _makePhoneCall(hotel.contact.phone);
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 5),
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.green.withOpacity(0.7),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Icon(
-                            Icons.call,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _launchEmail(hotel.contact.email);
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 5),
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.lightBlue.withOpacity(0.7),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Icon(
-                            Icons.mail_outline,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Card(
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: [
-                              const Text(
-                                'Check-in Time',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                hotel.checkinTime,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(width: 30),
-                          Column(
-                            children: [
-                              const Text(
-                                'Check-out Time',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                hotel.checkoutTime,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
                 ),
               ),
 
@@ -736,6 +608,151 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                   ],
                 ),
               ),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 10, left: 16, top: 8),
+                    child: Text(
+                      'Description',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 23,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+                    child: ListTile(
+                      leading: SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: CachedNetworkImage(
+                              alignment: Alignment.bottomCenter,
+                              imageUrl: hotel.images.first.secureUrl,
+                              placeholder: (context, url) => Image.memory(
+                                kTransparentImage,
+                                fit: BoxFit.cover,
+                              ),
+                              fadeInDuration: const Duration(milliseconds: 200),
+                              fit: BoxFit.cover,
+                            ),
+                          )),
+                      title: Text(
+                        hotel.name,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      subtitle: const Text('Hotel'),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              _makePhoneCall(hotel.contact.phone);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 5),
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.green.withOpacity(0.7),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Icon(
+                                Icons.call,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              _launchEmail(hotel.contact.email);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 5),
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.lightBlue.withOpacity(0.7),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Icon(
+                                Icons.mail_outline,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Card(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                children: [
+                                  const Text(
+                                    'Check-in Time',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    hotel.checkinTime,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: 30),
+                              Column(
+                                children: [
+                                  const Text(
+                                    'Check-out Time',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    hotel.checkoutTime,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
               (SharedService.id.isEmpty)
                   ? Container(
                       padding: const EdgeInsets.all(16),
