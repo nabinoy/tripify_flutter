@@ -339,38 +339,87 @@ class _PlaceState extends State<Place> {
                     height: 10,
                   ),
                   Table(
-                    border: TableBorder.all(),
-                    columnWidths: const {
-                      0: FractionColumnWidth(0.3),
-                      1: FractionColumnWidth(0.3),
-                      2: FractionColumnWidth(0.4),
-                    },
+                    border: const TableBorder(
+                      top: BorderSide.none,
+                      bottom: BorderSide(color: Colors.black12),
+                      horizontalInside: BorderSide(color: Colors.black12),
+                      verticalInside: BorderSide.none,
+                    ),
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                     children: [
                       TableRow(
                         decoration: BoxDecoration(
                           color: Colors.lightBlue[200],
                         ),
                         children: const [
-                          Center(child: Text('Day')),
-                          Center(child: Text('Open Time')),
-                          Center(child: Text('Close Time')),
+                          Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              child: Text(
+                                'Day',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              child: Text(
+                                'Open Time',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              child: Text(
+                                'Close Time',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                       ...List.generate(
                         placeList.first.timings.length,
                         (rowIndex) => TableRow(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                          ),
                           children: [
-                            Text(
-                              placeList.first.timings[rowIndex].day,
-                              textAlign: TextAlign.center,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Center(
+                                child: Text(
+                                  placeList.first.timings[rowIndex].day,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                             ),
-                            Text(
-                              placeList.first.timings[rowIndex].openTime,
-                              textAlign: TextAlign.center,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Center(
+                                child: Text(
+                                  placeList.first.timings[rowIndex].openTime,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                             ),
-                            Text(
-                              placeList.first.timings[rowIndex].closeTime,
-                              textAlign: TextAlign.center,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Center(
+                                child: Text(
+                                  placeList.first.timings[rowIndex].closeTime,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -576,6 +625,87 @@ class _PlaceState extends State<Place> {
                     '${placeList.first.address.street}\n${placeList.first.address.landmark}\n${placeList.first.address.zip}\n${placeList.first.address.city}\n${placeList.first.address.state}\n${placeList.first.address.country}',
                     style: const TextStyle(color: Colors.black54),
                   )
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'External links',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Column(
+                    children: placeList.first.externalLinks.map((externalLink) {
+                      return Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25.0),
+                            color: const Color.fromARGB(255, 233, 238, 240)),
+                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              externalLink.title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.55,
+                                    child: Text(
+                                      externalLink.link,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                          color: Colors.black54, fontSize: 13),
+                                    )),
+                                MaterialButton(
+                                  elevation: 0,
+                                  onPressed: () {
+                                    _launchWeb(externalLink.link);
+                                  },
+                                  color: Colors.lightBlue[600],
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: Row(
+                                    children: const [
+                                      Text(
+                                        'Open',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Icon(
+                                        Icons.open_in_new_outlined,
+                                        size: 18,
+                                        color: Colors.white,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ],
               ),
             ),
@@ -1079,87 +1209,6 @@ class _PlaceState extends State<Place> {
                   SizedBox(
                       height: MediaQuery.of(context).size.width / 1.58,
                       child: PlaceRecommendationByPlace(placeList.first.sId))
-                ],
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'External links',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Column(
-                    children: placeList.first.externalLinks.map((externalLink) {
-                      return Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25.0),
-                            color: const Color.fromARGB(255, 233, 238, 240)),
-                        margin: const EdgeInsets.symmetric(vertical: 8.0),
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              externalLink.title,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16.0,
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.55,
-                                    child: Text(
-                                      externalLink.link,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                          color: Colors.black54, fontSize: 13),
-                                    )),
-                                MaterialButton(
-                                  elevation: 0,
-                                  onPressed: () {
-                                    _launchWeb(externalLink.link);
-                                  },
-                                  color: Colors.lightBlue[600],
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50)),
-                                  child: Row(
-                                    children: const [
-                                      Text(
-                                        'Open',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                      Icon(
-                                        Icons.open_in_new_outlined,
-                                        size: 18,
-                                        color: Colors.white,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
                 ],
               ),
             ),
