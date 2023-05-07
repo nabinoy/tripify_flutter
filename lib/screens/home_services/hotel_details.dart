@@ -615,7 +615,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                   const Padding(
                     padding: EdgeInsets.only(bottom: 10, left: 16, top: 8),
                     child: Text(
-                      'Description',
+                      'Contact',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 23,
@@ -762,7 +762,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                           const Text(
                             'Rate this place',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 23,
                             ),
                           ),
                           const SizedBox(
@@ -860,7 +860,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                       const Text(
                                         'Rate this place',
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 23,
                                         ),
                                       ),
                                       const SizedBox(
@@ -945,7 +945,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                       const Text(
                                         'Your review',
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 23,
                                         ),
                                       ),
                                       const SizedBox(
@@ -968,7 +968,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                     const Text(
                       'Ratings and reviews',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 23,
                       ),
                     ),
                     const SizedBox(
