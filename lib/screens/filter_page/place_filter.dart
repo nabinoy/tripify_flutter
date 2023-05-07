@@ -5,6 +5,7 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/place_response_model.dart';
+import 'package:tripify/screens/place.dart';
 import 'package:tripify/services/api_service.dart';
 
 late List<String> _selectedCategoryChips;
@@ -93,6 +94,7 @@ class _FilterPlaceState extends State<FilterPlace> {
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     List<CategoryAll> c = arguments[0] as List<CategoryAll>;
     List<IslandAll> ia = arguments[1] as List<IslandAll>;
+    List<String> wishlistPlaceIdList = arguments[2] as List<String>;
 
     return Scaffold(
         appBar: AppBar(
@@ -437,13 +439,13 @@ class _FilterPlaceState extends State<FilterPlace> {
                       if (index < pd.length) {
                         return GestureDetector(
                           onTap: () {
-                            // Navigator.pushNamed(context, Place.routeName,
-                            //     arguments: [
-                            //       [pd[index]],
-                            //       (wishlistPlaceIdList.contains(pd[index].sId))
-                            //           ? true
-                            //           : false
-                            //     ]);
+                            Navigator.pushNamed(context, Place.routeName,
+                                arguments: [
+                                  [pd[index]],
+                                  (wishlistPlaceIdList.contains(pd[index].sId))
+                                      ? true
+                                      : false
+                                ]);
                           },
                           child: Container(
                             //width: MediaQuery.of(context).size.width / 1.4,

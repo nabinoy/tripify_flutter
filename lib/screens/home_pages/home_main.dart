@@ -253,7 +253,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                       minWidth: MediaQuery.of(context).size.width * .2,
                       onPressed: () {
                         Navigator.pushNamed(context, FilterPlace.routeName,
-                            arguments: [c, ia]);
+                            arguments: [c, ia,wishlistPlaceIdList]);
                       },
                       color: Colors.lightBlue[600],
                       shape: RoundedRectangleBorder(
