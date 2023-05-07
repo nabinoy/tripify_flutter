@@ -1091,15 +1091,10 @@ class _PlaceState extends State<Place> {
                   const SizedBox(
                     height: 5,
                   ),
-                  const Text(
-                    'https://www.example.com',
-                    style: TextStyle(color: Colors.black54),
-                  ),
                   Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade400),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
+                        borderRadius: BorderRadius.circular(25.0),
+                        color: const Color.fromARGB(255, 233, 238, 240)),
                     margin: const EdgeInsets.symmetric(vertical: 8.0),
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -1112,31 +1107,47 @@ class _PlaceState extends State<Place> {
                             fontSize: 16.0,
                           ),
                         ),
-                        const SizedBox(height: 8.0),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // SvgPicture.network(
-                            //   logoUrl,
-                            //   height: 24.0,
-                            //   width: 24.0,
-                            // ),
                             SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.6,
+                                width: MediaQuery.of(context).size.width * 0.55,
                                 child: Text(
                                   placeList.first.externalLinks.first.link,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(color: Colors.black54),
+                                  style: const TextStyle(
+                                      color: Colors.black54, fontSize: 13),
                                 )),
-                            const Spacer(),
-                            ElevatedButton(
-                              onPressed: () async {
+                            MaterialButton(
+                              elevation: 0,
+                              onPressed: () {
                                 // if (await canLaunch(url)) {
                                 //   await launch(url);
                                 // } else {
                                 //   throw 'Could not launch $url';
                                 // }
                               },
-                              child: const Text('Open'),
+                              color: Colors.lightBlue[600],
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: Row(
+                                children: const [
+                                  Text(
+                                    'Open',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Icon(
+                                    Icons.open_in_new_outlined,
+                                    size: 18,
+                                    color: Colors.white,
+                                  )
+                                ],
+                              ),
                             ),
                           ],
                         ),
