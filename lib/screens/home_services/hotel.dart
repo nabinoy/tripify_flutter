@@ -38,7 +38,7 @@ class _HotelScreenState extends State<HotelScreen> {
     NearbyModel model = NearbyModel(
         lat: currentLocation.latitude!.toString(),
         long: currentLocation.longitude!.toString(),
-        maxRad: '5000');
+        maxRad: '3000');
     dataFuture = APIService.hotelAll().then((value) => {hd = value});
     dataNearby =
         APIService.nearbyHotel(model).then((value) => {nearbyHd = value});
@@ -170,24 +170,13 @@ class _HotelScreenState extends State<HotelScreen> {
             ),
             Container(
               margin: const EdgeInsets.only(right: 16, left: 16, top: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Hotels',
-                    style: TextStyle(
-                      color: Colors.black.withOpacity(0.8),
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const Text(
-                    'See more',
-                    style: TextStyle(
-                      color: Colors.black54,
-                    ),
-                  ),
-                ],
+              child: Text(
+                'Hotels',
+                style: TextStyle(
+                  color: Colors.black.withOpacity(0.8),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             FutureBuilder(
@@ -371,26 +360,15 @@ class _HotelScreenState extends State<HotelScreen> {
               },
             ),
             Container(
-              margin: const EdgeInsets.only(top: 10, right: 20, left: 20),
+              margin: const EdgeInsets.only(top: 20, right: 20, left: 20),
               width: double.infinity,
               height: 50,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    "Near from you",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text(
-                    'See more',
-                    style: TextStyle(
-                      color: Colors.black54,
-                    ),
-                  ),
-                ],
+              child: const Text(
+                "Near from you",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             FutureBuilder(
