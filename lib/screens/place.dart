@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/loader/loader_review_all.dart';
@@ -160,7 +161,10 @@ class _PlaceState extends State<Place> {
             ),
             actions: [
               GestureDetector(
-                onTap: () {},
+                onTap: () async {
+                  //await Share.shareXFiles([],text: 'hii');
+                  await Share.share('hii');
+                },
                 child: const Padding(
                   padding: EdgeInsets.only(right: 20),
                   child: CircleAvatar(
