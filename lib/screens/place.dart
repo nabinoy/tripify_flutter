@@ -13,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/loader/loader_review_all.dart';
@@ -41,6 +42,8 @@ import '../models/nearby_request_model.dart';
 late PlaceDetails placeDetails;
 late List<Places2> currentPlace;
 ValueNotifier<String> temperatureNotifier = ValueNotifier<String>('');
+final controller = CarouselController();
+int tempIndex = 0;
 
 class PlaceCategoryTop extends SliverPersistentHeaderDelegate {
   double ratingsAverage;
@@ -102,6 +105,20 @@ class _PlaceState extends State<Place> {
     await launchUrl(Uri.parse(website), mode: LaunchMode.externalApplication);
   }
 
+  Widget buildIndicator(int tempIndex, int length) => AnimatedSmoothIndicator(
+        onDotClicked: animateToSlide,
+        effect: const ScaleEffect(
+            scale: 1.6,
+            dotHeight: 8,
+            dotWidth: 8,
+            dotColor: Color.fromARGB(255, 191, 191, 191),
+            activeDotColor: Colors.white),
+        activeIndex: tempIndex,
+        count: length,
+      );
+
+  void animateToSlide(int index) => controller.animateToPage(index);
+
   @override
   Widget build(BuildContext context) {
     GeoRange georange = GeoRange();
@@ -117,10 +134,8 @@ class _PlaceState extends State<Place> {
     List<Hotels> nearbyHd = [];
 
     late ReviewRatings r;
-    final controller = CarouselController();
     double userRating = 0;
     String message = '';
-    //bool isListed = false;
 
     NearbyModel model = NearbyModel(
         lat: placeList.first.location.coordinates[1].toString(),
@@ -138,21 +153,33 @@ class _PlaceState extends State<Place> {
             elevation: 0,
             flexibleSpace: FlexibleSpaceBar(
                 background: SafeArea(
-              child: CarouselSlider.builder(
-                  carouselController: controller,
-                  itemCount: placeList.first.images.length,
-                  itemBuilder: (context, index, realIndex) {
-                    final urlImage = placeList.first.images[index].secureUrl;
-                    return buildImage(context, urlImage, index);
-                  },
-                  options: CarouselOptions(
-                    height: 400,
-                    viewportFraction: 1,
-                    autoPlay: true,
-                    enableInfiniteScroll: true,
-                    autoPlayAnimationDuration: const Duration(seconds: 1),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                  )),
+              child: Stack(
+                children: [
+                  CarouselSlider.builder(
+                      carouselController: controller,
+                      itemCount: placeList.first.images.length,
+                      itemBuilder: (context, index, realIndex) {
+                        final urlImage =
+                            placeList.first.images[index].secureUrl;
+                        tempIndex = index;
+                        return buildImage(context, urlImage, index);
+                      },
+                      options: CarouselOptions(
+                          height: 400,
+                          viewportFraction: 1,
+                          autoPlay: true,
+                          enableInfiniteScroll: true,
+                          autoPlayAnimationDuration: const Duration(seconds: 1),
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          onPageChanged: (index, reason) =>
+                              setState(() => tempIndex = index))),
+                  Positioned(
+                      bottom: 30,
+                      left: MediaQuery.of(context).size.width * 0.42,
+                      child: buildIndicator(
+                          tempIndex, placeList.first.images.length))
+                ],
+              ),
             )),
             leading: GestureDetector(
               onTap: () {

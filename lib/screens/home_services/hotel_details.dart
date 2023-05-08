@@ -256,8 +256,8 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                       child: Text(
                         'Description',
                         style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 23,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -284,36 +284,26 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                       child: Text(
                         'Facilities',
                         style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 23,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 10.0,
-                      crossAxisSpacing: 10.0,
-                      children: hotel.facilities.map((facility) {
-                        return Card(
-                          color: Colors.lightBlue[200],
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Text(facility,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600)),
-                            ),
-                          ),
-                        );
-                      }).toList(),
+                    Wrap(
+                      children: hotel.facilities
+                          .map((amenity) => Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.0),
+                                color: Colors.blue[100],
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 9, vertical: 5),
+                              margin: const EdgeInsets.all(4),
+                              child: Text(
+                                amenity,
+                                style: const TextStyle(fontSize: 13),
+                              )))
+                          .toList(),
                     ),
                   ],
                 ),
@@ -327,8 +317,10 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                   children: [
                     const Text(
                       'Rooms',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 23),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 8.0),
                     ...hotel.rooms.map<Widget>((room) {
@@ -500,8 +492,8 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                     Text(
                       'Direction',
                       style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 23,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
@@ -545,8 +537,8 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                       child: const Text(
                         'Gallery',
                         style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 23,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -617,8 +609,8 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                     child: Text(
                       'Contact',
                       style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 23,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -762,7 +754,8 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                           const Text(
                             'Rate this place',
                             style: TextStyle(
-                              fontSize: 23,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                           const SizedBox(
@@ -860,7 +853,8 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                       const Text(
                                         'Rate this place',
                                         style: TextStyle(
-                                          fontSize: 23,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                       const SizedBox(
@@ -945,7 +939,8 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                       const Text(
                                         'Your review',
                                         style: TextStyle(
-                                          fontSize: 23,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                       const SizedBox(
@@ -968,7 +963,8 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                     const Text(
                       'Ratings and reviews',
                       style: TextStyle(
-                        fontSize: 23,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(
