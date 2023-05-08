@@ -30,7 +30,7 @@ import 'package:tripify/widget/place_recommendation_byuser.dart';
 
 int currentHour = DateTime.now().hour;
 String greet = '';
-int activeIndex = 0;
+
 String currentPlace = '';
 final controller = CarouselController();
 List<CategoryAll> c = [];
@@ -88,6 +88,7 @@ class HomeMainScreen extends StatefulWidget {
 }
 
 class _HomeMainScreenState extends State<HomeMainScreen> {
+  int activeIndex = 0;
   late Future dataNearby;
   List<Places2> nearbyPd = [];
   GeoRange georange = GeoRange();

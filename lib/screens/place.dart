@@ -43,7 +43,6 @@ late PlaceDetails placeDetails;
 late List<Places2> currentPlace;
 ValueNotifier<String> temperatureNotifier = ValueNotifier<String>('');
 final controller = CarouselController();
-int tempIndex = 0;
 
 class PlaceCategoryTop extends SliverPersistentHeaderDelegate {
   double ratingsAverage;
@@ -82,6 +81,8 @@ class Place extends StatefulWidget {
 
 class _PlaceState extends State<Place> {
   List<Hotels> nearbyHd = [];
+  ValueNotifier<int> pictureIndex = ValueNotifier<int>(0);
+  int tempIndex = 0;
   ReviewUser ru = ReviewUser.fromJson({
     "user": "",
     "name": "",
@@ -123,6 +124,7 @@ class _PlaceState extends State<Place> {
   Widget build(BuildContext context) {
     GeoRange georange = GeoRange();
     ValueNotifier<bool> isListed = ValueNotifier<bool>(false);
+
     final List<dynamic> arguments =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     List<Places2> placeList = arguments[0] as List<Places2>;
@@ -172,12 +174,20 @@ class _PlaceState extends State<Place> {
                           autoPlayAnimationDuration: const Duration(seconds: 1),
                           autoPlayCurve: Curves.fastOutSlowIn,
                           onPageChanged: (index, reason) =>
-                              setState(() => tempIndex = index))),
+                              pictureIndex.value = index)),
                   Positioned(
-                      bottom: 30,
-                      left: MediaQuery.of(context).size.width * 0.42,
-                      child: buildIndicator(
-                          tempIndex, placeList.first.images.length))
+                    bottom: 30,
+                    left: MediaQuery.of(context).size.width * 0.42,
+                    child: ValueListenableBuilder(
+                      valueListenable: pictureIndex,
+                      builder: (context, value, child) {
+                        return buildIndicator(
+                            pictureIndex.value, placeList.first.images.length);
+                      },
+                    ),
+                    // child: buildIndicator(
+                    //     tempIndex, placeList.first.images.length)
+                  )
                 ],
               ),
             )),
