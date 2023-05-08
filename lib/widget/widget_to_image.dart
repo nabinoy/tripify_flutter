@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
 
-class WidgetToImage extends StatefulWidget {
-  final Function(GlobalKey key) builder;
-
-  const WidgetToImage({
-    required this.builder,
-    required Key key,
-  }) : super(key: key);
+class PlaceToImage extends StatefulWidget {
+  const PlaceToImage({super.key});
 
   @override
-  State<WidgetToImage> createState() => _WidgetToImageState();
+  State<PlaceToImage> createState() => _PlaceToImageState();
 }
 
-class _WidgetToImageState extends State<WidgetToImage> {
-  final globalKey = GlobalKey();
-
+class _PlaceToImageState extends State<PlaceToImage> {
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      key: globalKey,
-      child: widget.builder(globalKey),
+    return Container(
+      height: 100,
+      width: 200,
+      color: Colors.amber,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
@@ -28,6 +30,7 @@ import 'package:tripify/widget/hour_forecast.dart';
 import 'dart:math' as math;
 
 import 'package:tripify/widget/place_recommendation_byplace.dart';
+import 'package:tripify/widget/widget_to_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 late PlaceDetails placeDetails;
@@ -163,10 +166,13 @@ class _PlaceState extends State<Place> {
             actions: [
               GestureDetector(
                 onTap: () async {
+                  final tempDir = await getTemporaryDirectory();
                   final controller = ScreenshotController();
-                  //final bytes = await controller.captureFromWidget();
-                  //await Share.shareXFiles([],text: 'hii');
-                  await Share.share('hii');
+                  final bytes = await controller
+                      .captureFromWidget(const Material(child: PlaceToImage()));
+                  final file = await File('${tempDir.path}/image.png')
+                      .writeAsBytes(bytes);
+                  await Share.shareFiles([file.path], text: 'hii');
                 },
                 child: const Padding(
                   padding: EdgeInsets.only(right: 20),
