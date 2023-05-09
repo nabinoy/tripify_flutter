@@ -9,6 +9,7 @@ import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/router.dart';
 import 'package:tripify/screens/chatbot.dart';
 import 'package:tripify/screens/drawer/helpline.dart';
+import 'package:tripify/screens/drawer/transport_service.dart';
 import 'package:tripify/screens/home_pages/home_main.dart';
 import 'package:tripify/screens/home_pages/profile.dart';
 import 'package:tripify/screens/home_pages/wishlist.dart';
@@ -323,6 +324,31 @@ class _HomepageState extends State<Homepage> {
                       Navigator.pushNamed(
                         context,
                         Helpline.routeName,
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Icon(
+                            Icons.emoji_transportation,
+                            color: Colors.grey[800],
+                            size: 30,
+                          ),
+                        ),
+                        const Text('Transport service'),
+                      ],
+                    ),
+                    onTap: () {
+                      HapticFeedback.mediumImpact();
+                      Navigator.pushNamed(
+                        context,
+                        TransportService.routeName,
                       );
                     },
                   ),

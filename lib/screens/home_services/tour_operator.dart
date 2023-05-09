@@ -171,19 +171,17 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                   radius:
                                       MediaQuery.of(context).size.width * .13,
                                   backgroundColor: Colors.transparent,
-                                  child: ClipOval(
-                                    child: SizedBox(
-                                      child: CachedNetworkImage(
-                                        imageUrl: widget.image.secureUrl,
-                                        placeholder: (context, url) =>
-                                            Image.memory(
-                                          kTransparentImage,
-                                          fit: BoxFit.cover,
-                                        ),
-                                        fadeInDuration:
-                                            const Duration(milliseconds: 200),
+                                  child: SizedBox(
+                                    child: CachedNetworkImage(
+                                      imageUrl: widget.image.secureUrl,
+                                      placeholder: (context, url) =>
+                                          Image.memory(
+                                        kTransparentImage,
                                         fit: BoxFit.cover,
                                       ),
+                                      fadeInDuration:
+                                          const Duration(milliseconds: 200),
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
