@@ -65,7 +65,6 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
-    //setState(() {});
     SharedService.getSharedLogin();
     bool flag = false;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -262,7 +261,6 @@ class _HomepageState extends State<Homepage> {
       drawer: Drawer(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //padding: EdgeInsets.zero,
           children: [
             Column(
               children: [
@@ -334,82 +332,97 @@ class _HomepageState extends State<Homepage> {
             Column(
               children: [
                 const Divider(),
-                (SharedService.id == '')
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            MaterialButton(
-                              minWidth: 120,
-                              height: 40,
-                              onPressed: () {
-                                HapticFeedback.mediumImpact();
-                                Navigator.pushNamed(
-                                    context, LoginPage.routeName);
-                              },
-                              shape: RoundedRectangleBorder(
-                                  side: const BorderSide(
-                                      width: 2,
-                                      color: Color.fromRGBO(2, 119, 189, 1)),
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: const Text(
-                                "Login",
-                                style: TextStyle(
-                                    color: Color.fromRGBO(2, 119, 189, 1),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15),
-                              ),
-                            ),
-                            MaterialButton(
-                              minWidth: 120,
-                              height: 40,
-                              onPressed: () {
-                                HapticFeedback.mediumImpact();
-                                Navigator.pushNamed(
-                                    context, SignupPage.routeName);
-                              },
-                              color: Colors.lightBlue[800],
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: const Text(
-                                "Sign up",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15),
+                FutureBuilder(
+                  future: SharedService.getSharedLogin(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return (SharedService.id == '')
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  MaterialButton(
+                                    minWidth: 120,
+                                    height: 40,
+                                    onPressed: () {
+                                      HapticFeedback.mediumImpact();
+                                      Navigator.pushNamed(
+                                          context, LoginPage.routeName);
+                                    },
+                                    shape: RoundedRectangleBorder(
+                                        side: const BorderSide(
+                                            width: 2,
+                                            color:
+                                                Color.fromRGBO(2, 119, 189, 1)),
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    child: const Text(
+                                      "Login",
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(2, 119, 189, 1),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 15),
+                                    ),
+                                  ),
+                                  MaterialButton(
+                                    minWidth: 120,
+                                    height: 40,
+                                    onPressed: () {
+                                      HapticFeedback.mediumImpact();
+                                      Navigator.pushNamed(
+                                          context, SignupPage.routeName);
+                                    },
+                                    color: Colors.lightBlue[800],
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    child: const Text(
+                                      "Sign up",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 15),
+                                    ),
+                                  )
+                                ],
                               ),
                             )
-                          ],
-                        ),
-                      )
-                    : Container(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: ListTile(
-                          title: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: Icon(
-                                  MdiIcons.logout,
-                                  color: Colors.grey[800],
-                                  size: 30,
+                          : Container(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: ListTile(
+                                title: Row(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: Icon(
+                                        MdiIcons.logout,
+                                        color: Colors.grey[800],
+                                        size: 30,
+                                      ),
+                                    ),
+                                    const Text('Log out'),
+                                  ],
                                 ),
+                                onTap: () {
+                                  HapticFeedback.mediumImpact();
+                                  SharedService.setSharedLogOut();
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    Home.routeName,
+                                  );
+                                },
                               ),
-                              const Text('Log out'),
-                            ],
-                          ),
-                          onTap: () {
-                            HapticFeedback.mediumImpact();
-                            SharedService.setSharedLogOut();
-                            Navigator.pushReplacementNamed(
-                              context,
-                              Home.routeName,
                             );
-                          },
-                        ),
-                      ),
+                    } else {
+                      return const LoadingScreen();
+                    }
+                  },
+                ),
               ],
             ),
           ],

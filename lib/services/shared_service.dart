@@ -2,6 +2,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedService {
+  static String name = '';
+  static String email = '';
+  static String id = '';
+
   static Future<void> shareInit() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isFirstTimeOpen = prefs.getBool('is_first_time_open') ?? true;
@@ -14,6 +18,9 @@ class SharedService {
   static Future<void> setSharedLogOut() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     const storage = FlutterSecureStorage();
+    name = '';
+  email = '';
+  id = '';
     await prefs.remove('name');
     await prefs.remove('email');
     await prefs.remove('id');
@@ -43,10 +50,6 @@ class SharedService {
     final valueName = data;
     prefs.setString(keyName, valueName);
   }
-
-  static String name = '';
-  static String email = '';
-  static String id = '';
 
   static Future<void> getSharedLogin() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -103,7 +106,7 @@ class SharedService {
   static Future<void> getSharedDistance() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     const key = 'distance';
-    distance = prefs.getDouble(key)!;
+    distance = prefs.getDouble(key) ?? 0;
   }
 
   static Future<void> setSharedUserToken(bool value) async {
@@ -118,25 +121,4 @@ class SharedService {
     const keyAfter = 'is_user_token';
     return prefs.getBool(keyAfter) ?? false;
   }
-
-  // static Future<void> setsharedLocation(double lat, double long) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   const keyLat = 'last_known_lat';
-  //   final valueLat = lat;
-  //   prefs.setDouble(keyLat, valueLat);
-  //   const keyLong = 'last_known_long';
-  //   final valueLong = long;
-  //   prefs.setDouble(keyLong, valueLong);
-  // }
-
-  // static double lat = 0;
-  // static double long = 0;
-
-  // static Future<void> getsharedLocation() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   const keyLat = 'last_known_lat';
-  //   lat =  prefs.getDouble(keyLat)!;
-  //   const keyLong = 'last_known_long';
-  //   long =  prefs.getDouble(keyLong)!;
-  // }
 }
