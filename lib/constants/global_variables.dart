@@ -7,6 +7,8 @@ const fontRegular = 'Poppins';
 var lightBlue800 = Colors.lightBlue[800];
 int placeCount = 4;
 int placePageSize = 4;
+double portBlairLat = 11.650475999232123;
+double portBlairLong = 92.73356876475748;
 
 Map<String, IconData> placeActivityIcons = {
   "Swimming": MdiIcons.swim,

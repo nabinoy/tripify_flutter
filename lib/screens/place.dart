@@ -97,7 +97,6 @@ class _PlaceState extends State<Place> {
   void dispose() {
     temperatureNotifier.value = '';
     hourForecasts.clear();
-    googleMapController.dispose();
     polylineCoordinates.clear();
     super.dispose();
   }
