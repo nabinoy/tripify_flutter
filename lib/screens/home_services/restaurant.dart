@@ -9,7 +9,7 @@ import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/nearby_request_model.dart';
 import 'package:tripify/models/restaurant_response_model.dart';
 import 'package:tripify/screens/home_services/restaurant_details.dart';
-import 'package:tripify/screens/search/search_hotel.dart';
+import 'package:tripify/screens/search/search_restaurant.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/shared_service.dart';
@@ -88,7 +88,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, SearchHotel.routeName);
+                Navigator.pushNamed(context, SearchRestaurant.routeName);
               },
               child: Container(
                 margin: const EdgeInsets.all(16),

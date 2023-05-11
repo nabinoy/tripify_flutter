@@ -22,6 +22,7 @@ import 'package:tripify/screens/home_services/map_webview.dart';
 import 'package:tripify/screens/review_all.dart';
 import 'package:tripify/screens/search/search_hotel.dart';
 import 'package:tripify/screens/search/search_place.dart';
+import 'package:tripify/screens/search/search_restaurant.dart';
 import 'package:tripify/screens/search/search_tour_operator.dart';
 import 'package:tripify/screens/signup.dart';
 import 'package:tripify/screens/weather_details.dart';
@@ -203,6 +204,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const RestaurantDetailsPage(),
+      );
+
+    case SearchRestaurant.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const SearchRestaurant(),
       );
 
     default:

@@ -274,6 +274,34 @@ class APIService {
     }
   }
 
+  static Future<List<Restaurants>> restaurantBySearch(String search) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {'search': search};
+    var url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['restaurants'];
+      List<Restaurants> r = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Restaurants r2 = Restaurants.fromJson(data[i]);
+        r.add(r2);
+      }
+      return r;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
   static Future<List<TourOperators>> tourOperatorBySearch(String search) async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',

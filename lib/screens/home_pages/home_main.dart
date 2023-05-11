@@ -784,19 +784,16 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                       },
                       child: ClipRRect(
                         child: Column(children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(100.0),
-                            child: CachedNetworkImage(
-                              height: screenWidth / 5.61,
-                              width: screenWidth / 5.61,
-                              imageUrl: sa[index].image.secureUrl,
-                              placeholder: (context, url) => Image.memory(
-                                kTransparentImage,
-                                fit: BoxFit.cover,
-                              ),
-                              fadeInDuration: const Duration(milliseconds: 200),
+                          CachedNetworkImage(
+                            height: screenWidth / 5.61,
+                            width: screenWidth / 5.61,
+                            imageUrl: sa[index].image.secureUrl,
+                            placeholder: (context, url) => Image.memory(
+                              kTransparentImage,
                               fit: BoxFit.cover,
                             ),
+                            fadeInDuration: const Duration(milliseconds: 200),
+                            fit: BoxFit.cover,
                           ),
                           Text(
                             sa[index].name,
@@ -834,7 +831,6 @@ Widget buildImage(
   String urlImage,
   String urlImageText,
   int index,
-  //LatLng islandCoord
 ) {
   return GestureDetector(
     onTap: () {
