@@ -365,11 +365,11 @@ class APIService {
     };
 
     var url = Uri.https(Config.apiURL, Config.restaurantNearbyAPI);
-    var response = await client.get(
+    var response = await client.post(
       url,
       headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
     );
-
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       data = data['restaurants'];

@@ -272,28 +272,20 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                           horizontal: 10),
                                       height: 30,
                                       decoration: BoxDecoration(
-                                        color: Colors.black38,
+                                        color: Colors.white,
                                         borderRadius: BorderRadius.circular(40),
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                          const Icon(
-                                            Icons.star,
-                                            size: 16,
-                                            color: Colors.white,
+                                          Icon(
+                                            MdiIcons.squareCircle,
+                                            size: 18,
+                                            color: (rd[index].isVeg)
+                                                ? Colors.green
+                                                : Colors.red,
                                           ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          // Text(
-                                          //   rd[index].ratings.toString(),
-                                          //   style: const TextStyle(
-                                          //     color: Colors.white,
-                                          //     fontWeight: FontWeight.bold,
-                                          //   ),
-                                          // ),
                                         ],
                                       ),
                                     ),
@@ -368,7 +360,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
               child: const Text(
                 "Near from you",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -500,6 +492,13 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                         ),
                                         const SizedBox(
                                           height: 3,
+                                        ),
+                                        Icon(
+                                          MdiIcons.squareCircle,
+                                          size: 18,
+                                          color: (widget.isVeg)
+                                              ? Colors.green
+                                              : Colors.red,
                                         ),
                                         const SizedBox(
                                           height: 5,
