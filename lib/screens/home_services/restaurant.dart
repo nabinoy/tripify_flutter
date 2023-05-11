@@ -9,6 +9,7 @@ import 'package:tripify/loader/loader_hotel_card.dart';
 import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/hotel_response_model.dart';
 import 'package:tripify/models/nearby_request_model.dart';
+import 'package:tripify/models/restaurant_response_model.dart';
 import 'package:tripify/screens/home_services/hotel_details.dart';
 import 'package:tripify/screens/search/search_hotel.dart';
 import 'package:tripify/services/api_service.dart';
@@ -25,8 +26,8 @@ class RestaurantScreen extends StatefulWidget {
 
 class _RestaurantScreenState extends State<RestaurantScreen> {
   GeoRange georange = GeoRange();
-  List<Hotels> hd = [];
-  List<Hotels> nearbyHd = [];
+  List<Restaurants> rd = [];
+  List<Restaurants> nearbyRd = [];
   List<IslandAll> ia = [];
   late Future dataFuture;
   late Future dataNearby;
@@ -39,9 +40,9 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
         lat: currentLocation.latitude!.toString(),
         long: currentLocation.longitude!.toString(),
         maxRad: '3000');
-    dataFuture = APIService.hotelAll().then((value) => {hd = value});
+    dataFuture = APIService.restaurantAll().then((value) => {rd = value});
     dataNearby =
-        APIService.nearbyHotel(model).then((value) => {nearbyHd = value});
+        APIService.nearbyRestaurants(model).then((value) => {nearbyRd = value});
   }
 
   @override
@@ -55,7 +56,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
           backgroundColor: bgColor,
           centerTitle: true,
           title: const Text(
-            "Hotel",
+            "Restaurants",
             style: TextStyle(color: Colors.black, fontSize: 18),
           ),
         ),
@@ -76,7 +77,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                   Container(
                     margin: const EdgeInsets.only(top: 5),
                     child: Text(
-                      "Looking for a hotel?",
+                      "Looking for a restaurant?",
                       style: TextStyle(
                         fontSize: 24,
                         color: Colors.lightBlue[800],
@@ -114,7 +115,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                 MediaQuery.of(context).size.height * .0145),
                         height: MediaQuery.of(context).size.height * .06,
                         child: const Text(
-                          'Search Hotels',
+                          'Search Restaurants',
                           style: TextStyle(fontSize: 16, color: Colors.black54),
                         ),
                       ),
@@ -156,12 +157,13 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                             )),
                   onTap: (value) {
                     if (value == 0) {
-                      dataFuture =
-                          APIService.hotelAll().then((value) => {hd = value});
+                      dataFuture = APIService.restaurantAll()
+                          .then((value) => {rd = value});
                       setState(() {});
                     } else {
-                      dataFuture = APIService.hotelByIslandId(ia[value - 1].sId)
-                          .then((value) => {hd = value});
+                      dataFuture =
+                          APIService.restaurantByIslandId(ia[value - 1].sId)
+                              .then((value) => {rd = value});
                       setState(() {});
                     }
                   },
@@ -171,7 +173,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             Container(
               margin: const EdgeInsets.only(right: 16, left: 16, top: 30),
               child: Text(
-                'Hotels',
+                'Restaurants',
                 style: TextStyle(
                   color: Colors.black.withOpacity(0.8),
                   fontSize: 18,
@@ -183,7 +185,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
               future: dataFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  if (hd.isEmpty) {
+                  if (rd.isEmpty) {
                     return Container(
                       padding: const EdgeInsets.symmetric(vertical: 85),
                       alignment: Alignment.center,
@@ -198,7 +200,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'No hotels found!',
+                            'No restaurants found!',
                             style: TextStyle(
                               fontSize: 16,
                               color: Theme.of(context).disabledColor,
@@ -213,15 +215,15 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       // width: 100,
                       height: 250,
                       child: ListView.builder(
-                        itemCount: hd.length,
+                        itemCount: rd.length,
                         scrollDirection: Axis.horizontal,
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, HotelDetailsPage.routeName,
-                                  arguments: [hd[index]]);
+                              // Navigator.pushNamed(
+                              //     context, HotelDetailsPage.routeName,
+                              //     arguments: [hd[index]]);
                             },
                             child: Container(
                               width: 250,
@@ -235,7 +237,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                       height: 330,
                                       alignment: Alignment.bottomCenter,
                                       imageUrl:
-                                          hd[index].images.first.secureUrl,
+                                          rd[index].images.first.secureUrl,
                                       placeholder: (context, url) =>
                                           Image.memory(
                                         kTransparentImage,
@@ -285,13 +287,13 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                           const SizedBox(
                                             width: 5,
                                           ),
-                                          Text(
-                                            hd[index].ratings.toString(),
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
+                                          // Text(
+                                          //   rd[index].ratings.toString(),
+                                          //   style: const TextStyle(
+                                          //     color: Colors.white,
+                                          //     fontWeight: FontWeight.bold,
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                     ),
@@ -311,7 +313,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                           child: SizedBox(
                                             width: 210,
                                             child: Text(
-                                              hd[index].name,
+                                              rd[index].name,
                                               style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w500,
@@ -333,7 +335,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                             SizedBox(
                                               width: 180,
                                               child: Text(
-                                                hd[index].address.city,
+                                                rd[index].address.city,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                   color: Colors.white,
@@ -375,7 +377,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
               future: dataNearby,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  if (nearbyHd.isEmpty) {
+                  if (nearbyRd.isEmpty) {
                     return Container(
                       padding: const EdgeInsets.symmetric(vertical: 85),
                       alignment: Alignment.center,
@@ -390,7 +392,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'No hotels found!',
+                            'No restaurants found!',
                             style: TextStyle(
                               fontSize: 16,
                               color: Theme.of(context).disabledColor,
@@ -403,7 +405,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     return Column(
                       children: [
                         Wrap(
-                          children: nearbyHd.map((widget) {
+                          children: nearbyRd.map((widget) {
                             Point point1 = Point(
                                 latitude: currentLocation.latitude!,
                                 longitude: currentLocation.longitude!);
@@ -498,44 +500,6 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                         ),
                                         const SizedBox(
                                           height: 3,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            RatingBar.builder(
-                                              initialRating:
-                                                  widget.ratings.toDouble(),
-                                              ignoreGestures: true,
-                                              minRating: 1,
-                                              direction: Axis.horizontal,
-                                              allowHalfRating: true,
-                                              itemCount: 5,
-                                              itemSize: 16,
-                                              itemBuilder: (context, _) =>
-                                                  const Icon(
-                                                Icons.star,
-                                                color: Colors.amber,
-                                              ),
-                                              onRatingUpdate: (rating) {},
-                                            ),
-                                            const SizedBox(
-                                              width: 4,
-                                            ),
-                                            Text(
-                                              widget.ratings.toString(),
-                                              style:
-                                                  const TextStyle(fontSize: 13),
-                                            ),
-                                            Text(
-                                                ' (${widget.reviews.length} reviews)',
-                                                style: const TextStyle(
-                                                    fontSize: 11,
-                                                    color: Colors.black54)),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                          ],
                                         ),
                                         const SizedBox(
                                           height: 5,

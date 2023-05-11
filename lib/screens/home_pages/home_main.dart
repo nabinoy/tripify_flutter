@@ -16,6 +16,7 @@ import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/screens/category.dart';
 import 'package:tripify/screens/filter_page/place_filter.dart';
 import 'package:tripify/screens/home_services/hotel.dart';
+import 'package:tripify/screens/home_services/restaurant.dart';
 import 'package:tripify/screens/home_services/tour_operator.dart';
 import 'package:tripify/screens/island.dart';
 import 'package:tripify/screens/location_weather.dart';
@@ -772,6 +773,13 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                         if (index == 3) {
                           Navigator.pushNamed(
                               context, ToiletMapWebView.routeName);
+                        }
+                        if (index == 4) {
+                          Navigator.pushNamed(
+                              context, RestaurantScreen.routeName,
+                              arguments: [
+                                ia,
+                              ]);
                         }
                       },
                       child: ClipRRect(

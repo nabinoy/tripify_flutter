@@ -6,6 +6,7 @@ import 'package:tripify/models/login_request_model.dart';
 import 'package:tripify/models/nearby_request_model.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/models/otp_request_model.dart';
+import 'package:tripify/models/restaurant_response_model.dart';
 import 'package:tripify/models/review_rating_model.dart';
 import 'package:tripify/models/signup_request_model.dart';
 import 'package:http/http.dart' as http;
@@ -358,6 +359,32 @@ class APIService {
     }
   }
 
+  static Future<List<Restaurants>> nearbyRestaurants(NearbyModel model) async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+
+    var url = Uri.https(Config.apiURL, Config.restaurantNearbyAPI);
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['restaurants'];
+      List<Restaurants> r = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Restaurants r2 = Restaurants.fromJson(data[i]);
+        r.add(r2);
+      }
+      return r;
+    } else {
+      throw Exception('Failed to load Restaurant details');
+    }
+  }
+
   static Future<List<Hotels>> nearbyHotel(NearbyModel model) async {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
@@ -413,6 +440,36 @@ class APIService {
     }
   }
 
+  static Future<List<Restaurants>> restaurantByIslandId(String id) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {
+      'island': id,
+    };
+    var url =
+        Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['restaurants'];
+      List<Restaurants> r = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Restaurants r2 = Restaurants.fromJson(data[i]);
+        r.add(r2);
+      }
+      return r;
+    } else {
+      throw Exception('Failed to load Restaurant details');
+    }
+  }
+
   static Future<List<Hotels>> hotelAll() async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
@@ -440,6 +497,36 @@ class APIService {
       return h;
     } else {
       throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<List<Restaurants>> restaurantAll() async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    var url = Uri.https(
+      Config.apiURL,
+      Config.restaurantAllAPI,
+    );
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['restaurants'];
+      List<Restaurants> r = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Restaurants r2 = Restaurants.fromJson(data[i]);
+        r.add(r2);
+      }
+      return r;
+    } else {
+      throw Exception('Failed to load Restaurant details');
     }
   }
 

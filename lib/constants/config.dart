@@ -18,6 +18,8 @@ class Config {
   static const placeRecommendationByUserAPI = "/api/v1/user/recomendPlaces";
   static const hotelAllAPI = "/api/v1/hotels/all";
   static const hotelNearbyAPI = "/api/v1/hotels/nearby";
+  static const restaurantAllAPI = "/api/v1/restaurants/all";
+  static const restaurantNearbyAPI = "/api/v1/restaurants/nearby";
   static const placeNearbyAPI = "/api/v1/places/nearby";
   static const updateNameAPI = "/api/v1/userdashboard/update";
   static const updatePasswordAPI = "/api/v1/password/update";

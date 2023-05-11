@@ -18,7 +18,6 @@ class Restaurants {
   Address address;
   Contact contact;
   Menu menu;
-  Menu governmentAuthorizedLicense;
   String sId;
   String name;
   String description;
@@ -35,7 +34,6 @@ class Restaurants {
       required this.address,
       required this.contact,
       required this.menu,
-      required this.governmentAuthorizedLicense,
       required this.sId,
       required this.name,
       required this.description,
@@ -53,8 +51,6 @@ class Restaurants {
         address: Address.fromJson(json['address']),
         contact: Contact.fromJson(json['contact']),
         menu: Menu.fromJson(json['menu']),
-        governmentAuthorizedLicense:
-            Menu.fromJson(json['governmentAuthorizedLicense']),
         sId: json['_id'],
         name: json['name'],
         description: json['description'],
