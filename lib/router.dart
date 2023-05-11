@@ -6,6 +6,7 @@ import 'package:tripify/screens/home_pages/profile/edit_name.dart';
 import 'package:tripify/screens/home_services/hotel.dart';
 import 'package:tripify/screens/home_services/hotel_details.dart';
 import 'package:tripify/screens/home_services/restaurant.dart';
+import 'package:tripify/screens/home_services/restaurant_details.dart';
 import 'package:tripify/screens/home_services/tour_operator.dart';
 import 'package:tripify/screens/otp_form.dart';
 import 'package:tripify/screens/category.dart';
@@ -196,6 +197,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const RestaurantScreen(),
+      );
+
+    case RestaurantDetailsPage.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const RestaurantDetailsPage(),
       );
 
     default:

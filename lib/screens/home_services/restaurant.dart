@@ -1,16 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:georange/georange.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/loader/loader_hotel_card.dart';
 import 'package:tripify/models/home_main_model.dart';
-import 'package:tripify/models/hotel_response_model.dart';
 import 'package:tripify/models/nearby_request_model.dart';
 import 'package:tripify/models/restaurant_response_model.dart';
-import 'package:tripify/screens/home_services/hotel_details.dart';
+import 'package:tripify/screens/home_services/restaurant_details.dart';
 import 'package:tripify/screens/search/search_hotel.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
@@ -221,9 +219,9 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              // Navigator.pushNamed(
-                              //     context, HotelDetailsPage.routeName,
-                              //     arguments: [hd[index]]);
+                              Navigator.pushNamed(
+                                  context, RestaurantDetailsPage.routeName,
+                                  arguments: [rd[index]]);
                             },
                             child: Container(
                               width: 250,
@@ -409,7 +407,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                             return GestureDetector(
                               onTap: () {
                                 Navigator.pushNamed(
-                                    context, HotelDetailsPage.routeName,
+                                    context, RestaurantDetailsPage.routeName,
                                     arguments: [widget]);
                               },
                               child: Container(

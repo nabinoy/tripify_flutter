@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -204,9 +205,13 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                         ),
                                       ),
                                       const SizedBox(height: 5),
-                                      Text(
+                                      ExpandableText(
                                         widget.description,
-                                        textAlign: TextAlign.center,
+                                        animation: true,
+                                        expandText: 'show more',
+                                        collapseText: 'show less',
+                                        maxLines: 5,
+                                        linkColor: Colors.blue,
                                       ),
                                       const SizedBox(height: 10),
                                       const Text(

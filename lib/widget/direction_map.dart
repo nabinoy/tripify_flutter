@@ -44,6 +44,7 @@ class _DirectionMapState extends State<DirectionMap> {
         var latLng = LatLng(c[1], c[0]);
         polylineCoordinates.add(latLng);
       }
+      setState(() {});
     }
   }
 
