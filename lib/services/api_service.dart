@@ -803,6 +803,26 @@ class APIService {
     }
   }
 
+  static Future<int> tourOpCount() async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    var url = Uri.https(Config.apiURL, Config.tourOperatorAllAPI);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data['filteredNumber'];
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
   static Future<int> restaurantCount() async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
@@ -1062,6 +1082,35 @@ class APIService {
         rd.add(r2);
       }
       return rd;
+    } else {
+      throw Exception('Failed to hotel details');
+    }
+  }
+
+  static Future<List<TourOperators>> allTourOpPagination(String page) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {
+      'page': page,
+    };
+    var url = Uri.https(Config.apiURL, Config.tourOperatorAllAPI, queryParameters);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['tourOperators'];
+      List<TourOperators> to = [];
+
+      for (var i = 0; i < data.length; i++) {
+        TourOperators r2 = TourOperators.fromJson(data[i]);
+        to.add(r2);
+      }
+      return to;
     } else {
       throw Exception('Failed to hotel details');
     }

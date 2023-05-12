@@ -58,6 +58,12 @@ class _HotelScreenState extends State<HotelScreen> {
     });
   }
 
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   Future fetch(String islandId) async {
     List<Hotels> temp = [];
     page++;

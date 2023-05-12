@@ -59,6 +59,12 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     });
   }
 
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   Future fetch(String islandId) async {
     List<Restaurants> temp = [];
     page++;
