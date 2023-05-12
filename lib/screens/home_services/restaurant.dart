@@ -29,6 +29,11 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
   List<IslandAll> ia = [];
   late Future dataFuture;
   late Future dataNearby;
+  int page = 1;
+  int isEndLoading = 1;
+  int restaurantCount = 1;
+  final controller = ScrollController();
+  String restaurantId = 'All';
 
   @override
   void initState() {
@@ -38,9 +43,38 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
         lat: currentLocation.latitude!.toString(),
         long: currentLocation.longitude!.toString(),
         maxRad: '3000');
-    dataFuture = APIService.restaurantAll().then((value) => {rd = value});
+
+    dataFuture = APIService.restaurantCount().then((value) async => {
+          restaurantCount = value,
+          await APIService.restaurantAll().then((value) => {rd = value})
+        });
+
     dataNearby =
         APIService.nearbyRestaurants(model).then((value) => {nearbyRd = value});
+
+    controller.addListener(() {
+      if (controller.position.maxScrollExtent == controller.offset) {
+        fetch(restaurantId);
+      }
+    });
+  }
+
+  Future fetch(String islandId) async {
+    List<Restaurants> temp = [];
+    page++;
+    if (islandId == 'All') {
+      await APIService.allRestaurantPagination(page.toString())
+          .then((value) => {temp = value});
+      setState(() {
+        rd.addAll(temp);
+      });
+    } else {
+      await APIService.restaurantPagination(islandId, page.toString())
+          .then((value) => {temp = value});
+      setState(() {
+        rd.addAll(temp);
+      });
+    }
   }
 
   @override
@@ -154,14 +188,27 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                   fontFamily: fontRegular),
                             )),
                   onTap: (value) {
+                    page = 1;
+                    isEndLoading = 1;
+                    rd = [];
                     if (value == 0) {
-                      dataFuture = APIService.restaurantAll()
-                          .then((value) => {rd = value});
+                      dataFuture =
+                          APIService.restaurantCount().then((value) async => {
+                                restaurantCount = value,
+                                await APIService.restaurantAll()
+                                    .then((value) => {rd = value})
+                              });
                       setState(() {});
                     } else {
+                      restaurantId = ia[value - 1].sId;
                       dataFuture =
-                          APIService.restaurantByIslandId(ia[value - 1].sId)
-                              .then((value) => {rd = value});
+                          APIService.islandRestaurantCount(ia[value - 1].sId)
+                              .then((value) async => {
+                                    restaurantCount = value,
+                                    await APIService.restaurantByIslandId(
+                                            restaurantId)
+                                        .then((value) => {rd = value})
+                                  });
                       setState(() {});
                     }
                   },
@@ -208,140 +255,156 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       ),
                     );
                   } else {
+                    if (restaurantCount <= (page * restaurantPageSize)) {
+                      isEndLoading = 0;
+                    }
                     return Container(
                       margin: const EdgeInsets.only(left: 20, top: 20),
-                      // width: 100,
                       height: 250,
                       child: ListView.builder(
-                        itemCount: rd.length,
+                        controller: (isEndLoading == 0) ? null : controller,
+                        itemCount: rd.length + isEndLoading,
                         scrollDirection: Axis.horizontal,
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, RestaurantDetailsPage.routeName,
-                                  arguments: [rd[index]]);
-                            },
-                            child: Container(
-                              width: 250,
-                              height: 250,
-                              margin: const EdgeInsets.only(right: 20),
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: CachedNetworkImage(
-                                      height: 330,
-                                      alignment: Alignment.bottomCenter,
-                                      imageUrl:
-                                          rd[index].images.first.secureUrl,
-                                      placeholder: (context, url) =>
-                                          Image.memory(
-                                        kTransparentImage,
+                          if (index < rd.length) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, RestaurantDetailsPage.routeName,
+                                    arguments: [rd[index]]);
+                              },
+                              child: Container(
+                                width: 250,
+                                height: 250,
+                                margin: const EdgeInsets.only(right: 20),
+                                child: Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: CachedNetworkImage(
+                                        height: 330,
+                                        alignment: Alignment.bottomCenter,
+                                        imageUrl:
+                                            rd[index].images.first.secureUrl,
+                                        placeholder: (context, url) =>
+                                            Image.memory(
+                                          kTransparentImage,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        fadeInDuration:
+                                            const Duration(milliseconds: 200),
                                         fit: BoxFit.cover,
                                       ),
-                                      fadeInDuration:
-                                          const Duration(milliseconds: 200),
-                                      fit: BoxFit.cover,
                                     ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 100.0),
-                                    height: 330,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      gradient: LinearGradient(
-                                        begin: Alignment.bottomCenter,
-                                        end: Alignment.topCenter,
-                                        colors: [
-                                          Colors.black.withOpacity(0.7),
-                                          Colors.black.withOpacity(0.0),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 15,
-                                    right: 15,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      height: 30,
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 100.0),
+                                      height: 330,
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(40),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Icon(
-                                            MdiIcons.squareCircle,
-                                            size: 18,
-                                            color: (rd[index].isVeg)
-                                                ? Colors.green
-                                                : Colors.red,
-                                          ),
-                                        ],
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                        gradient: LinearGradient(
+                                          begin: Alignment.bottomCenter,
+                                          end: Alignment.topCenter,
+                                          colors: [
+                                            Colors.black.withOpacity(0.7),
+                                            Colors.black.withOpacity(0.0),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Positioned(
-                                    bottom: 20,
-                                    left: 20,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 10),
-                                          child: SizedBox(
-                                            width: 210,
-                                            child: Text(
-                                              rd[index].name,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 23,
-                                              ),
-                                            ),
-                                          ),
+                                    Positioned(
+                                      top: 15,
+                                      right: 15,
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(40),
                                         ),
-                                        Row(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
-                                            const Icon(
-                                              Icons.location_on_outlined,
-                                              size: 20,
-                                              color: Colors.white,
-                                            ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            SizedBox(
-                                              width: 180,
-                                              child: Text(
-                                                rd[index].address.city,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
+                                            Icon(
+                                              MdiIcons.squareCircle,
+                                              size: 18,
+                                              color: (rd[index].isVeg)
+                                                  ? Colors.green
+                                                  : Colors.red,
                                             ),
                                           ],
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  )
-                                ],
+                                    Positioned(
+                                      bottom: 20,
+                                      left: 20,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10),
+                                            child: SizedBox(
+                                              width: 210,
+                                              child: Text(
+                                                rd[index].name,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 23,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.location_on_outlined,
+                                                size: 20,
+                                                color: Colors.white,
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              SizedBox(
+                                                width: 180,
+                                                child: Text(
+                                                  rd[index].address.city,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          } else {
+                            return Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 40),
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          }
                         },
                       ),
                     );

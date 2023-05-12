@@ -803,6 +803,26 @@ class APIService {
     }
   }
 
+  static Future<int> restaurantCount() async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    var url = Uri.https(Config.apiURL, Config.restaurantAllAPI);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data['filteredNumber'];
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
   static Future<int> islandHotelCount(String sId) async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
@@ -810,6 +830,27 @@ class APIService {
 
     final queryParameters = {'island': sId};
     var url = Uri.https(Config.apiURL, Config.hotelAllAPI, queryParameters);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data['filteredNumber'];
+    } else {
+      throw Exception('Failed to load hotel details');
+    }
+  }
+
+  static Future<int> islandRestaurantCount(String sId) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {'island': sId};
+    var url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
 
     var response = await client.get(
       url,
@@ -997,6 +1038,35 @@ class APIService {
     }
   }
 
+  static Future<List<Restaurants>> allRestaurantPagination(String page) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {
+      'page': page,
+    };
+    var url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['restaurants'];
+      List<Restaurants> rd = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Restaurants r2 = Restaurants.fromJson(data[i]);
+        rd.add(r2);
+      }
+      return rd;
+    } else {
+      throw Exception('Failed to hotel details');
+    }
+  }
+
   static Future<List<Hotels>> hotelPagination(
       String islandID, String page) async {
     Map<String, String> requestHeaders = {
@@ -1022,6 +1092,34 @@ class APIService {
       return hd;
     } else {
       throw Exception('Failed to hotel details');
+    }
+  }
+
+  static Future<List<Restaurants>> restaurantPagination(
+      String islandID, String page) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {'page': page, 'island': islandID};
+    var url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['restaurants'];
+      List<Restaurants> rd = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Restaurants r2 = Restaurants.fromJson(data[i]);
+        rd.add(r2);
+      }
+      return rd;
+    } else {
+      throw Exception('Failed to restaurant details');
     }
   }
 

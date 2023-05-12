@@ -7,6 +7,7 @@ const fontRegular = 'Poppins';
 var lightBlue800 = Colors.lightBlue[800];
 int placePageSize = 4;
 int hotelPageSize = 6;
+int restaurantPageSize = 6;
 double portBlairLat = 11.650475999232123;
 double portBlairLong = 92.73356876475748;
 

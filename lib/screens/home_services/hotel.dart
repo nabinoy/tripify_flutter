@@ -44,7 +44,6 @@ class _HotelScreenState extends State<HotelScreen> {
         lat: currentLocation.latitude!.toString(),
         long: currentLocation.longitude!.toString(),
         maxRad: '3000');
-    //dataFuture = APIService.hotelAll().then((value) => {hd = value});
     dataFuture = APIService.hotelCount().then((value) async => {
           hotelCount = value,
           await APIService.hotelAll().then((value) => {hd = value})
