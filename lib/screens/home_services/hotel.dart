@@ -202,7 +202,6 @@ class _HotelScreenState extends State<HotelScreen> {
                       setState(() {});
                     } else {
                       islandId = ia[value - 1].sId;
-                      print(islandId);
                       dataFuture =
                           APIService.islandHotelCount(ia[value - 1].sId)
                               .then((value) async => {

@@ -463,7 +463,6 @@ class APIService {
         Hotels h2 = Hotels.fromJson(data[i]);
         h.add(h2);
       }
-      print(h.first.name);
       return h;
     } else {
       throw Exception('Failed to load hotel by id details');

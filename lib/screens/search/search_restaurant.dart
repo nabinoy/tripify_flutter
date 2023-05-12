@@ -184,16 +184,6 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                                         color: Color.fromARGB(255, 0, 0, 0))
                                   ],
                                 ),
-                                Icon(
-                                  MdiIcons.squareCircle,
-                                  size: 14,
-                                  color: (restaurant[index].isVeg)
-                                      ? Colors.green
-                                      : Colors.red,
-                                ),
-                                const SizedBox(
-                                  height: 3,
-                                ),
                                 Row(
                                   children: [
                                     const Icon(
@@ -216,6 +206,16 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                                       ),
                                     ),
                                   ],
+                                ),
+                                const SizedBox(
+                                  height: 3,
+                                ),
+                                Icon(
+                                  MdiIcons.squareCircle,
+                                  size: 14,
+                                  color: (restaurant[index].isVeg)
+                                      ? Colors.green
+                                      : Colors.red,
                                 ),
                               ],
                             ),
