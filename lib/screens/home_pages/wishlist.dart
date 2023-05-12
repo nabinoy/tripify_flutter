@@ -58,74 +58,80 @@ class _WishlistState extends State<Wishlist> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(
-                              Icons.error_outline_outlined,
-                              size: 58,
-                              color: Theme.of(context).disabledColor,
-                            ),
+                            Icon(Icons.error_outline_outlined,
+                                size: 88, color: Colors.lightBlue[800]),
                             const SizedBox(height: 16),
-                            Text(
-                              'Please login/signup first to access your wishlist!',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Theme.of(context).disabledColor,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20),
-                              child: MaterialButton(
-                                minWidth: double.infinity,
-                                height: 60,
-                                onPressed: () {
-                                  HapticFeedback.mediumImpact();
-                                  Navigator.pushNamed(
-                                      context, LoginPage.routeName);
-                                },
-                                shape: RoundedRectangleBorder(
-                                    side: const BorderSide(
-                                        width: 2,
-                                        color: Color.fromRGBO(2, 119, 189, 1)),
-                                    borderRadius: BorderRadius.circular(50)),
-                                child: const Text(
-                                  "Login",
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(2, 119, 189, 1),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18),
+                              child: Text(
+                                'Please login/signup first to access your wishlist!',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.lightBlue[800],
                                 ),
                               ),
                             ),
                             const SizedBox(
                               height: 20,
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: MaterialButton(
-                                minWidth: double.infinity,
-                                height: 60,
-                                onPressed: () {
-                                  HapticFeedback.mediumImpact();
-                                  Navigator.pushNamed(
-                                      context, SignupPage.routeName);
-                                },
-                                color: Colors.lightBlue[800],
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50)),
-                                child: const Text(
-                                  "Sign up",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: MaterialButton(
+                                    minWidth:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    height: 40,
+                                    onPressed: () {
+                                      HapticFeedback.mediumImpact();
+                                      Navigator.pushNamed(
+                                          context, LoginPage.routeName);
+                                    },
+                                    shape: RoundedRectangleBorder(
+                                        side: const BorderSide(
+                                            width: 2,
+                                            color:
+                                                Color.fromRGBO(2, 119, 189, 1)),
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    child: const Text(
+                                      "Login",
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(2, 119, 189, 1),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 20),
+                                  child: MaterialButton(
+                                    minWidth:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    height: 40,
+                                    onPressed: () {
+                                      HapticFeedback.mediumImpact();
+                                      Navigator.pushNamed(
+                                          context, SignupPage.routeName);
+                                    },
+                                    color: Colors.lightBlue[800],
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    child: const Text(
+                                      "Sign up",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             )
                           ],
                         ),
