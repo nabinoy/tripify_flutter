@@ -30,6 +30,11 @@ class _HotelScreenState extends State<HotelScreen> {
   List<IslandAll> ia = [];
   late Future dataFuture;
   late Future dataNearby;
+  int page = 1;
+  int isEndLoading = 1;
+  int hotelCount = 1;
+  final controller = ScrollController();
+  String islandId = 'All';
 
   @override
   void initState() {
@@ -39,9 +44,37 @@ class _HotelScreenState extends State<HotelScreen> {
         lat: currentLocation.latitude!.toString(),
         long: currentLocation.longitude!.toString(),
         maxRad: '3000');
-    dataFuture = APIService.hotelAll().then((value) => {hd = value});
+    //dataFuture = APIService.hotelAll().then((value) => {hd = value});
+    dataFuture = APIService.hotelCount().then((value) async => {
+          hotelCount = value,
+          await APIService.hotelAll().then((value) => {hd = value})
+        });
+
     dataNearby =
         APIService.nearbyHotel(model).then((value) => {nearbyHd = value});
+    controller.addListener(() {
+      if (controller.position.maxScrollExtent == controller.offset) {
+        fetch(islandId);
+      }
+    });
+  }
+
+  Future fetch(String islandId) async {
+    List<Hotels> temp = [];
+    page++;
+    if (islandId == 'All') {
+      await APIService.allHotelPagination(page.toString())
+          .then((value) => {temp = value});
+      setState(() {
+        hd.addAll(temp);
+      });
+    } else {
+      await APIService.hotelPagination(islandId, page.toString())
+          .then((value) => {temp = value});
+      setState(() {
+        hd.addAll(temp);
+      });
+    }
   }
 
   @override
@@ -155,13 +188,28 @@ class _HotelScreenState extends State<HotelScreen> {
                                   fontFamily: fontRegular),
                             )),
                   onTap: (value) {
+                    page = 1;
+                    isEndLoading = 1;
+                    hd = [];
                     if (value == 0) {
+                      islandId = 'All';
                       dataFuture =
-                          APIService.hotelAll().then((value) => {hd = value});
+                          APIService.hotelCount().then((value) async => {
+                                hotelCount = value,
+                                await APIService.hotelAll()
+                                    .then((value) => {hd = value})
+                              });
                       setState(() {});
                     } else {
-                      dataFuture = APIService.hotelByIslandId(ia[value - 1].sId)
-                          .then((value) => {hd = value});
+                      islandId = ia[value - 1].sId;
+                      print(islandId);
+                      dataFuture =
+                          APIService.islandHotelCount(ia[value - 1].sId)
+                              .then((value) async => {
+                                    hotelCount = value,
+                                    await APIService.hotelByIslandId(islandId)
+                                        .then((value) => {hd = value})
+                                  });
                       setState(() {});
                     }
                   },
@@ -208,148 +256,165 @@ class _HotelScreenState extends State<HotelScreen> {
                       ),
                     );
                   } else {
+                    if (hotelCount <= (page * hotelPageSize)) {
+                      isEndLoading = 0;
+                    }
                     return Container(
                       margin: const EdgeInsets.only(left: 20, top: 20),
                       // width: 100,
                       height: 250,
                       child: ListView.builder(
-                        itemCount: hd.length,
+                        controller: (isEndLoading == 0) ? null : controller,
+                        itemCount: hd.length + isEndLoading,
                         scrollDirection: Axis.horizontal,
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, HotelDetailsPage.routeName,
-                                  arguments: [hd[index]]);
-                            },
-                            child: Container(
-                              width: 250,
-                              height: 250,
-                              margin: const EdgeInsets.only(right: 20),
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: CachedNetworkImage(
-                                      height: 330,
-                                      alignment: Alignment.bottomCenter,
-                                      imageUrl:
-                                          hd[index].images.first.secureUrl,
-                                      placeholder: (context, url) =>
-                                          Image.memory(
-                                        kTransparentImage,
+                          if (index < hd.length) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, HotelDetailsPage.routeName,
+                                    arguments: [hd[index]]);
+                              },
+                              child: Container(
+                                width: 250,
+                                height: 250,
+                                margin: const EdgeInsets.only(right: 20),
+                                child: Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: CachedNetworkImage(
+                                        height: 330,
+                                        alignment: Alignment.bottomCenter,
+                                        imageUrl:
+                                            hd[index].images.first.secureUrl,
+                                        placeholder: (context, url) =>
+                                            Image.memory(
+                                          kTransparentImage,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        fadeInDuration:
+                                            const Duration(milliseconds: 200),
                                         fit: BoxFit.cover,
                                       ),
-                                      fadeInDuration:
-                                          const Duration(milliseconds: 200),
-                                      fit: BoxFit.cover,
                                     ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 100.0),
-                                    height: 330,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      gradient: LinearGradient(
-                                        begin: Alignment.bottomCenter,
-                                        end: Alignment.topCenter,
-                                        colors: [
-                                          Colors.black.withOpacity(0.7),
-                                          Colors.black.withOpacity(0.0),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 15,
-                                    right: 15,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      height: 30,
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 100.0),
+                                      height: 330,
                                       decoration: BoxDecoration(
-                                        color: Colors.black38,
-                                        borderRadius: BorderRadius.circular(40),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          const Icon(
-                                            Icons.star,
-                                            size: 16,
-                                            color: Colors.white,
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            hd[index].ratings.toString(),
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                        gradient: LinearGradient(
+                                          begin: Alignment.bottomCenter,
+                                          end: Alignment.topCenter,
+                                          colors: [
+                                            Colors.black.withOpacity(0.7),
+                                            Colors.black.withOpacity(0.0),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Positioned(
-                                    bottom: 20,
-                                    left: 20,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 10),
-                                          child: SizedBox(
-                                            width: 210,
-                                            child: Text(
-                                              hd[index].name,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 23,
-                                              ),
-                                            ),
-                                          ),
+                                    Positioned(
+                                      top: 15,
+                                      right: 15,
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                          color: Colors.black38,
+                                          borderRadius:
+                                              BorderRadius.circular(40),
                                         ),
-                                        Row(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
                                             const Icon(
-                                              Icons.location_on_outlined,
-                                              size: 20,
+                                              Icons.star,
+                                              size: 16,
                                               color: Colors.white,
                                             ),
                                             const SizedBox(
                                               width: 5,
                                             ),
-                                            SizedBox(
-                                              width: 180,
-                                              child: Text(
-                                                hd[index].address.city,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 15,
-                                                ),
+                                            Text(
+                                              hd[index].ratings.toString(),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  )
-                                ],
+                                    Positioned(
+                                      bottom: 20,
+                                      left: 20,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10),
+                                            child: SizedBox(
+                                              width: 210,
+                                              child: Text(
+                                                hd[index].name,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 23,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.location_on_outlined,
+                                                size: 20,
+                                                color: Colors.white,
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              SizedBox(
+                                                width: 180,
+                                                child: Text(
+                                                  hd[index].address.city,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          } else {
+                            return Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 40),
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          }
                         },
                       ),
                     );

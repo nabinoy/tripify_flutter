@@ -5,19 +5,10 @@ const appName = 'Tripify';
 const bgColor = Colors.white;
 const fontRegular = 'Poppins';
 var lightBlue800 = Colors.lightBlue[800];
-int placeCount = 4;
 int placePageSize = 4;
+int hotelPageSize = 6;
 double portBlairLat = 11.650475999232123;
 double portBlairLong = 92.73356876475748;
-
-Map<String, IconData> placeActivityIcons = {
-  "Swimming": MdiIcons.swim,
-  "Scuba Diving": MdiIcons.divingScuba
-};
-
-Map<String, Icon> hotelAmenityIcons = {};
-
-Map<String, Icon> hotelFacilityIcons = {};
 
 Map<String, IconData> hotelBedIcons = {
   "King": MdiIcons.bedKing,

@@ -280,7 +280,8 @@ class APIService {
     };
 
     final queryParameters = {'search': search};
-    var url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
+    var url =
+        Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
 
     var response = await client.get(
       url,
@@ -462,6 +463,7 @@ class APIService {
         Hotels h2 = Hotels.fromJson(data[i]);
         h.add(h2);
       }
+      print(h.first.name);
       return h;
     } else {
       throw Exception('Failed to load hotel by id details');
@@ -782,6 +784,47 @@ class APIService {
     }
   }
 
+  static Future<int> hotelCount() async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    var url = Uri.https(Config.apiURL, Config.hotelAllAPI);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data['filteredNumber'];
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<int> islandHotelCount(String sId) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {'island': sId};
+    var url = Uri.https(Config.apiURL, Config.hotelAllAPI, queryParameters);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data['filteredNumber'];
+    } else {
+      throw Exception('Failed to load hotel details');
+    }
+  }
+
   static Future<int> placeCount() async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
@@ -923,6 +966,63 @@ class APIService {
       return pd;
     } else {
       throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<List<Hotels>> allHotelPagination(String page) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {
+      'page': page,
+    };
+    var url = Uri.https(Config.apiURL, Config.hotelAllAPI, queryParameters);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['hotels'];
+      List<Hotels> hd = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Hotels h2 = Hotels.fromJson(data[i]);
+        hd.add(h2);
+      }
+      return hd;
+    } else {
+      throw Exception('Failed to hotel details');
+    }
+  }
+
+  static Future<List<Hotels>> hotelPagination(
+      String islandID, String page) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    final queryParameters = {'page': page, 'island': islandID};
+    var url = Uri.https(Config.apiURL, Config.hotelAllAPI, queryParameters);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['hotels'];
+      List<Hotels> hd = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Hotels h2 = Hotels.fromJson(data[i]);
+        hd.add(h2);
+      }
+      return hd;
+    } else {
+      throw Exception('Failed to hotel details');
     }
   }
 
