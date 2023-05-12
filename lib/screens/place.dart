@@ -176,16 +176,21 @@ class _PlaceState extends State<Place> {
                               pictureIndex.value = index)),
                   Positioned(
                     bottom: 30,
-                    left: MediaQuery.of(context).size.width * 0.42,
-                    child: ValueListenableBuilder(
-                      valueListenable: pictureIndex,
-                      builder: (context, value, child) {
-                        return buildIndicator(
-                            pictureIndex.value, placeList.first.images.length);
-                      },
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ValueListenableBuilder(
+                            valueListenable: pictureIndex,
+                            builder: (context, value, child) {
+                              return buildIndicator(pictureIndex.value,
+                                  placeList.first.images.length);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                    // child: buildIndicator(
-                    //     tempIndex, placeList.first.images.length)
                   )
                 ],
               ),
@@ -379,6 +384,7 @@ class _PlaceState extends State<Place> {
                         child: ListTile(
                           title: Text(
                             item,
+                            textAlign: TextAlign.center,
                             style: const TextStyle(fontSize: 14),
                           ),
                         ),
@@ -595,32 +601,89 @@ class _PlaceState extends State<Place> {
                   const SizedBox(
                     height: 5,
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Icon(
-                          Icons.attach_money,
-                          color: Colors.white,
-                        ),
-                        SizedBox(width: 8.0),
-                        Text(
-                          "Entry free",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
+                  (placeList.first.entry)
+                      ? Column(children: [
+                          Wrap(
+                            children:
+                                placeList.first.entryCost.map((entryCost) {
+                              return Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: const EdgeInsets.only(top: 10),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 8.0),
+                                decoration: BoxDecoration(
+                                  color: Color((math.Random().nextDouble() *
+                                              0xCCCCCC)
+                                          .toInt())
+                                      .withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.7,
+                                      child: Text(
+                                        entryCost.category,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          MdiIcons.currencyRupee,
+                                          color: Colors.black,
+                                          size: 20,
+                                        ),
+                                        Text(
+                                          entryCost.cost.toString(),
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 24.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
+                        ])
+                      : Container(
+                          height: 50,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 8.0),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 233, 238, 240),
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: const [
+                              Icon(
+                                MdiIcons.cashRemove,
+                                color: Colors.black,
+                              ),
+                              SizedBox(width: 8.0),
+                              Text(
+                                "Entry free",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
                 ],
               ),
             ),

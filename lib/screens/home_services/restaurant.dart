@@ -198,6 +198,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     isEndLoading = 1;
                     rd = [];
                     if (value == 0) {
+                      restaurantId = 'All';
                       dataFuture =
                           APIService.restaurantCount().then((value) async => {
                                 restaurantCount = value,

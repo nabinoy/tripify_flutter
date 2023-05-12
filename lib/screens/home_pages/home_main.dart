@@ -231,7 +231,6 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                                           MediaQuery.of(context).size.height *
                                               .0143),
                                   height: 50,
-                                  //height: MediaQuery.of(context).size.height * .06,
                                   width: MediaQuery.of(context).size.width * .5,
                                   child: const Text(
                                     'Search Places',

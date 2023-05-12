@@ -870,7 +870,8 @@ class APIService {
     };
 
     final queryParameters = {'island': sId};
-    var url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
+    var url =
+        Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
 
     var response = await client.get(
       url,
@@ -1066,7 +1067,8 @@ class APIService {
     final queryParameters = {
       'page': page,
     };
-    var url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
+    var url =
+        Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
 
     var response = await client.get(
       url,
@@ -1095,7 +1097,8 @@ class APIService {
     final queryParameters = {
       'page': page,
     };
-    var url = Uri.https(Config.apiURL, Config.tourOperatorAllAPI, queryParameters);
+    var url =
+        Uri.https(Config.apiURL, Config.tourOperatorAllAPI, queryParameters);
 
     var response = await client.get(
       url,
@@ -1151,7 +1154,8 @@ class APIService {
     };
 
     final queryParameters = {'page': page, 'island': islandID};
-    var url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
+    var url =
+        Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
 
     var response = await client.get(
       url,
