@@ -756,29 +756,33 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                     return GestureDetector(
                       onTap: () {
                         HapticFeedback.mediumImpact();
-                        if (index == 0) {
+                        if (sa[index].name.contains('Hotel')) {
                           Navigator.pushNamed(context, HotelScreen.routeName,
                               arguments: [
                                 ia,
                               ]);
                         }
-                        if (index == 1) {
+                        if (sa[index].name.contains('Tour Operator')) {
                           Navigator.pushNamed(
                               context, TourOperatorSceen.routeName);
                         }
-                        if (index == 2) {
+                        if (sa[index].name.contains('Nearby ATMs')) {
                           Navigator.pushNamed(context, MapWebView.routeName);
                         }
-                        if (index == 3) {
+                        if (sa[index].name.contains('Nearby Restrooms')) {
                           Navigator.pushNamed(
                               context, ToiletMapWebView.routeName);
                         }
-                        if (index == 4) {
+                        if (sa[index].name.contains('Restaurant')) {
                           Navigator.pushNamed(
                               context, RestaurantScreen.routeName,
                               arguments: [
                                 ia,
                               ]);
+                        }
+                        if (sa[index].name.contains('Nearby Hospitals')) {
+                          Navigator.pushNamed(
+                              context, HospitalMapWebView.routeName);
                         }
                       },
                       child: ClipRRect(

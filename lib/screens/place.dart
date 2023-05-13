@@ -1741,8 +1741,10 @@ class _PlaceState extends State<Place> {
                           Wrap(
                             children: nearbyRd.map((widget) {
                               Point point1 = Point(
-                                  latitude: currentLocation.latitude!,
-                                  longitude: currentLocation.longitude!);
+                                  latitude:
+                                      placeList.first.location.coordinates[1],
+                                  longitude:
+                                      placeList.first.location.coordinates[0]);
                               Point point2 = Point(
                                   latitude: widget.location.coordinates[1],
                                   longitude: widget.location.coordinates[0]);

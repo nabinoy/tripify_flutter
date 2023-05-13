@@ -208,6 +208,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (_) => const TransportService(),
       );
 
+    case HospitalMapWebView.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const HospitalMapWebView(),
+      );
+
     case RestaurantScreen.routeName:
       return MaterialPageRoute(
         settings: routeSettings,

@@ -85,3 +85,45 @@ class _ToiletMapWebViewState extends State<ToiletMapWebView> {
     );
   }
 }
+
+class HospitalMapWebView extends StatefulWidget {
+  static const String routeName = '/hospitalmapwebview';
+  const HospitalMapWebView({super.key});
+
+  get controller => null;
+
+  @override
+  State<HospitalMapWebView> createState() => _HospitalMapWebViewState();
+}
+
+class _HospitalMapWebViewState extends State<HospitalMapWebView> {
+  late final WebViewController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = WebViewController()
+      ..loadRequest(
+        Uri.parse(
+            'https://www.google.com/maps/search/hospital/@${currentLocation.latitude},${currentLocation.longitude},15z'),
+      )
+      ..setJavaScriptMode(JavaScriptMode.unrestricted);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Google Maps',
+          style: TextStyle(fontSize: 18),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: WebViewWidget(
+        controller: controller,
+      ),
+    );
+  }
+}
