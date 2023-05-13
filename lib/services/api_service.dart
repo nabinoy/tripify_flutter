@@ -1279,11 +1279,18 @@ class APIService {
       queryParameters = {'page': page};
       url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
     } else {
-      queryParameters = {
-        'island': islandID,
-        'isVeg': (type == 'Veg') ? 'true' : 'false',
-        'page': page
-      };
+      if (type.contains("All")) {
+          queryParameters = {
+          'island': islandID,
+          'page': page
+        };
+        } else {
+          queryParameters = {
+          'island': islandID,
+          'isVeg': (type == 'Veg') ? 'true' : 'false',
+          'page': page
+        };
+        }
       url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
     }
 
