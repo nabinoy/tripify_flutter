@@ -244,43 +244,67 @@ class _PlaceState extends State<Place> {
               GestureDetector(
                 onTap: () async {
                   HapticFeedback.mediumImpact();
-                  if (isListed.value) {
-                    await APIService.deleteFromWishlist(placeList.first.sId)
-                        .then((value) {
-                      message = value;
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(
-                          message,
-                          style: const TextStyle(
-                              fontFamily: fontRegular, fontSize: 12),
-                          textAlign: TextAlign.center,
+                  if (SharedService.id == '') {
+                    final snackBar = SnackBar(
+                      width: double.infinity,
+                      dismissDirection: DismissDirection.down,
+                      elevation: 0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      content: DefaultTextStyle(
+                        style: const TextStyle(
+                          fontFamily: fontRegular,
                         ),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 3,
+                        child: AwesomeSnackbarContent(
+                          title: 'Warning!',
+                          message:
+                              'Please login/signup to add this place to wishlist!',
+                          contentType: ContentType.warning,
                         ),
-                        backgroundColor: Colors.blue,
-                      ));
-                    });
-                    isListed.value = false;
+                      ),
+                    );
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(snackBar);
                   } else {
-                    await APIService.addToWishlist(placeList.first.sId)
-                        .then((value) {
-                      message = value;
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(
-                          message,
-                          style: const TextStyle(
-                              fontFamily: fontRegular, fontSize: 12),
-                          textAlign: TextAlign.center,
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 3,
-                        ),
-                        backgroundColor: Colors.blue,
-                      ));
-                    });
+                    if (isListed.value) {
+                      await APIService.deleteFromWishlist(placeList.first.sId)
+                          .then((value) {
+                        message = value;
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                            message,
+                            style: const TextStyle(
+                                fontFamily: fontRegular, fontSize: 12),
+                            textAlign: TextAlign.center,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 3,
+                          ),
+                          backgroundColor: Colors.blue,
+                        ));
+                      });
+                      isListed.value = false;
+                    } else {
+                      await APIService.addToWishlist(placeList.first.sId)
+                          .then((value) {
+                        message = value;
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                            message,
+                            style: const TextStyle(
+                                fontFamily: fontRegular, fontSize: 12),
+                            textAlign: TextAlign.center,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 3,
+                          ),
+                          backgroundColor: Colors.blue,
+                        ));
+                      });
 
-                    isListed.value = true;
+                      isListed.value = true;
+                    }
                   }
                 },
                 child: Padding(
