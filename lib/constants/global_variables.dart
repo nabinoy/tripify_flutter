@@ -31,7 +31,7 @@ Map<String, String> hotelRoomTypeImages = {
   "Single Room":
       "https://hotelhavanabulgaria.com/wp-content/uploads/2020/07/single-room-1.jpg",
   "Twin Room":
-      "https://www.collinsdictionary.com/images/full/twinroom_310855142_1000.jpg",
+      "https://webbox.imgix.net/images/glsakmgqfksboglw/84b71477-06b3-43f1-8a9a-00afa518e07f.jpg",
   "Triple Room":
       "https://www.louisfitzgeraldhotel.com/wp-content/uploads/2020/03/hotel-louis-fitzgerald-082.jpg",
   "Family Room":

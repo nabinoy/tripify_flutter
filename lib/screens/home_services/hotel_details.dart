@@ -132,12 +132,16 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 5),
-                                child: Text(
-                                  hotel.name,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.w600,
+                                child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  child: Text(
+                                    hotel.name,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                               ),

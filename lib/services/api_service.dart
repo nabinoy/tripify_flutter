@@ -479,11 +479,59 @@ class APIService {
     };
     var url =
         Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
+
     var response = await client.get(
       url,
       headers: requestHeaders,
     );
 
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['restaurants'];
+      List<Restaurants> r = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Restaurants r2 = Restaurants.fromJson(data[i]);
+        r.add(r2);
+      }
+      return r;
+    } else {
+      throw Exception('Failed to load Restaurant details');
+    }
+  }
+
+  static Future<List<Restaurants>> restaurantByIslandIdFoodType(
+      String id, String type) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+    late dynamic queryParameters;
+    dynamic url;
+
+    if (type.contains("All") && id.contains('All')) {
+      url = Uri.https(Config.apiURL, Config.restaurantAllAPI);
+    } else {
+      if (id.contains('All')) {
+        queryParameters = {'isVeg': (type == 'Veg') ? 'true' : 'false'};
+      } else {
+        if (type.contains("All")) {
+          queryParameters = {
+            'island': id,
+          };
+        } else {
+          queryParameters = {
+            'island': id,
+            'isVeg': (type == 'Veg') ? 'true' : 'false'
+          };
+        }
+      }
+      url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
+    }
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       data = data['restaurants'];
@@ -886,6 +934,48 @@ class APIService {
     }
   }
 
+  static Future<int> islandRestaurantCountFoodType(
+      String sId, String type) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+    late dynamic queryParameters;
+    dynamic url;
+
+    if (type.contains("All") && sId.contains('All')) {
+      url = Uri.https(Config.apiURL, Config.restaurantAllAPI);
+    } else {
+      if (sId.contains('All')) {
+        queryParameters = {'isVeg': (type == 'Veg') ? 'true' : 'false'};
+      } else {
+        if (type.contains("All")) {
+          queryParameters = {
+            'island': sId,
+          };
+        } else {
+          queryParameters = {
+            'island': sId,
+            'isVeg': (type == 'Veg') ? 'true' : 'false'
+          };
+        }
+      }
+
+      url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
+    }
+    //final queryParameters = {'island': sId,'isVeg':isVeg};
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data['filteredNumber'];
+    } else {
+      throw Exception('Failed to load hotel details');
+    }
+  }
+
   static Future<int> placeCount() async {
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
@@ -1156,6 +1246,46 @@ class APIService {
     final queryParameters = {'page': page, 'island': islandID};
     var url =
         Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['restaurants'];
+      List<Restaurants> rd = [];
+
+      for (var i = 0; i < data.length; i++) {
+        Restaurants r2 = Restaurants.fromJson(data[i]);
+        rd.add(r2);
+      }
+      return rd;
+    } else {
+      throw Exception('Failed to restaurant details');
+    }
+  }
+
+  static Future<List<Restaurants>> restaurantPaginationFoodType(
+      String islandID, String type, String page) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    late dynamic queryParameters;
+    dynamic url;
+
+    if (type.contains("All") && islandID.contains('All')) {
+      queryParameters = {'page': page};
+      url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
+    } else {
+      queryParameters = {
+        'island': islandID,
+        'isVeg': (type == 'Veg') ? 'true' : 'false',
+        'page': page
+      };
+      url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
+    }
 
     var response = await client.get(
       url,

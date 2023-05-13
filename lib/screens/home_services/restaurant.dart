@@ -8,6 +8,7 @@ import 'package:tripify/loader/loader_hotel_card.dart';
 import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/nearby_request_model.dart';
 import 'package:tripify/models/restaurant_response_model.dart';
+import 'package:tripify/screens/filter_page/restaurant_filter.dart';
 import 'package:tripify/screens/home_services/restaurant_details.dart';
 import 'package:tripify/screens/search/search_restaurant.dart';
 import 'package:tripify/services/api_service.dart';
@@ -126,41 +127,80 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, SearchRestaurant.routeName);
-              },
-              child: Container(
-                margin: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.lightBlue.shade200.withOpacity(0.3),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(50),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, SearchRestaurant.routeName);
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * .65,
+                    margin: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlue.shade200.withOpacity(0.3),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(50),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.search_outlined,
+                              color: Color.fromARGB(221, 55, 55, 55)),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical:
+                                    MediaQuery.of(context).size.height * .0145),
+                            height: MediaQuery.of(context).size.height * .06,
+                            child: const Text(
+                              'Search Restaurants',
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.black54),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.search_outlined,
-                          color: Color.fromARGB(221, 55, 55, 55)),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical:
-                                MediaQuery.of(context).size.height * .0145),
-                        height: MediaQuery.of(context).size.height * .06,
-                        child: const Text(
-                          'Search Restaurants',
-                          style: TextStyle(fontSize: 16, color: Colors.black54),
+                Container(
+                  margin: const EdgeInsets.only(right: 16),
+                  child: MaterialButton(
+                    elevation: 0,
+                    height: 48,
+                    minWidth: MediaQuery.of(context).size.width * .2,
+                    onPressed: () {
+                      Navigator.pushNamed(context, FilterRestaurant.routeName,
+                          arguments: [ia]);
+                    },
+                    color: Colors.lightBlue[600],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Row(
+                      children: const [
+                        Icon(
+                          Icons.filter_list_outlined,
+                          size: 16,
+                          color: Colors.white,
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          'Filter',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w600),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
             Container(
               margin: const EdgeInsets.only(left: 16, right: 16, top: 10),
