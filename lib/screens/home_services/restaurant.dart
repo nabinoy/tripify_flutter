@@ -424,7 +424,6 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             Container(
               margin: const EdgeInsets.only(top: 20, right: 20, left: 20),
               width: double.infinity,
-              height: 50,
               child: const Text(
                 "Near from you",
                 style: TextStyle(

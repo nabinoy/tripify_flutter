@@ -265,7 +265,6 @@ class _HotelScreenState extends State<HotelScreen> {
                     }
                     return Container(
                       margin: const EdgeInsets.only(left: 20, top: 20),
-                      // width: 100,
                       height: 250,
                       child: ListView.builder(
                         controller: (isEndLoading == 0) ? null : controller,
@@ -431,7 +430,6 @@ class _HotelScreenState extends State<HotelScreen> {
             Container(
               margin: const EdgeInsets.only(top: 20, right: 20, left: 20),
               width: double.infinity,
-              height: 50,
               child: const Text(
                 "Near from you",
                 style: TextStyle(

@@ -20,10 +20,12 @@ import 'package:tripify/loader/loader_review_all.dart';
 import 'package:tripify/loader/loader_review_user.dart';
 import 'package:tripify/models/hotel_response_model.dart';
 import 'package:tripify/models/place_response_model.dart';
+import 'package:tripify/models/restaurant_response_model.dart';
 import 'package:tripify/models/review_rating_model.dart';
 import 'package:tripify/models/user_review_model.dart';
 import 'package:tripify/models/weather_model.dart';
 import 'package:tripify/screens/home_services/hotel_details.dart';
+import 'package:tripify/screens/home_services/restaurant_details.dart';
 import 'package:tripify/screens/review_all.dart';
 import 'package:tripify/screens/weather_details.dart';
 import 'package:tripify/services/api_service.dart';
@@ -81,6 +83,7 @@ class Place extends StatefulWidget {
 
 class _PlaceState extends State<Place> {
   List<Hotels> nearbyHd = [];
+  List<Restaurants> nearbyRd = [];
   ValueNotifier<int> pictureIndex = ValueNotifier<int>(0);
   int tempIndex = 0;
   ReviewUser ru = ReviewUser.fromJson({
@@ -109,8 +112,8 @@ class _PlaceState extends State<Place> {
         onDotClicked: animateToSlide,
         effect: const ScaleEffect(
             scale: 1.6,
-            dotHeight: 8,
-            dotWidth: 8,
+            dotHeight: 6,
+            dotWidth: 6,
             dotColor: Color.fromARGB(255, 191, 191, 191),
             activeDotColor: Colors.white),
         activeIndex: tempIndex,
@@ -918,7 +921,7 @@ class _PlaceState extends State<Place> {
                             height: 12,
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               RatingBar.builder(
                                 initialRating: ru.rating.toDouble(),
@@ -1538,6 +1541,200 @@ class _PlaceState extends State<Place> {
                                                 width: 10,
                                               ),
                                             ],
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 3, horizontal: 8),
+                                            decoration: BoxDecoration(
+                                              color: Colors.lightBlue[700],
+                                              borderRadius:
+                                                  BorderRadius.circular(40),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.location_on,
+                                                  size: 15,
+                                                  color: Colors.white,
+                                                ),
+                                                const SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Text(
+                                                  '${distance.toStringAsFixed(1)}km away',
+                                                  style: const TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      );
+                    }
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 20, right: 20, left: 20),
+                width: double.infinity,
+                child: const Text(
+                  "Nearby Restaurants",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              FutureBuilder(
+                future: APIService.nearbyRestaurants(model)
+                    .then((value) => {nearbyRd = value}),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (nearbyRd.isEmpty) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(vertical: 85),
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              MdiIcons.alertCircleOutline,
+                              size: 58,
+                              color: Theme.of(context).disabledColor,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'No restaurants found!',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Theme.of(context).disabledColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return Column(
+                        children: [
+                          Wrap(
+                            children: nearbyRd.map((widget) {
+                              Point point1 = Point(
+                                  latitude: currentLocation.latitude!,
+                                  longitude: currentLocation.longitude!);
+                              Point point2 = Point(
+                                  latitude: widget.location.coordinates[1],
+                                  longitude: widget.location.coordinates[0]);
+
+                              var distance = georange.distance(point1, point2);
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, RestaurantDetailsPage.routeName,
+                                      arguments: [widget]);
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 16),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 2.0,
+                                        blurRadius: 5.0,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                                    color: Colors.white,
+                                  ),
+                                  width: double.infinity,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.all(12),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          child: CachedNetworkImage(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                .25,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                .25,
+                                            imageUrl:
+                                                widget.images.first.secureUrl,
+                                            placeholder: (context, url) =>
+                                                Image.memory(
+                                              kTransparentImage,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            fadeInDuration: const Duration(
+                                                milliseconds: 200),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 6,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                .55,
+                                            child: Text(
+                                              widget.name,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                .55,
+                                            child: Text(widget.address.city,
+                                                style: const TextStyle(
+                                                    fontSize: 12)),
+                                          ),
+                                          const SizedBox(
+                                            height: 3,
+                                          ),
+                                          Icon(
+                                            MdiIcons.squareCircle,
+                                            size: 18,
+                                            color: (widget.isVeg)
+                                                ? Colors.green
+                                                : Colors.red,
                                           ),
                                           const SizedBox(
                                             height: 5,
