@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tripify/services/current_location.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MapWebView extends StatefulWidget {
@@ -19,7 +20,8 @@ class _MapWebViewState extends State<MapWebView> {
     super.initState();
     controller = WebViewController()
       ..loadRequest(
-        Uri.parse('https://www.google.com/maps/search/atm/'),
+        Uri.parse(
+            'https://www.google.com/maps/search/atm/@${currentLocation.latitude},${currentLocation.longitude},15z'),
       )
       ..setJavaScriptMode(JavaScriptMode.unrestricted);
   }
@@ -42,7 +44,6 @@ class _MapWebViewState extends State<MapWebView> {
   }
 }
 
-
 class ToiletMapWebView extends StatefulWidget {
   static const String routeName = '/toiletmapwebview';
   const ToiletMapWebView({super.key});
@@ -61,7 +62,8 @@ class _ToiletMapWebViewState extends State<ToiletMapWebView> {
     super.initState();
     controller = WebViewController()
       ..loadRequest(
-        Uri.parse('https://www.google.com/maps/search/toilet/'),
+        Uri.parse(
+            'https://www.google.com/maps/search/toilet/@${currentLocation.latitude},${currentLocation.longitude},15z'),
       )
       ..setJavaScriptMode(JavaScriptMode.unrestricted);
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tripify/screens/chatbot.dart';
+import 'package:tripify/screens/drawer/translator.dart';
 import 'package:tripify/screens/drawer/transport_service.dart';
 import 'package:tripify/screens/filter_page/place_filter.dart';
 import 'package:tripify/screens/filter_page/restaurant_filter.dart';
@@ -193,6 +194,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const FilterRestaurant(),
+      );
+
+    case TranslatorWebView.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const TranslatorWebView(),
       );
 
     case TransportService.routeName:

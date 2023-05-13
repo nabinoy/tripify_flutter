@@ -65,7 +65,8 @@ class _TransportServiceState extends State<TransportService>
           WebViewWidget(
               controller: WebViewController()
                 ..loadRequest(
-                  Uri.parse('https://dss.andaman.gov.in/'),
+                  Uri.parse(
+                      'https://dss.andaman.gov.in/ShipAndamanWebSite/services/passenger-services/online_enquiry.html'),
                 )
                 ..setJavaScriptMode(JavaScriptMode.unrestricted)),
           WebViewWidget(

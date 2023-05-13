@@ -9,6 +9,7 @@ import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/router.dart';
 import 'package:tripify/screens/chatbot.dart';
 import 'package:tripify/screens/drawer/helpline.dart';
+import 'package:tripify/screens/drawer/translator.dart';
 import 'package:tripify/screens/drawer/transport_service.dart';
 import 'package:tripify/screens/home_pages/home_main.dart';
 import 'package:tripify/screens/home_pages/profile.dart';
@@ -349,6 +350,31 @@ class _HomepageState extends State<Homepage> {
                       Navigator.pushNamed(
                         context,
                         TransportService.routeName,
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Icon(
+                            Icons.translate_outlined,
+                            color: Colors.grey[800],
+                            size: 30,
+                          ),
+                        ),
+                        const Text('Translator'),
+                      ],
+                    ),
+                    onTap: () {
+                      HapticFeedback.mediumImpact();
+                      Navigator.pushNamed(
+                        context,
+                        TranslatorWebView.routeName,
                       );
                     },
                   ),
