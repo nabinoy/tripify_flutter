@@ -405,6 +405,64 @@ class _PlaceState extends State<Place> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
+                    'Best time to visit',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(children: [
+                        Icon(Icons.calendar_month,
+                            size: 40, color: Colors.lightGreen[800]),
+                        const Text('January',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 16)),
+                        const Text('Start month',
+                            style:
+                                TextStyle(fontSize: 12, color: Colors.black54))
+                      ]),
+                      Row(
+                        children: List.generate(
+                          7,
+                          (index) => Container(
+                            width: 8,
+                            height: 8,
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 18, horizontal: 5.0),
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.black38,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Column(children: [
+                        Icon(Icons.calendar_month,
+                            size: 40, color: Colors.lightBlue[800]),
+                        const Text('September',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 16)),
+                        const Text('End month',
+                            style:
+                                TextStyle(fontSize: 12, color: Colors.black54))
+                      ]),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
                     'Timing',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
@@ -687,6 +745,31 @@ class _PlaceState extends State<Place> {
                             ],
                           ),
                         )
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'How to reach',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  ExpandableText(
+                    'The Science Centre in Andaman and Nicobar Islands is located in Goodwill Estate, in the city of Port Blair. It is easily accessible by road from any part of the city. Here are some ways to reach the Science Centre:\n\n1. By car or taxi: You can hire a car or taxi from anywhere in Port Blair and ask the driver to take you to the Science Centre. The centre is located about 3 km from the city centre, and the journey should take around 15-20 minutes.\n\n2. By bus: You can take a local bus from any part of Port Blair that goes towards the Science Centre. You can ask the conductor or other passengers for help in identifying the correct bus. The journey may take a bit longer than by car or taxi, but it is a more affordable option.\n\n3. By auto-rickshaw: You can also take an auto-rickshaw from anywhere in Port Blair to reach the Science Centre. This option is more convenient if you are travelling alone or in a small group.',
+                    animation: true,
+                    expandText: 'show more',
+                    collapseText: 'show less',
+                    maxLines: 6,
+                    linkColor: Colors.blue,
+                  ),
                 ],
               ),
             ),
