@@ -6,6 +6,7 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/restaurant_response_model.dart';
 import 'package:tripify/models/weather_model.dart';
+import 'package:tripify/screens/util.dart/pdf_viewer.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/widget/direction_map.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -184,44 +185,54 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.only(
+                    left: 20, right: 20, top: 25, bottom: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Direction',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        'Menu',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.center,
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.width * 0.8,
-                  width: MediaQuery.of(context).size.width,
-                  child: FutureBuilder(
-                      future: Future.wait([
-                        getCurrentLocation(),
-                      ]),
-                      builder: (builder, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          return ClipRRect(
-                              borderRadius: BorderRadius.circular(15.0),
-                              child: const DirectionMap());
-                        } else {
-                          return Container(
-                            color: Colors.white,
-                            child: const Center(
-                              child: CircularProgressIndicator(),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, PdfViewPage.routeName,
+                            arguments: [restaurant.menu.secureUrl, 'Menu']);
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Colors.green[400],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              Icons.restaurant_menu,
+                              color: Colors.white,
                             ),
-                          );
-                        }
-                      }),
+                            SizedBox(width: 10),
+                            Text(
+                              'View Menu',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
               Container(
@@ -298,6 +309,47 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
                   ],
                 ),
               ),
+              Container(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Direction',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                alignment: Alignment.center,
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.width * 0.8,
+                  width: MediaQuery.of(context).size.width,
+                  child: FutureBuilder(
+                      future: Future.wait([
+                        getCurrentLocation(),
+                      ]),
+                      builder: (builder, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return ClipRRect(
+                              borderRadius: BorderRadius.circular(15.0),
+                              child: const DirectionMap());
+                        } else {
+                          return Container(
+                            color: Colors.white,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+                      }),
+                ),
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -339,7 +391,7 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
                           color: Colors.black87,
                         ),
                       ),
-                      subtitle: const Text('Hotel'),
+                      subtitle: const Text('Restaurant'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
