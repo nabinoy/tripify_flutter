@@ -27,6 +27,7 @@ import 'package:tripify/screens/search/search_place.dart';
 import 'package:tripify/screens/search/search_restaurant.dart';
 import 'package:tripify/screens/search/search_tour_operator.dart';
 import 'package:tripify/screens/signup.dart';
+import 'package:tripify/screens/util.dart/pdf_viewer.dart';
 import 'package:tripify/screens/weather_details.dart';
 import 'package:tripify/screens/welcome.dart';
 
@@ -206,6 +207,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const TransportService(),
+      );
+
+    case PdfViewPage.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const PdfViewPage(),
       );
 
     case HospitalMapWebView.routeName:

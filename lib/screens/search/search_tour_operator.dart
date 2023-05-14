@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/models/tour_operator_response_model.dart';
+import 'package:tripify/screens/util.dart/pdf_viewer.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -159,18 +162,16 @@ class _SearchTourOperatorState extends State<SearchTourOperator> {
                           CircleAvatar(
                             radius: MediaQuery.of(context).size.width * .13,
                             backgroundColor: Colors.transparent,
-                            child: ClipOval(
-                              child: SizedBox(
-                                child: CachedNetworkImage(
-                                  imageUrl: tourOp[index].image.secureUrl,
-                                  placeholder: (context, url) => Image.memory(
-                                    kTransparentImage,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  fadeInDuration:
-                                      const Duration(milliseconds: 200),
+                            child: SizedBox(
+                              child: CachedNetworkImage(
+                                imageUrl: tourOp[index].image.secureUrl,
+                                placeholder: (context, url) => Image.memory(
+                                  kTransparentImage,
                                   fit: BoxFit.cover,
                                 ),
+                                fadeInDuration:
+                                    const Duration(milliseconds: 200),
+                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
@@ -191,9 +192,13 @@ class _SearchTourOperatorState extends State<SearchTourOperator> {
                                   ),
                                 ),
                                 const SizedBox(height: 5),
-                                Text(
+                                ExpandableText(
                                   tourOp[index].description,
-                                  textAlign: TextAlign.center,
+                                  animation: true,
+                                  expandText: 'show more',
+                                  collapseText: 'show less',
+                                  maxLines: 5,
+                                  linkColor: Colors.blue,
                                 ),
                                 const SizedBox(height: 10),
                                 const Text(
@@ -342,9 +347,14 @@ class _SearchTourOperatorState extends State<SearchTourOperator> {
                                     MaterialButton(
                                       elevation: 0,
                                       onPressed: () {
-                                        _launchWeb(tourOp[index]
-                                            .tariffDocument
-                                            .secureUrl);
+                                        Navigator.pushNamed(
+                                            context, PdfViewPage.routeName,
+                                            arguments: [
+                                              tourOp[index]
+                                                  .tariffDocument
+                                                  .secureUrl,
+                                              'Tarrif Document'
+                                            ]);
                                       },
                                       color: Colors.lightBlue[600],
                                       shape: RoundedRectangleBorder(
@@ -371,6 +381,35 @@ class _SearchTourOperatorState extends State<SearchTourOperator> {
                                       ),
                                     ),
                                   ],
+                                ),
+                                MaterialButton(
+                                  elevation: 0,
+                                  onPressed: () {
+                                    _launchWeb('https://google.com');
+                                  },
+                                  color: Colors.lightBlue[800],
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(
+                                        MdiIcons.web,
+                                        size: 20,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text(
+                                        'Get a quote',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
