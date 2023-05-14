@@ -29,21 +29,21 @@ Map<String, IconData> hotelBedIcons = {
 
 Map<String, String> hotelRoomTypeImages = {
   "Single Room":
-      "https://hotelhavanabulgaria.com/wp-content/uploads/2020/07/single-room-1.jpg",
+      "https://res.cloudinary.com/diowg4rud/image/upload/v1684061312/hotels/Bed%20images/single-room-1_zatew9.jpg",
   "Twin Room":
-      "https://webbox.imgix.net/images/glsakmgqfksboglw/84b71477-06b3-43f1-8a9a-00afa518e07f.jpg",
+      "https://res.cloudinary.com/diowg4rud/image/upload/v1684061373/hotels/Bed%20images/84b71477-06b3-43f1-8a9a-00afa518e07f_hxql1j.jpg",
   "Triple Room":
-      "https://www.louisfitzgeraldhotel.com/wp-content/uploads/2020/03/hotel-louis-fitzgerald-082.jpg",
+      "https://res.cloudinary.com/diowg4rud/image/upload/v1684061415/hotels/Bed%20images/hotel-louis-fitzgerald-082_brfer5.jpg",
   "Family Room":
-      "https://hips.hearstapps.com/hmg-prod/images/gettyimages-670913803-1515521778.jpg?crop=1xw:1xh;center,top&resize=980:*",
+      "https://res.cloudinary.com/diowg4rud/image/upload/v1684061457/hotels/Bed%20images/gettyimages-670913803-1515521778_djeofn.jpg",
   "Cottage":
-      "https://r2imghtlak.mmtcdn.com/r2-mmt-htl-image/htl-imgs/202108122021419955-150ddef4330211ec82820a58a9feac02.jpg?&output-quality=75&downsize=910:612&crop=910:612;4,0&output-format=jpg",
+      "https://res.cloudinary.com/diowg4rud/image/upload/v1684061524/hotels/Bed%20images/202108122021419955-150ddef4330211ec82820a58a9feac02_q0axdk.jpg",
   "Dormitory Room":
-      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/160849727.jpg?k=0d56f62be9551f18ca73fe31a5f67208a142a8c5b3ef9bb9154b0ded1c087646&o=&hp=1",
+      "https://res.cloudinary.com/diowg4rud/image/upload/v1684061565/hotels/Bed%20images/160849727_bf15lx.jpg",
   "Executive Suite":
-      "https://images.rosewoodhotels.com/is/image/rwhg/rwgzu-executive-suite-living-room-dusk",
+      "https://res.cloudinary.com/diowg4rud/image/upload/v1684061633/hotels/Bed%20images/rwgzu-executive-suite-living-room-dusk_sttzbk.jpg",
   "Suite Room":
-      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+      "https://res.cloudinary.com/diowg4rud/image/upload/v1684061691/hotels/Bed%20images/photo-1560448204-e02f11c3d0e2_lsuqip.jpg",
   "Deluxe Room":
-      "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+      "https://res.cloudinary.com/diowg4rud/image/upload/v1684061739/hotels/Bed%20images/photo-1631049307264-da0ec9d70304_zmzg6v.jpg"
 };

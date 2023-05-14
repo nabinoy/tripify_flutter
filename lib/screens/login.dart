@@ -12,7 +12,7 @@ import 'package:tripify/services/shared_service.dart';
 
 class LoginPage extends StatelessWidget {
   static const String routeName = '/login';
-  
+
   const LoginPage({super.key});
 
   @override
@@ -343,7 +343,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                 height: MediaQuery.of(context).size.height / 3,
                 decoration: const BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage('assets/images/background.png'),
+                        image: AssetImage('assets/images/login_background.jpg'),
                         fit: BoxFit.cover)),
               ))
         ],
