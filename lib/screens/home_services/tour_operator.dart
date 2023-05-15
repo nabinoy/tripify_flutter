@@ -450,38 +450,46 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                             ),
                                           ],
                                         ),
-                                        MaterialButton(
-                                          elevation: 0,
-                                          onPressed: () {
-                                            _launchWeb('https://google.com');
-                                          },
-                                          color: Colors.lightBlue[800],
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(50)),
-                                          child: const Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                MdiIcons.web,
-                                                size: 20,
-                                                color: Colors.white,
-                                              ),
-                                              SizedBox(
-                                                width: 4,
-                                              ),
-                                              Text(
-                                                'Get a quote',
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                        (tourOp[index].contact.website ==
+                                                'null')
+                                            ? const SizedBox(
+                                                height: 1,
                                               )
-                                            ],
-                                          ),
-                                        ),
+                                            : MaterialButton(
+                                                elevation: 0,
+                                                onPressed: () {
+                                                  _launchWeb(tourOp[index]
+                                                      .contact
+                                                      .website!);
+                                                },
+                                                color: Colors.lightBlue[800],
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50)),
+                                                child: const Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      MdiIcons.web,
+                                                      size: 20,
+                                                      color: Colors.white,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 4,
+                                                    ),
+                                                    Text(
+                                                      'Get a quote',
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
                                       ],
                                     ),
                                   ),

@@ -76,11 +76,12 @@ class Contact {
   String name;
   String phone;
   String email;
+  String? website;
 
-  Contact({required this.name, required this.phone, required this.email});
+  Contact({required this.name, required this.phone, required this.email,this.website});
 
   factory Contact.fromJson(Map<String, dynamic> json) {
     return Contact(
-        name: json['name'], phone: json['phone'], email: json['email']);
+        name: json['name'], phone: json['phone'], email: json['email'],website: json['website']??'null');
   }
 }

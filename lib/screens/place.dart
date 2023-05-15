@@ -457,8 +457,8 @@ class _PlaceState extends State<Place> {
                       Column(children: [
                         Icon(Icons.calendar_month,
                             size: 40, color: Colors.lightGreen[800]),
-                        const Text('January',
-                            style: TextStyle(
+                        Text(placeList.first.bestTimeToVisit.startMonth,
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 16)),
                         const Text('Start month',
                             style:
@@ -482,8 +482,8 @@ class _PlaceState extends State<Place> {
                       Column(children: [
                         Icon(Icons.calendar_month,
                             size: 40, color: Colors.lightBlue[800]),
-                        const Text('September',
-                            style: TextStyle(
+                        Text(placeList.first.bestTimeToVisit.endMonth,
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 16)),
                         const Text('End month',
                             style:
@@ -835,8 +835,8 @@ class _PlaceState extends State<Place> {
                   const SizedBox(
                     height: 5,
                   ),
-                  const ExpandableText(
-                    'The Science Centre in Andaman and Nicobar Islands is located in Goodwill Estate, in the city of Port Blair. It is easily accessible by road from any part of the city. Here are some ways to reach the Science Centre:\n\n1. By car or taxi: You can hire a car or taxi from anywhere in Port Blair and ask the driver to take you to the Science Centre. The centre is located about 3 km from the city centre, and the journey should take around 15-20 minutes.\n\n2. By bus: You can take a local bus from any part of Port Blair that goes towards the Science Centre. You can ask the conductor or other passengers for help in identifying the correct bus. The journey may take a bit longer than by car or taxi, but it is a more affordable option.\n\n3. By auto-rickshaw: You can also take an auto-rickshaw from anywhere in Port Blair to reach the Science Centre. This option is more convenient if you are travelling alone or in a small group.',
+                  ExpandableText(
+                    placeList.first.howToReach,
                     animation: true,
                     expandText: 'show more',
                     collapseText: 'show less',
@@ -870,7 +870,7 @@ class _PlaceState extends State<Place> {
                             'Avail a transport service',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
                           ),

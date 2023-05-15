@@ -21,6 +21,7 @@ class PlaceDetails {
 class Places2 {
   Location location;
   Address address;
+  BestTimeToVisit bestTimeToVisit;
   String sId;
   String name;
   String description;
@@ -29,6 +30,7 @@ class Places2 {
   String island;
   List<String> activities;
   List<String> categories;
+  String howToReach;
   List<Images> images;
   List<ExternalLinks> externalLinks;
   List<Timings> timings;
@@ -43,6 +45,7 @@ class Places2 {
   Places2(
       {required this.location,
       required this.address,
+      required this.bestTimeToVisit,
       required this.sId,
       required this.name,
       required this.description,
@@ -51,6 +54,7 @@ class Places2 {
       required this.island,
       required this.activities,
       required this.categories,
+      required this.howToReach,
       required this.images,
       required this.externalLinks,
       required this.timings,
@@ -66,6 +70,7 @@ class Places2 {
     return Places2(
       location: Location.fromJson(data['location']),
       address: Address.fromJson(data['address']),
+      bestTimeToVisit: BestTimeToVisit.fromJson(data['bestTimeToVisit']),
       sId: data['_id'],
       name: data['name'],
       description: data['description'],
@@ -80,6 +85,7 @@ class Places2 {
       categories: (data['categories'] as List<dynamic>)
           .map((e) => e.toString())
           .toList(),
+      howToReach: data['howToReach'],
       images: (data['images'] as List<dynamic>)
           .map((e) => Images.fromJson(e))
           .toList(),
@@ -100,6 +106,18 @@ class Places2 {
       createdAt: data['createdAt'].toString(),
       iV: data['__v'],
     );
+  }
+}
+
+class BestTimeToVisit {
+  String startMonth;
+  String endMonth;
+
+  BestTimeToVisit({required this.startMonth, required this.endMonth});
+
+  factory BestTimeToVisit.fromJson(Map<String, dynamic> json) {
+    return BestTimeToVisit(
+        startMonth: json['startMonth'], endMonth: json['endMonth']);
   }
 }
 
@@ -134,7 +152,7 @@ class Address {
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
       street: json['street'],
-      landmark: json['landmark']??'null',
+      landmark: json['landmark'] ?? 'null',
       city: json['city'],
       state: json['state'],
       zip: json['zip'],
