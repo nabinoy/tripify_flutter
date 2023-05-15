@@ -1,10 +1,16 @@
+import 'dart:io';
+
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/loader/loader_review_all.dart';
@@ -18,6 +24,7 @@ import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/shared_service.dart';
 import 'package:tripify/widget/direction_map.dart';
+import 'package:tripify/widget/widget_to_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:math' as math;
 
@@ -81,6 +88,33 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
           hotel.name,
           style: const TextStyle(fontSize: 16),
         ),
+        actions: [
+          GestureDetector(
+            onTap: () async {
+              HapticFeedback.mediumImpact();
+              final tempDir = await getTemporaryDirectory();
+              final controller = ScreenshotController();
+              final bytes = await controller
+                  .captureFromWidget(Material(child: HotelToImage([hotel])));
+              final file =
+                  await File('${tempDir.path}/image.png').writeAsBytes(bytes);
+              await Share.shareFiles([file.path],
+                  text:
+                      'Download our app now!\n\nhttps://play.google.com/store/apps/details?id=com.example.tripify');
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(
+                  MdiIcons.share,
+                  color: Colors.black,
+                  size: 24,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -161,84 +195,6 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              // Container(
-                              //   margin: const EdgeInsets.only(top: 20),
-                              //   child: Row(
-                              //     mainAxisAlignment:
-                              //         MainAxisAlignment.spaceBetween,
-                              //     children: [
-                              //       Row(
-                              //         mainAxisAlignment:
-                              //             MainAxisAlignment.center,
-                              //         crossAxisAlignment:
-                              //             CrossAxisAlignment.center,
-                              //         children: [
-                              //           Container(
-                              //             margin:
-                              //                 const EdgeInsets.only(right: 10),
-                              //             width: 30,
-                              //             height: 30,
-                              //             decoration: BoxDecoration(
-                              //               borderRadius:
-                              //                   BorderRadius.circular(10),
-                              //               color:
-                              //                   Colors.white.withOpacity(0.4),
-                              //             ),
-                              //             child: const Icon(
-                              //               Icons.bed,
-                              //               color: Colors.white,
-                              //               size: 20,
-                              //             ),
-                              //           ),
-                              //           const Text(
-                              //             "4 Bedroom",
-                              //             style: TextStyle(
-                              //               color: Colors.white,
-                              //               // fontWeight: FontWeight.w400,
-                              //               fontSize: 14,
-                              //             ),
-                              //           ),
-                              //         ],
-                              //       ),
-                              //       const SizedBox(
-                              //         width: 30,
-                              //       ),
-                              //       Row(
-                              //         mainAxisAlignment:
-                              //             MainAxisAlignment.center,
-                              //         crossAxisAlignment:
-                              //             CrossAxisAlignment.center,
-                              //         children: [
-                              //           Container(
-                              //             margin:
-                              //                 const EdgeInsets.only(right: 10),
-                              //             width: 30,
-                              //             height: 30,
-                              //             decoration: BoxDecoration(
-                              //               borderRadius:
-                              //                   BorderRadius.circular(10),
-                              //               color:
-                              //                   Colors.white.withOpacity(0.4),
-                              //             ),
-                              //             child: const Icon(
-                              //               Icons.bathroom,
-                              //               color: Colors.white,
-                              //               size: 20,
-                              //             ),
-                              //           ),
-                              //           const Text(
-                              //             "3 Bathroom",
-                              //             style: TextStyle(
-                              //               color: Colors.white,
-                              //               // fontWeight: FontWeight.w500,
-                              //               fontSize: 14,
-                              //             ),
-                              //           ),
-                              //         ],
-                              //       )
-                              //     ],
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),

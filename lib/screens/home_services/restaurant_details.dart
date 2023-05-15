@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/restaurant_response_model.dart';
@@ -9,6 +15,7 @@ import 'package:tripify/models/weather_model.dart';
 import 'package:tripify/screens/util.dart/pdf_viewer.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/widget/direction_map.dart';
+import 'package:tripify/widget/widget_to_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 late Restaurants currentRestaurant;
@@ -59,6 +66,33 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
           restaurant.name,
           style: const TextStyle(fontSize: 16),
         ),
+        actions: [
+          GestureDetector(
+            onTap: () async {
+              HapticFeedback.mediumImpact();
+              final tempDir = await getTemporaryDirectory();
+              final controller = ScreenshotController();
+              final bytes = await controller.captureFromWidget(
+                  Material(child: RestaurantToImage([restaurant])));
+              final file =
+                  await File('${tempDir.path}/image.png').writeAsBytes(bytes);
+              await Share.shareFiles([file.path],
+                  text:
+                      'Download our app now!\n\nhttps://play.google.com/store/apps/details?id=com.example.tripify');
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(
+                  MdiIcons.share,
+                  color: Colors.black,
+                  size: 24,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Stack(
         children: [
