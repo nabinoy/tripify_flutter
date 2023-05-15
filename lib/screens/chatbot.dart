@@ -63,7 +63,7 @@ class _ChatBotState extends State<ChatBot> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Trek',
+                  'Tripy',
                   style: TextStyle(fontSize: 16.0),
                 ),
                 Text(

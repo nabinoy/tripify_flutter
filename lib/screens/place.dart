@@ -24,6 +24,7 @@ import 'package:tripify/models/restaurant_response_model.dart';
 import 'package:tripify/models/review_rating_model.dart';
 import 'package:tripify/models/user_review_model.dart';
 import 'package:tripify/models/weather_model.dart';
+import 'package:tripify/screens/drawer/transport_service.dart';
 import 'package:tripify/screens/home_services/hotel_details.dart';
 import 'package:tripify/screens/home_services/restaurant_details.dart';
 import 'package:tripify/screens/review_all.dart';
@@ -124,6 +125,7 @@ class _PlaceState extends State<Place> {
 
   @override
   Widget build(BuildContext context) {
+    bool isTiming = true;
     GeoRange georange = GeoRange();
     ValueNotifier<bool> isListed = ValueNotifier<bool>(false);
 
@@ -145,6 +147,15 @@ class _PlaceState extends State<Place> {
         lat: placeList.first.location.coordinates[1].toString(),
         long: placeList.first.location.coordinates[0].toString(),
         maxRad: '3000');
+
+    for (var i = 0; i < placeList.first.timings.length; i++) {
+      if (placeList.first.timings[i].openTime == "00:00" &&
+          placeList.first.timings[i].closeTime == "00:00") {
+        isTiming = false;
+      } else {
+        isTiming = true;
+      }
+    }
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -407,12 +418,16 @@ class _PlaceState extends State<Place> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        color: const Color.fromARGB(255, 233, 238, 240),
+                        color: Color(
+                                (math.Random().nextDouble() * 0xCCCCCC).toInt())
+                            .withOpacity(0.2),
+                        //color: const Color.fromARGB(255, 233, 238, 240),
                         child: ListTile(
                           title: Text(
                             item,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 14),
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w600),
                           ),
                         ),
                       );
@@ -493,94 +508,128 @@ class _PlaceState extends State<Place> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Table(
-                    border: const TableBorder(
-                      top: BorderSide.none,
-                      bottom: BorderSide(color: Colors.black12),
-                      horizontalInside: BorderSide(color: Colors.black12),
-                      verticalInside: BorderSide.none,
-                    ),
-                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                    children: [
-                      TableRow(
-                        decoration: BoxDecoration(
-                          color: Colors.lightBlue[100],
-                        ),
-                        children: const [
-                          Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              child: Text(
-                                'Day',
+                  (!isTiming)
+                      ? Container(
+                          height: 45,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.green[200],
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                MdiIcons.check,
+                                color: Colors.black,
+                              ),
+                              SizedBox(width: 8.0),
+                              Text(
+                                "Open 24/7",
                                 style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                          Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              child: Text(
-                                'Open Time',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
+                        )
+                      : Table(
+                          border: const TableBorder(
+                            top: BorderSide.none,
+                            bottom: BorderSide(color: Colors.black12),
+                            horizontalInside: BorderSide(color: Colors.black12),
+                            verticalInside: BorderSide.none,
                           ),
-                          Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              child: Text(
-                                'Close Time',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      ...List.generate(
-                        placeList.first.timings.length,
-                        (rowIndex) => TableRow(
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                          ),
+                          defaultVerticalAlignment:
+                              TableCellVerticalAlignment.middle,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: Center(
-                                child: Text(
-                                  placeList.first.timings[rowIndex].day,
-                                  textAlign: TextAlign.center,
-                                ),
+                            TableRow(
+                              decoration: BoxDecoration(
+                                color: Colors.lightBlue[100],
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: Center(
-                                child: Text(
-                                  placeList.first.timings[rowIndex].openTime,
-                                  textAlign: TextAlign.center,
+                              children: const [
+                                Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 16),
+                                    child: Text(
+                                      'Day',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: Center(
-                                child: Text(
-                                  placeList.first.timings[rowIndex].closeTime,
-                                  textAlign: TextAlign.center,
+                                Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 16),
+                                    child: Text(
+                                      'Open Time',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
                                 ),
+                                Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 16),
+                                    child: Text(
+                                      'Close Time',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            ...List.generate(
+                              placeList.first.timings.length,
+                              (rowIndex) => TableRow(
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                ),
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8),
+                                    child: Center(
+                                      child: Text(
+                                        placeList.first.timings[rowIndex].day,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8),
+                                    child: Center(
+                                      child: Text(
+                                        placeList
+                                            .first.timings[rowIndex].openTime,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8),
+                                    child: Center(
+                                      child: Text(
+                                        placeList
+                                            .first.timings[rowIndex].closeTime,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                    ],
-                  )
+                        )
                 ],
               ),
             ),
@@ -743,11 +792,11 @@ class _PlaceState extends State<Place> {
                           ),
                         ])
                       : Container(
-                          height: 50,
+                          height: 45,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16.0, vertical: 8.0),
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 233, 238, 240),
+                            color: Colors.green[200],
                             borderRadius: BorderRadius.circular(25.0),
                           ),
                           child: const Row(
@@ -776,17 +825,17 @@ class _PlaceState extends State<Place> {
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.all(16),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'How to reach',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
-                  ExpandableText(
+                  const ExpandableText(
                     'The Science Centre in Andaman and Nicobar Islands is located in Goodwill Estate, in the city of Port Blair. It is easily accessible by road from any part of the city. Here are some ways to reach the Science Centre:\n\n1. By car or taxi: You can hire a car or taxi from anywhere in Port Blair and ask the driver to take you to the Science Centre. The centre is located about 3 km from the city centre, and the journey should take around 15-20 minutes.\n\n2. By bus: You can take a local bus from any part of Port Blair that goes towards the Science Centre. You can ask the conductor or other passengers for help in identifying the correct bus. The journey may take a bit longer than by car or taxi, but it is a more affordable option.\n\n3. By auto-rickshaw: You can also take an auto-rickshaw from anywhere in Port Blair to reach the Science Centre. This option is more convenient if you are travelling alone or in a small group.',
                     animation: true,
                     expandText: 'show more',
@@ -794,6 +843,41 @@ class _PlaceState extends State<Place> {
                     maxLines: 6,
                     linkColor: Colors.blue,
                   ),
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        TransportService.routeName,
+                      );
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        color: Colors.lightBlue[400],
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.emoji_transportation_outlined,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            'Avail a transport service',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

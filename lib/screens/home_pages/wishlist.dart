@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/place_response_model.dart';
@@ -58,8 +59,14 @@ class _WishlistState extends State<Wishlist> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.error_outline_outlined,
-                                size: 88, color: Colors.lightBlue[800]),
+                            Container(
+                              margin: const EdgeInsets.all(40),
+                              height: 250,
+                              child: Lottie.asset(
+                                'assets/lottie/login_wishlist.json',
+                                animate: true,
+                              ),
+                            ),
                             const SizedBox(height: 16),
                             Padding(
                               padding:
@@ -142,12 +149,13 @@ class _WishlistState extends State<Wishlist> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Icons.error_outline_outlined,
-                                  size: 58,
-                                  color: Theme.of(context).disabledColor,
+                                SizedBox(
+                                  height: 250,
+                                  child: Lottie.asset(
+                                    'assets/lottie/empty_wishlist.json',
+                                    animate: true,
+                                  ),
                                 ),
-                                const SizedBox(height: 16),
                                 Text(
                                   'Your wishlist is empty!',
                                   style: TextStyle(
