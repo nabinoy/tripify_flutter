@@ -765,7 +765,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
         effect: const ExpandingDotsEffect(
             dotHeight: 10,
             dotWidth: 10,
-            dotColor: Color.fromARGB(255, 113, 199, 239),
+            dotColor: Color.fromARGB(255, 200, 222, 232),
             activeDotColor: Colors.blue),
         activeIndex: activeIndex,
         count: ia.length,
