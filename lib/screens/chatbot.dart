@@ -50,18 +50,18 @@ class _ChatBotState extends State<ChatBot> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
+        title: const Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             //randomAvatar('saytoonz', height: 32, width: 32),
-            const CircleAvatar(
+            CircleAvatar(
               radius: 18,
               backgroundImage: AssetImage('assets/images/chatbot_profile.png'),
             ),
-            const SizedBox(width: 10.0),
+            SizedBox(width: 10.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
                   'Trek',
                   style: TextStyle(fontSize: 16.0),

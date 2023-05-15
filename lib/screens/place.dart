@@ -607,8 +607,8 @@ class _PlaceState extends State<Place> {
                           ...placeList.first.doS.map((d) => Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    children: const [
+                                  const Column(
+                                    children: [
                                       SizedBox(
                                         height: 2,
                                       ),
@@ -642,8 +642,8 @@ class _PlaceState extends State<Place> {
                           ...placeList.first.dontS.map((d) => Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    children: const [
+                                  const Column(
+                                    children: [
                                       SizedBox(
                                         height: 2,
                                       ),
@@ -750,9 +750,9 @@ class _PlaceState extends State<Place> {
                             color: const Color.fromARGB(255, 233, 238, 240),
                             borderRadius: BorderRadius.circular(25.0),
                           ),
-                          child: Row(
+                          child: const Row(
                             mainAxisSize: MainAxisSize.min,
-                            children: const [
+                            children: [
                               Icon(
                                 MdiIcons.cashRemove,
                                 color: Colors.black,
@@ -776,9 +776,9 @@ class _PlaceState extends State<Place> {
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.all(16),
-              child: Column(
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'How to reach',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
@@ -801,9 +801,9 @@ class _PlaceState extends State<Place> {
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.all(16),
-              child: Column(
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'Direction',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
@@ -932,8 +932,8 @@ class _PlaceState extends State<Place> {
                                   color: Colors.lightBlue[600],
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50)),
-                                  child: Row(
-                                    children: const [
+                                  child: const Row(
+                                    children: [
                                       Text(
                                         'Open',
                                         style: TextStyle(
@@ -2161,9 +2161,9 @@ class _UserReviewWidgetState extends State<UserReviewWidget> {
                           color: Colors.lightBlue,
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: Row(
+                        child: const Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(
                               MdiIcons.checkDecagram,
                               size: 12,

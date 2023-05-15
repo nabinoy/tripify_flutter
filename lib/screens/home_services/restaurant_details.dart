@@ -212,9 +212,9 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
                           borderRadius: BorderRadius.circular(25),
                           color: Colors.green[400],
                         ),
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(
                               Icons.restaurant_menu,
                               color: Colors.white,
@@ -311,9 +311,9 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
               ),
               Container(
                 padding: const EdgeInsets.all(16),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       'Direction',
                       style: TextStyle(

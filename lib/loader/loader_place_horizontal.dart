@@ -6,10 +6,10 @@ class LoaderPlaceHorizontal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: const [
+        children: [
           LoaderPlaceHorizontalInside(),
           LoaderPlaceHorizontalInside(),
           LoaderPlaceHorizontalInside(),

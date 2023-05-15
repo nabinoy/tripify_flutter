@@ -3,7 +3,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
-import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/otp_request_model.dart';
 import 'package:tripify/models/signup_request_model.dart';
@@ -75,22 +74,18 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                const FadeAnimation(
-                    1,
-                    Text(
+                const Text(
                       "Sign up",
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                    )),
+                    ),
                 const SizedBox(
                   height: 14,
                 ),
-                FadeAnimation(
-                    1.2,
-                    Text(
+                Text(
                       "Create an account, It's free",
                       style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                    )),
+                    )
               ],
             ),
             Form(
@@ -99,9 +94,7 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
-                    child: FadeAnimation(
-                      1.1,
-                      TextFormField(
+                    child: TextFormField(
                         onTap: () {
                           isVisiblepw = false;
                         },
@@ -131,13 +124,11 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                           name = value;
                         }),
                       ),
-                    ),
+                    
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
-                    child: FadeAnimation(
-                      1.2,
-                      TextFormField(
+                    child: TextFormField(
                         onTap: () {
                           isVisiblepw = false;
                         },
@@ -171,13 +162,11 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                           email = value;
                         }),
                       ),
-                    ),
+                    
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
-                    child: FadeAnimation(
-                      1.3,
-                      TextFormField(
+                    child: TextFormField(
                         onTap: () {
                           isVisiblepw = true;
                         },
@@ -219,7 +208,7 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                           password = value;
                         }),
                       ),
-                    ),
+                    
                   ),
                   Visibility(
                     visible: isVisiblepw,
@@ -241,9 +230,7 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 32),
-                    child: FadeAnimation(
-                      1.4,
-                      TextFormField(
+                    child: TextFormField(
                         controller: confirmPass,
                         onTap: () {
                           isVisiblepw = false;
@@ -287,11 +274,9 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                           fillColor: Colors.white,
                         ),
                       ),
-                    ),
+                    
                   ),
-                  FadeAnimation(
-                      1.5,
-                      Container(
+                  Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                         ),
@@ -404,10 +389,8 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                                       fontSize: 18),
                                 ),
                         ),
-                      )),
-                  FadeAnimation(
-                      1.6,
-                      Row(
+                      ),
+                  Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           const Text("Already have an account?"),
@@ -437,7 +420,7 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                             ),
                           ),
                         ],
-                      )),
+                      )
                 ],
               ),
             ),

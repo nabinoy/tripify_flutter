@@ -314,8 +314,8 @@ class _FilterRestaurantState extends State<FilterRestaurant> {
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.lightBlue[800],
                   ),
-                  child: Row(
-                    children: const [
+                  child: const Row(
+                    children: [
                       Text(
                         'Filter',
                         style: TextStyle(fontSize: 14, color: Colors.white),

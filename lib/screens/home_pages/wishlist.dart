@@ -271,8 +271,8 @@ class _WishlistState extends State<Wishlist> {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             50)),
-                                                child: Row(
-                                                  children: const [
+                                                child: const Row(
+                                                  children: [
                                                     Text(
                                                       'Visit',
                                                       style: TextStyle(

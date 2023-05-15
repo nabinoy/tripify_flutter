@@ -181,8 +181,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     color: Colors.lightBlue[600],
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50)),
-                    child: Row(
-                      children: const [
+                    child: const Row(
+                      children: [
                         Icon(
                           Icons.filter_list_outlined,
                           size: 16,

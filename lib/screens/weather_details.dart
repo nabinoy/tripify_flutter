@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/weather_model.dart';
 import 'package:tripify/services/current_location.dart';
@@ -127,9 +126,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               padding: const EdgeInsets.fromLTRB(10, 2, 10, 10),
               child: MainWeather(widget.weatherLocationName),
             ),
-            FadeAnimation(
-              1.7,
-              Column(
+            Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Padding(
@@ -146,15 +143,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       height: screenHeight * 0.2, child: const HourForecast())
                 ],
               ),
-            ),
-            FadeAnimation(
-                1.8,
-                SizedBox(
-                    height: screenHeight * 0.41, child: const DayForecast())),
-            FadeAnimation(
-                1.9,
-                SizedBox(
-                    height: screenWidth * 0.85, child: const WeatherDetail())),
+            SizedBox(
+                    height: screenHeight * 0.41, child: const DayForecast()),
+            SizedBox(
+                    height: screenWidth * 0.85, child: const WeatherDetail()),
           ],
         ),
       ),
@@ -175,48 +167,3 @@ class LoadingScreen extends StatelessWidget {
     );
   }
 }
-
-// class LoadingScreen extends StatelessWidget {
-//   const LoadingScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       color: Colors.white,
-//       child: Center(
-//         child: Shimmer.fromColors(
-//           baseColor: const Color.fromARGB(255, 80, 80, 80),
-//           highlightColor: const Color.fromARGB(255, 198, 198, 198),
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Container(
-//                 height: 20,
-//                 width: 50,
-//                 color: Colors.white,
-//               ),
-//               const SizedBox(height: 10),
-//               Container(
-//                 height: 20,
-//                 width: 80,
-//                 color: Colors.white,
-//               ),
-//               const SizedBox(height: 10),
-//               Container(
-//                 height: 20,
-//                 width: 100,
-//                 color: Colors.white,
-//               ),
-//               const SizedBox(height: 10),
-//               Container(
-//                 height: 20,
-//                 width: 60,
-//                 color: Colors.white,
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

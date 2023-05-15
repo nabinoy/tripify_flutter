@@ -122,8 +122,8 @@ class _HelplineState extends State<Helpline> {
                         color: Colors.green[600],
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50)),
-                        child: Row(
-                          children: const [
+                        child: const Row(
+                          children: [
                             Icon(
                               Icons.call,
                               size: 18,

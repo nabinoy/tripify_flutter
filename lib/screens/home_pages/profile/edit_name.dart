@@ -1,7 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:random_avatar/random_avatar.dart';
-import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/update_user_model.dart';
 import 'package:tripify/services/api_service.dart';
@@ -42,40 +41,34 @@ class _EditNameState extends State<EditName> {
                   height: 90,
                   width: 90,
                   child:
-                      FadeAnimation(1,randomAvatar(SharedService.name, height: 70, width: 70)),
+                      randomAvatar(SharedService.name, height: 70, width: 70)
                 ),
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: FadeAnimation(1.1,
-                    Text(
+                  child: Text(
                       '${SharedService.name} (Current name)',
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 18),
                     ),
-                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: FadeAnimation(1.2,
-                    Text(
+                  child: Text(
                       SharedService.email,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                           color: Color.fromARGB(255, 100, 100, 100)),
                     ),
-                  ),
                 ),
                 const SizedBox(height: 20),
-                Column(
-                  children: const <Widget>[
-                    FadeAnimation(
-                        1.3,
-                        Text(
+                const Column(
+                  children: <Widget>[
+                    Text(
                           "Edit name",
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold),
-                        )),
+                        ),
                     SizedBox(
                       height: 14,
                     ),
@@ -87,9 +80,7 @@ class _EditNameState extends State<EditName> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16),
-                        child: FadeAnimation(
-                          1.4,
-                          TextFormField(
+                        child: TextFormField(
                             onTap: () {
                               isVisiblepw = false;
                             },
@@ -119,11 +110,9 @@ class _EditNameState extends State<EditName> {
                               name = value;
                             }),
                           ),
-                        ),
+                        
                       ),
-                      FadeAnimation(
-                          1.5,
-                          Container(
+                      Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(50),
                             ),
@@ -216,7 +205,7 @@ class _EditNameState extends State<EditName> {
                                           fontSize: 18),
                                     ),
                             ),
-                          )),
+                          )
                     ],
                   ),
                 ),

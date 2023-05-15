@@ -217,13 +217,13 @@ class _FilterPlaceState extends State<FilterPlace> {
                                         _endValue.toInt().toString(),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(
                                           horizontal: 23.0),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
-                                        children: const [
+                                        children: [
                                           Text(
                                             '1',
                                             style: TextStyle(
@@ -383,8 +383,8 @@ class _FilterPlaceState extends State<FilterPlace> {
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.lightBlue[800],
                   ),
-                  child: Row(
-                    children: const [
+                  child: const Row(
+                    children: [
                       Text(
                         'Filter',
                         style: TextStyle(fontSize: 14, color: Colors.white),

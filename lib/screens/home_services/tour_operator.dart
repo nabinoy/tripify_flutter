@@ -356,8 +356,8 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           50)),
-                                              child: Row(
-                                                children: const [
+                                              child: const Row(
+                                                children: [
                                                   Icon(
                                                     Icons.call,
                                                     size: 20,
@@ -389,8 +389,8 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           50)),
-                                              child: Row(
-                                                children: const [
+                                              child: const Row(
+                                                children: [
                                                   Icon(
                                                     Icons.mail,
                                                     size: 20,
@@ -427,8 +427,8 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           50)),
-                                              child: Row(
-                                                children: const [
+                                              child: const Row(
+                                                children: [
                                                   Icon(
                                                     Icons.picture_as_pdf,
                                                     size: 20,
@@ -459,10 +459,10 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(50)),
-                                          child: Row(
+                                          child: const Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
-                                            children: const [
+                                            children: [
                                               Icon(
                                                 MdiIcons.web,
                                                 size: 20,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tripify/animation/FadeAnimation.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/router.dart';
 import 'package:tripify/screens/home.dart';
@@ -85,39 +84,31 @@ class _WelcomePageState extends State<WelcomePage> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                const FadeAnimation(
-                    1,
-                    Text(
+                const Text(
                       "Welcome",
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                    )),
+                    ),
                 const SizedBox(
                   height: 20,
                 ),
-                FadeAnimation(
-                    1.2,
-                    Text(
+                Text(
                       "Automatic identity verification which enables you to verify your identity",
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.grey[700], fontSize: 15),
-                    )),
+                    )
               ],
             ),
-            FadeAnimation(
-                1.4,
-                Container(
+            Container(
                   height: MediaQuery.of(context).size.height / 3,
                   decoration: const BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage(
                               'assets/images/welcome_background.jpg'))),
-                )),
+                ),
             Column(
               children: <Widget>[
-                FadeAnimation(
-                    1.5,
-                    MaterialButton(
+                MaterialButton(
                       minWidth: double.infinity,
                       height: 60,
                       onPressed: () {
@@ -135,13 +126,11 @@ class _WelcomePageState extends State<WelcomePage> {
                             fontWeight: FontWeight.w600,
                             fontSize: 18),
                       ),
-                    )),
+                    ),
                 const SizedBox(
                   height: 20,
                 ),
-                FadeAnimation(
-                    1.6,
-                    Container(
+                Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                       ),
@@ -164,7 +153,7 @@ class _WelcomePageState extends State<WelcomePage> {
                               fontSize: 18),
                         ),
                       ),
-                    ))
+                    )
               ],
             )
           ],

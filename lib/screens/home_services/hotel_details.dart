@@ -490,9 +490,9 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
 
               Container(
                 padding: const EdgeInsets.all(16),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       'Direction',
                       style: TextStyle(
@@ -1392,9 +1392,9 @@ class _UserReviewWidgetState extends State<UserReviewWidget> {
                           color: Colors.lightBlue,
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: Row(
+                        child: const Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(
                               MdiIcons.checkDecagram,
                               size: 12,

@@ -294,8 +294,8 @@ class _SearchTourOperatorState extends State<SearchTourOperator> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(50)),
-                                      child: Row(
-                                        children: const [
+                                      child: const Row(
+                                        children: [
                                           Icon(
                                             Icons.call,
                                             size: 20,
@@ -324,8 +324,8 @@ class _SearchTourOperatorState extends State<SearchTourOperator> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(50)),
-                                      child: Row(
-                                        children: const [
+                                      child: const Row(
+                                        children: [
                                           Icon(
                                             Icons.mail,
                                             size: 20,
@@ -360,8 +360,8 @@ class _SearchTourOperatorState extends State<SearchTourOperator> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(50)),
-                                      child: Row(
-                                        children: const [
+                                      child: const Row(
+                                        children: [
                                           Icon(
                                             Icons.picture_as_pdf,
                                             size: 20,
@@ -390,9 +390,9 @@ class _SearchTourOperatorState extends State<SearchTourOperator> {
                                   color: Colors.lightBlue[800],
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50)),
-                                  child: Row(
+                                  child: const Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
+                                    children: [
                                       Icon(
                                         MdiIcons.web,
                                         size: 20,
