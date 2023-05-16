@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tripify/constants/global_variables.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TransportService extends StatefulWidget {
@@ -59,20 +60,20 @@ class _TransportServiceState extends State<TransportService>
           WebViewWidget(
               controller: WebViewController()
                 ..loadRequest(
-                  Uri.parse('https://www.air.irctc.co.in/'),
+                  Uri.parse(byAir),
                 )
                 ..setJavaScriptMode(JavaScriptMode.unrestricted)),
           WebViewWidget(
               controller: WebViewController()
                 ..loadRequest(
                   Uri.parse(
-                      'https://dss.andaman.gov.in/ShipAndamanWebSite/services/passenger-services/online_enquiry.html'),
+                      bySea),
                 )
                 ..setJavaScriptMode(JavaScriptMode.unrestricted)),
           WebViewWidget(
               controller: WebViewController()
                 ..loadRequest(
-                  Uri.parse('https://ants.andaman.gov.in/'),
+                  Uri.parse(byRoad),
                 )
                 ..setJavaScriptMode(JavaScriptMode.unrestricted)),
         ],

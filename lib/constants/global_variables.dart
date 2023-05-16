@@ -11,6 +11,10 @@ int restaurantPageSize = 6;
 int tourOpPageSize = 6;
 double portBlairLat = 11.650475999232123;
 double portBlairLong = 92.73356876475748;
+String byAir = 'https://www.andaman.gov.in/helicopter-schedule';
+String bySea = 'https://dss.andaman.gov.in/ShipAndamanWebSite/services/passenger-services/online_enquiry.html';
+String byRoad = 'https://ants.andaman.gov.in/';
+String appLink = 'https://play.google.com/store/apps/details?id=com.example.tripify';
 
 Map<String, IconData> hotelBedIcons = {
   "King": MdiIcons.bedKing,

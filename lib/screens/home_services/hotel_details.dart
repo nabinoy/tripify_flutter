@@ -100,7 +100,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                   await File('${tempDir.path}/image.png').writeAsBytes(bytes);
               await Share.shareFiles([file.path],
                   text:
-                      'Download our app now!\n\nhttps://play.google.com/store/apps/details?id=com.example.tripify');
+                      'Download our app now!\n\n$appLink');
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 20),
