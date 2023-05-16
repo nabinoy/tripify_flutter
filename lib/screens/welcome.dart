@@ -85,75 +85,74 @@ class _WelcomePageState extends State<WelcomePage> {
             Column(
               children: <Widget>[
                 const Text(
-                      "Welcome",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                    ),
+                  "Welcome",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
                 Text(
-                      "Automatic identity verification which enables you to verify your identity",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey[700], fontSize: 15),
-                    )
+                  "Ready to Explore the Andamans? Login or Sign up for Tripify to Unlock Endless Possibilities!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey[700], fontSize: 15),
+                )
               ],
             ),
             Container(
-                  height: MediaQuery.of(context).size.height / 3,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                              'assets/images/welcome_background.jpg'))),
-                ),
+              height: MediaQuery.of(context).size.height / 3,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image:
+                          AssetImage('assets/images/welcome_background.jpg'))),
+            ),
             Column(
               children: <Widget>[
                 MaterialButton(
-                      minWidth: double.infinity,
-                      height: 60,
-                      onPressed: () {
-                        HapticFeedback.mediumImpact();
-                        Navigator.pushNamed(context, LoginPage.routeName);
-                      },
-                      shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                              width: 2, color: Color.fromRGBO(2, 119, 189, 1)),
-                          borderRadius: BorderRadius.circular(50)),
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(
-                            color: Color.fromRGBO(2, 119, 189, 1),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18),
-                      ),
-                    ),
+                  minWidth: double.infinity,
+                  height: 60,
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    Navigator.pushNamed(context, LoginPage.routeName);
+                  },
+                  shape: RoundedRectangleBorder(
+                      side: const BorderSide(
+                          width: 2, color: Color.fromRGBO(2, 119, 189, 1)),
+                      borderRadius: BorderRadius.circular(50)),
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(
+                        color: Color.fromRGBO(2, 119, 189, 1),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18),
+                  ),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
                 Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: MaterialButton(
-                        minWidth: double.infinity,
-                        height: 60,
-                        onPressed: () {
-                          HapticFeedback.mediumImpact();
-                          Navigator.pushNamed(context, SignupPage.routeName);
-                        },
-                        color: Colors.lightBlue[800],
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50)),
-                        child: const Text(
-                          "Sign up",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18),
-                        ),
-                      ),
-                    )
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: MaterialButton(
+                    minWidth: double.infinity,
+                    height: 60,
+                    onPressed: () {
+                      HapticFeedback.mediumImpact();
+                      Navigator.pushNamed(context, SignupPage.routeName);
+                    },
+                    color: Colors.lightBlue[800],
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
+                    child: const Text(
+                      "Sign up",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18),
+                    ),
+                  ),
+                )
               ],
             )
           ],

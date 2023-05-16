@@ -85,7 +85,7 @@ class _LocationWeatherState extends State<LocationWeather> {
                       Navigator.pushNamed(
                         context,
                         WeatherDetails.routeName,
-                        arguments: ['Current','Location'],
+                        arguments: ['Current', 'Location'],
                       );
                     },
                     child: SizedBox(
@@ -98,18 +98,6 @@ class _LocationWeatherState extends State<LocationWeather> {
                               ConnectionState.done) {
                             return Container(
                               margin: const EdgeInsets.only(top: 6),
-                              // decoration: BoxDecoration(
-                              //   boxShadow: const [
-                              //     BoxShadow(
-                              //       color: Colors.grey,
-                              //       blurRadius: 5.0,
-                              //       offset: Offset(3.0, 3.0),
-                              //       spreadRadius: 2.0,
-                              //     ),
-                              //   ],
-                              //   color: const Color.fromARGB(255, 229, 229, 229),
-                              //   borderRadius: BorderRadius.circular(10.0),
-                              // ),
                               child: Row(
                                 children: [
                                   SizedBox(
@@ -236,7 +224,7 @@ class _LocationWeatherState extends State<LocationWeather> {
                     padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
                     child: const Text(
                       'Your location',
-                      style: TextStyle(),
+                      style: TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
                   SizedBox(
