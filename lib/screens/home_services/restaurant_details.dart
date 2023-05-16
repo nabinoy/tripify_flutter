@@ -12,6 +12,7 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/restaurant_response_model.dart';
 import 'package:tripify/models/weather_model.dart';
+import 'package:tripify/screens/util.dart/image_viewer.dart';
 import 'package:tripify/screens/util.dart/pdf_viewer.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/widget/direction_map.dart';
@@ -77,8 +78,7 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
               final file =
                   await File('${tempDir.path}/image.png').writeAsBytes(bytes);
               await Share.shareFiles([file.path],
-                  text:
-                      'Download our app now!\n\n$appLink');
+                  text: 'Download our app now!\n\n$appLink');
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 20),
@@ -293,45 +293,35 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
                             .map(
                               (item) => GestureDetector(
                                 onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Dialog(
-                                        child: CachedNetworkImage(
-                                          height: 430,
-                                          alignment: Alignment.bottomCenter,
-                                          imageUrl: item.secureUrl,
-                                          placeholder: (context, url) =>
-                                              Image.memory(
-                                            kTransparentImage,
-                                            fit: BoxFit.cover,
-                                          ),
-                                          fadeInDuration:
-                                              const Duration(milliseconds: 200),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      );
-                                    },
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ImageViewer(
+                                          imagePath: item.secureUrl),
+                                    ),
                                   );
                                 },
-                                child: Container(
-                                  margin: const EdgeInsets.only(right: 8),
-                                  width: 160,
-                                  height: 160,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: CachedNetworkImage(
-                                      height: 430,
-                                      alignment: Alignment.bottomCenter,
-                                      imageUrl: item.secureUrl,
-                                      placeholder: (context, url) =>
-                                          Image.memory(
-                                        kTransparentImage,
+                                child: Hero(
+                                  tag: item.secureUrl,
+                                  child: Container(
+                                    margin: const EdgeInsets.only(right: 8),
+                                    width: 160,
+                                    height: 160,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: CachedNetworkImage(
+                                        height: 430,
+                                        alignment: Alignment.bottomCenter,
+                                        imageUrl: item.secureUrl,
+                                        placeholder: (context, url) =>
+                                            Image.memory(
+                                          kTransparentImage,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        fadeInDuration:
+                                            const Duration(milliseconds: 200),
                                         fit: BoxFit.cover,
                                       ),
-                                      fadeInDuration:
-                                          const Duration(milliseconds: 200),
-                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),

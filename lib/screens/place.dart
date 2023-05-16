@@ -28,6 +28,7 @@ import 'package:tripify/screens/drawer/transport_service.dart';
 import 'package:tripify/screens/home_services/hotel_details.dart';
 import 'package:tripify/screens/home_services/restaurant_details.dart';
 import 'package:tripify/screens/review_all.dart';
+import 'package:tripify/screens/util.dart/image_viewer.dart';
 import 'package:tripify/screens/weather_details.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
@@ -237,8 +238,7 @@ class _PlaceState extends State<Place> {
                   final file = await File('${tempDir.path}/image.png')
                       .writeAsBytes(bytes);
                   await Share.shareFiles([file.path],
-                      text:
-                          'Download our app now!\n\n$appLink');
+                      text: 'Download our app now!\n\n$appLink');
                 },
                 child: const Padding(
                   padding: EdgeInsets.only(right: 20),
@@ -2352,24 +2352,37 @@ class _UserReviewWidgetState extends State<UserReviewWidget> {
 }
 
 Widget buildImage(BuildContext context, String urlImage, int index) {
-  return Container(
-    margin: const EdgeInsets.symmetric(horizontal: 12),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: CachedNetworkImage(
-        height: 600,
-        width: MediaQuery.of(context).size.width,
-        alignment: Alignment.bottomCenter,
-        imageUrl: urlImage,
-        placeholder: (context, url) => Image.memory(
-          kTransparentImage,
-          fit: BoxFit.cover,
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ImageViewer(imagePath: urlImage),
         ),
-        fadeInDuration: const Duration(milliseconds: 200),
-        fit: BoxFit.cover,
+      );
+    },
+    child: Hero(
+      tag: urlImage,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: CachedNetworkImage(
+            height: 600,
+            width: MediaQuery.of(context).size.width,
+            alignment: Alignment.bottomCenter,
+            imageUrl: urlImage,
+            placeholder: (context, url) => Image.memory(
+              kTransparentImage,
+              fit: BoxFit.cover,
+            ),
+            fadeInDuration: const Duration(milliseconds: 200),
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
     ),
   );

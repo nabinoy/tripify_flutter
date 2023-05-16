@@ -20,6 +20,7 @@ import 'package:tripify/models/review_rating_model.dart';
 import 'package:tripify/models/user_hotel_review_model.dart';
 import 'package:tripify/models/weather_model.dart';
 import 'package:tripify/screens/review_all.dart';
+import 'package:tripify/screens/util.dart/image_viewer.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/shared_service.dart';
@@ -99,8 +100,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
               final file =
                   await File('${tempDir.path}/image.png').writeAsBytes(bytes);
               await Share.shareFiles([file.path],
-                  text:
-                      'Download our app now!\n\n$appLink');
+                  text: 'Download our app now!\n\n$appLink');
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 20),
@@ -507,13 +507,24 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                       physics: const BouncingScrollPhysics(),
                       child: Row(
                         children: hotel.images
-                            .map(
-                              (item) => GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Dialog(
+                            .map((item) => GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ImageViewer(
+                                            imagePath: item.secureUrl),
+                                      ),
+                                    );
+                                  },
+                                  child: Hero(
+                                    tag: item.secureUrl,
+                                    child: Container(
+                                      margin: const EdgeInsets.only(right: 8),
+                                      width: 160,
+                                      height: 160,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
                                         child: CachedNetworkImage(
                                           height: 430,
                                           alignment: Alignment.bottomCenter,
@@ -527,33 +538,10 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                               const Duration(milliseconds: 200),
                                           fit: BoxFit.cover,
                                         ),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.only(right: 8),
-                                  width: 160,
-                                  height: 160,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: CachedNetworkImage(
-                                      height: 430,
-                                      alignment: Alignment.bottomCenter,
-                                      imageUrl: item.secureUrl,
-                                      placeholder: (context, url) =>
-                                          Image.memory(
-                                        kTransparentImage,
-                                        fit: BoxFit.cover,
                                       ),
-                                      fadeInDuration:
-                                          const Duration(milliseconds: 200),
-                                      fit: BoxFit.cover,
                                     ),
                                   ),
-                                ),
-                              ),
-                            )
+                                ))
                             .toList(),
                       ),
                     ),
