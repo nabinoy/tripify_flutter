@@ -365,7 +365,7 @@ class APIService {
 
   static Future<List<List<Places2>>> itineraryAll(ItineraryModel model) async {
     Map<String, String> requestHeaders = {
-      'Accept': 'application/json',
+      'Content-Type': 'application/json',
     };
 
     var url = Uri.https(
@@ -385,12 +385,12 @@ class APIService {
       List<List<Places2>> pd = [];
 
       for (var j = 0; j < data.length; j++) {
+        pd.add([]);
         for (var i = 0; i < data[j].length; i++) {
-          Places2 p2 = Places2.fromJson(data[i]);
+          Places2 p2 = Places2.fromJson(data[j][i]);
           pd[j].add(p2);
         }
       }
-      print(pd.length);
       return pd;
     } else {
       throw Exception('Failed to load person details');
