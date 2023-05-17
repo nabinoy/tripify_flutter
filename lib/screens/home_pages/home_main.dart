@@ -491,8 +491,8 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                                             ]);
                                       },
                                       child: Container(
-                                        margin: const EdgeInsets.symmetric(
-                                          vertical: 8.0,
+                                        margin: const EdgeInsets.only(
+                                          top: 8.0,
                                         ),
                                         decoration: BoxDecoration(
                                           borderRadius:
@@ -613,7 +613,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                                                           fontSize: 13),
                                                     ),
                                                     Text(
-                                                        ' (${widget.reviews.length} reviews)',
+                                                        ' (${widget.reviews.length})',
                                                         style: const TextStyle(
                                                             fontSize: 11,
                                                             color: Colors
@@ -724,7 +724,8 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                           context, HospitalMapWebView.routeName);
                     }
                   },
-                  child: ClipRRect(
+                  child: SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
                     child: Column(children: [
                       CachedNetworkImage(
                         height: screenWidth / 5.61,

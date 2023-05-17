@@ -33,28 +33,28 @@ class _IslandState extends State<Island> {
           elevation: 0,
           flexibleSpace: FlexibleSpaceBar(
               background: SafeArea(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: CachedNetworkImage(
-                            height: 300,
-                            width: MediaQuery.of(context).size.width,
-                            alignment: Alignment.bottomCenter,
-                            imageUrl: islandDetails.image.secureUrl,
-                            placeholder: (context, url) => Image.memory(
-                              kTransparentImage,
-                              fit: BoxFit.cover,
-                            ),
-                            fadeInDuration: const Duration(milliseconds: 200),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-              )),
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: CachedNetworkImage(
+                  height: 300,
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.bottomCenter,
+                  imageUrl: islandDetails.image.secureUrl,
+                  placeholder: (context, url) => Image.memory(
+                    kTransparentImage,
+                    fit: BoxFit.cover,
+                  ),
+                  fadeInDuration: const Duration(milliseconds: 200),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          )),
           leading: GestureDetector(
             onTap: () {
               HapticFeedback.mediumImpact();
@@ -114,7 +114,7 @@ class _IslandState extends State<Island> {
                             height: 5,
                           ),
                           SizedBox(
-                              height: MediaQuery.of(context).size.width / 1.58,
+                              height: MediaQuery.of(context).size.height * 0.32,
                               child:
                                   PlaceHorizontal(item.sId, islandDetails.sId)),
                         ],

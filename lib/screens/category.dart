@@ -107,7 +107,7 @@ class _CategoryState extends State<Category> {
                             ),
                             SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.width / 1.58,
+                                    MediaQuery.of(context).size.height * 0.32,
                                 child: PlaceHorizontal(
                                     categoryDetails.sId, item.sId)),
                           ],

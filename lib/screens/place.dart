@@ -1543,7 +1543,7 @@ class _PlaceState extends State<Place> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
-                      height: MediaQuery.of(context).size.width / 1.58,
+                      height: MediaQuery.of(context).size.height * 0.32,
                       child: PlaceRecommendationByPlace(placeList.first.sId))
                 ],
               ),
