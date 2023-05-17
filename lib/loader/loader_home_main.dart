@@ -8,6 +8,9 @@ class LoaderHomeMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = CarouselController();
+    double screenWidth = MediaQuery.of(context).size.width;
+    double containerWidth = screenWidth / 2 - 25;
+    double containerHeight = containerWidth * 0.60;
 
     return Shimmer.fromColors(
       direction: ShimmerDirection.ltr,
@@ -94,8 +97,8 @@ class LoaderHomeMain extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
                             child: Container(
-                              height: 100,
-                              width: 170,
+                              height: containerHeight,
+                              width: containerWidth,
                               color: Colors.grey,
                             ),
                           ),
@@ -105,8 +108,8 @@ class LoaderHomeMain extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
                                 child: Container(
-                                  height: 100,
-                                  width: 170,
+                                  height: containerHeight,
+                                  width: containerWidth,
                                   color: Colors.grey,
                                 ),
                               ),

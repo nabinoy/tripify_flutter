@@ -247,8 +247,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         ),
                         onPressed: () async {
                           HapticFeedback.mediumImpact();
-                            Navigator.pushReplacementNamed(
-                                context, Welcome.routeName);
+                          Navigator.pushReplacementNamed(
+                              context, Welcome.routeName);
                         },
                         child: const Text(
                           'Get started',

@@ -77,7 +77,6 @@ class _WelcomePageState extends State<WelcomePage> {
         width: double.infinity,
         height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.fromLTRB(40, 10, 40, 80),
-        //padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,

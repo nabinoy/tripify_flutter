@@ -63,6 +63,7 @@ class _FilterPlaceState extends State<FilterPlace> {
   Future fetch() async {
     List<Places2> temp = [];
     page++;
+    print(page);
     await APIService.singlePlacePagination(page.toString())
         .then((value) => {temp = value});
     setState(() {

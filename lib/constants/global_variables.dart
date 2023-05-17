@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-const appName = 'Tripify';
+const appName = 'Tripify Andaman';
 const bgColor = Colors.white;
 const fontRegular = 'Poppins';
 var lightBlue800 = Colors.lightBlue[800];
@@ -12,9 +12,11 @@ int tourOpPageSize = 6;
 double portBlairLat = 11.650475999232123;
 double portBlairLong = 92.73356876475748;
 String byAir = 'https://www.andaman.gov.in/helicopter-schedule';
-String bySea = 'https://dss.andaman.gov.in/ShipAndamanWebSite/services/passenger-services/online_enquiry.html';
+String bySea =
+    'https://dss.andaman.gov.in/ShipAndamanWebSite/services/passenger-services/online_enquiry.html';
 String byRoad = 'https://ants.andaman.gov.in/';
-String appLink = 'https://play.google.com/store/apps/details?id=com.example.tripify';
+String appLink =
+    'https://play.google.com/store/apps/details?id=com.example.tripify';
 
 Map<String, IconData> hotelBedIcons = {
   "King": MdiIcons.bedKing,

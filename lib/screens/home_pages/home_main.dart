@@ -210,23 +210,17 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                           const SizedBox(
                             width: 5,
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical:
-                                        MediaQuery.of(context).size.height *
-                                            .0143),
-                                height: 50,
-                                width: MediaQuery.of(context).size.width * .5,
-                                child: const Text(
-                                  'Search Places',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.black54),
-                                ),
-                              ),
-                            ],
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical:
+                                    MediaQuery.of(context).size.height * .0143),
+                            height: 50,
+                            width: MediaQuery.of(context).size.width * .5,
+                            child: const Text(
+                              'Search Places',
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.black54),
+                            ),
                           ),
                         ],
                       ),
