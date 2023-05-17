@@ -20,48 +20,51 @@ class DayForecast extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height / 2 * 0.75,
-          width: MediaQuery.of(context).size.width,
-          child: ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-            itemCount: dayForecasts.length,
-            itemBuilder: (BuildContext context, int index) {
-              Map item = dayForecasts[index];
-              return SizedBox(
-                width: 100.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 130,
-                      padding: const EdgeInsets.only(left: 6),
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        DateFormat('EEEE').format(DateTime.parse(item['date'])),
+        SingleChildScrollView(
+          child: SizedBox(
+            height: 320,
+            width: MediaQuery.of(context).size.width,
+            child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+              itemCount: dayForecasts.length,
+              itemBuilder: (BuildContext context, int index) {
+                Map item = dayForecasts[index];
+                return SizedBox(
+                  width: 100.0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 130,
+                        padding: const EdgeInsets.only(left: 6),
+                        child: Text(
+                          textAlign: TextAlign.center,
+                          DateFormat('EEEE')
+                              .format(DateTime.parse(item['date'])),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 60,
-                      width: 70,
-                      child: Image.network(
-                        'http://openweathermap.org/img/wn/${item["ico"]}@4x.png',
-                        fit: BoxFit.cover,
+                      SizedBox(
+                        height: 60,
+                        width: 70,
+                        child: Image.network(
+                          'http://openweathermap.org/img/wn/${item["ico"]}@4x.png',
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 50),
-                    Text(
-                      "${item['temperature']}°c",
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(width: 40),
-                  ],
-                ),
-              );
-            },
+                      const SizedBox(width: 50),
+                      Text(
+                        "${item['temperature']}°c",
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(width: 40),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ],

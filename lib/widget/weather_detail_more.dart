@@ -65,7 +65,7 @@ class WeatherDetail extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height / 2 * 0.74,
+          height: 320,
           width: MediaQuery.of(context).size.width,
           child: GridView(
             physics: const NeverScrollableScrollPhysics(),
@@ -82,7 +82,7 @@ class WeatherDetail extends StatelessWidget {
                   '${visibility}km', 'Visibility', MdiIcons.eye),
               _gridWeatherBuilder(
                   '$humidity%', 'Humidity', MdiIcons.waterPercent),
-              _gridWeatherBuilder('${wind}kmph', 'Wind', MdiIcons.weatherWindy),
+              _gridWeatherBuilder('${wind}km/h', 'Wind', MdiIcons.weatherWindy),
               _gridWeatherBuilder(
                   '$feelsLike°c', 'Feels Like', MdiIcons.temperatureCelsius),
               _gridWeatherBuilder(

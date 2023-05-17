@@ -270,7 +270,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                   return buildImage(context, urlImage, urlImageText, index);
                 },
                 options: CarouselOptions(
-                    height: 200,
+                    height: MediaQuery.of(context).size.height * 0.25,
                     viewportFraction: 0.78,
                     autoPlay: true,
                     enableInfiniteScroll: true,
@@ -783,7 +783,7 @@ Widget buildImage(
       borderRadius: BorderRadius.circular(10.0),
       child: Stack(children: [
         CachedNetworkImage(
-          height: 200,
+          height: MediaQuery.of(context).size.height * 0.25,
           width: MediaQuery.of(context).size.width,
           imageUrl: urlImage,
           placeholder: (context, url) => Image.memory(
@@ -794,7 +794,8 @@ Widget buildImage(
           fit: BoxFit.cover,
         ),
         Container(
-          margin: const EdgeInsets.only(top: 100.0),
+          margin:
+              EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.13),
           height: 100.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),

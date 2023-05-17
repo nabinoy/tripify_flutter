@@ -24,7 +24,7 @@ class _HourForecastState extends State<HourForecast> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height / 2 * 0.33,
+          height: 130,
           width: MediaQuery.of(context).size.width,
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
@@ -35,31 +35,33 @@ class _HourForecastState extends State<HourForecast> {
               Map item = hourForecasts[index];
               return SizedBox(
                 width: 100.0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      DateFormat('EEE, hh a')
-                          .format(DateTime.parse(item['date'])),
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Color.fromARGB(255, 43, 43, 43),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        DateFormat('EEE, hh a')
+                            .format(DateTime.parse(item['date'])),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 43, 43, 43),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 60,
-                      width: 70,
-                      child: Image.network(
-                        'http://openweathermap.org/img/wn/${item["ico"]}@4x.png',
-                        fit: BoxFit.cover,
+                      SizedBox(
+                        height: 60,
+                        width: 70,
+                        child: Image.network(
+                          'http://openweathermap.org/img/wn/${item["ico"]}@4x.png',
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                    Text(
-                      "${item['temperature']}°c",
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w600),
-                    ),
-                  ],
+                      Text(
+                        "${item['temperature']}°c",
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },

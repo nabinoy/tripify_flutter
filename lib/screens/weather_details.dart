@@ -114,39 +114,35 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    // double screenWidth = MediaQuery.of(context).size.width;
+    // double screenHeight = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           children: [
             Container(
-              height: screenHeight / 2 * 0.8,
               padding: const EdgeInsets.fromLTRB(10, 2, 10, 10),
               child: MainWeather(widget.weatherLocationName),
             ),
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: Text(
-                      'Hour forecast',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                      ),
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 8),
+                  child: Text(
+                    'Hour forecast',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(
-                      height: screenHeight * 0.2, child: const HourForecast())
-                ],
-              ),
-            SizedBox(
-                    height: screenHeight * 0.41, child: const DayForecast()),
-            SizedBox(
-                    height: screenWidth * 0.85, child: const WeatherDetail()),
+                ),
+                HourForecast()
+              ],
+            ),
+            const DayForecast(),
+            const WeatherDetail(),
           ],
         ),
       ),
