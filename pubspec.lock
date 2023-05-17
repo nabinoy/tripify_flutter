@@ -1089,10 +1089,10 @@ packages:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: dfd138a0cea87d6b1c624513b4b620f06515d884d65f1fa5fb93345266c7592c
+      sha256: b2ad1c93239b094d6de1b4679c1835b1bc4332e6c6548bd2da44bd2594e6cdc5
       url: "https://pub.dev"
     source: hosted
-    version: "21.2.4"
+    version: "21.2.5"
   syncfusion_flutter_pdf:
     dependency: transitive
     description:
@@ -1109,6 +1109,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "21.2.4"
+  syncfusion_flutter_sliders:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_sliders
+      sha256: "5d24cccdbe7a0d51c9e4f66539c43cc4e7673093a1e153e93bd74de5529136ca"
+      url: "https://pub.dev"
+    source: hosted
+    version: "21.2.5"
   syncfusion_pdfviewer_macos:
     dependency: transitive
     description:

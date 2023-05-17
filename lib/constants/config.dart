@@ -4,6 +4,7 @@ class Config {
   static const loginAPI = "/api/v1/login";
   static const registerAPI = "/api/v1/signup";
   static const placeAPI = "/api/v1/place";
+  static const itineraryAPI = "/api/v1/place/itinerary";
   static const placeAllAPI = "/api/v1/place/all";
   static const categoryAllAPI = "/api/v1/category/all";
   static const serviceAllAPI = "/api/v1/service/all";

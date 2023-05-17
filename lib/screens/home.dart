@@ -202,8 +202,9 @@ class _HomepageState extends State<Homepage> {
         centerTitle: true,
         elevation: 0,
         title: const Text(
-          'Tripify',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+          appName,
+          style: TextStyle(
+              fontSize: 18, color: Colors.black, fontWeight: FontWeight.w600),
         ),
         actions: [
           GestureDetector(

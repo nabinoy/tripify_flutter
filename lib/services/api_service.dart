@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:tripify/models/forgot_password_request_model.dart';
 import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/hotel_response_model.dart';
+import 'package:tripify/models/itinerary_request_model.dart';
 import 'package:tripify/models/login_request_model.dart';
 import 'package:tripify/models/nearby_request_model.dart';
 import 'package:tripify/models/place_response_model.dart';
@@ -356,6 +357,40 @@ class APIService {
         Places2 p2 = Places2.fromJson(data[i]);
         pd.add(p2);
       }
+      return pd;
+    } else {
+      throw Exception('Failed to load person details');
+    }
+  }
+
+  static Future<List<List<Places2>>> itineraryAll(ItineraryModel model) async {
+    Map<String, String> requestHeaders = {
+      'Accept': 'application/json',
+    };
+
+    var url = Uri.https(
+      Config.apiURL,
+      Config.itineraryAPI,
+    );
+
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      data = data['places'];
+      List<List<Places2>> pd = [];
+
+      for (var j = 0; j < data.length; j++) {
+        for (var i = 0; i < data[j].length; i++) {
+          Places2 p2 = Places2.fromJson(data[i]);
+          pd[j].add(p2);
+        }
+      }
+      print(pd.length);
       return pd;
     } else {
       throw Exception('Failed to load person details');
@@ -1280,17 +1315,14 @@ class APIService {
       url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
     } else {
       if (type.contains("All")) {
-          queryParameters = {
-          'island': islandID,
-          'page': page
-        };
-        } else {
-          queryParameters = {
+        queryParameters = {'island': islandID, 'page': page};
+      } else {
+        queryParameters = {
           'island': islandID,
           'isVeg': (type == 'Veg') ? 'true' : 'false',
           'page': page
         };
-        }
+      }
       url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
     }
 

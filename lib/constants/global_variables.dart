@@ -11,6 +11,10 @@ int restaurantPageSize = 6;
 int tourOpPageSize = 6;
 double portBlairLat = 11.650475999232123;
 double portBlairLong = 92.73356876475748;
+double itineraryDayCount = 10.0;
+
+
+
 String byAir = 'https://www.andaman.gov.in/helicopter-schedule';
 String bySea =
     'https://dss.andaman.gov.in/ShipAndamanWebSite/services/passenger-services/online_enquiry.html';

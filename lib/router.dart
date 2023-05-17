@@ -10,6 +10,7 @@ import 'package:tripify/screens/home_services/hotel_details.dart';
 import 'package:tripify/screens/home_services/restaurant.dart';
 import 'package:tripify/screens/home_services/restaurant_details.dart';
 import 'package:tripify/screens/home_services/tour_operator.dart';
+import 'package:tripify/screens/itinerary/itinerary_page.dart';
 import 'package:tripify/screens/otp_form.dart';
 import 'package:tripify/screens/category.dart';
 import 'package:tripify/screens/drawer/helpline.dart';
@@ -99,6 +100,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const WeatherDetails(),
+      );
+
+    case ItineraryPage.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const ItineraryPage(),
       );
 
     case ForgotPassword.routeName:

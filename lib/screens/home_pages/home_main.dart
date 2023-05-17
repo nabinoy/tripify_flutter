@@ -18,6 +18,7 @@ import 'package:tripify/screens/home_services/hotel.dart';
 import 'package:tripify/screens/home_services/restaurant.dart';
 import 'package:tripify/screens/home_services/tour_operator.dart';
 import 'package:tripify/screens/island.dart';
+import 'package:tripify/screens/itinerary/itinerary_page.dart';
 import 'package:tripify/screens/location_weather.dart';
 import 'package:tripify/screens/home_services/map_webview.dart';
 import 'package:tripify/screens/place.dart';
@@ -425,6 +426,29 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                   ),
             Column(
               children: [
+                Container(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Icon(
+                            Icons.emoji_transportation,
+                            color: Colors.grey[800],
+                            size: 30,
+                          ),
+                        ),
+                        const Text('Itinerary'),
+                      ],
+                    ),
+                    onTap: () {
+                      HapticFeedback.mediumImpact();
+                      Navigator.pushNamed(context, ItineraryPage.routeName,
+                          arguments: [c, ia, currentLocation]);
+                    },
+                  ),
+                ),
                 Container(
                   padding: const EdgeInsets.only(top: 16.0),
                   child: const Text(
