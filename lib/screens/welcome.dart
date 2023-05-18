@@ -99,11 +99,7 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
             Container(
               height: MediaQuery.of(context).size.height / 3,
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image:
-                          AssetImage('assets/images/welcome_background.jpg'))),
-            ),
+              child: Image.asset('assets/images/welcome_background.jpg'),),
             Column(
               children: <Widget>[
                 MaterialButton(
