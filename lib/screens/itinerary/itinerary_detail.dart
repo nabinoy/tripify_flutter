@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/models/itinerary_request_model.dart';
 import 'package:tripify/models/place_response_model.dart';
@@ -59,14 +61,19 @@ class _ItineraryDetailsState extends State<ItineraryDetails> {
                       children: itineraryPlace.map((day) {
                         return Column(
                           children: [
-                            Container(
-                                margin: const EdgeInsets.only(top: 16),
-                                child: Text(
-                                  'Day ${itineraryPlace.indexOf(day) + 1}',
-                                  style: const TextStyle(
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.w600),
-                                )),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                    margin: const EdgeInsets.only(top: 28),
+                                    child: Text(
+                                      'Day ${itineraryPlace.indexOf(day) + 1}',
+                                      style: const TextStyle(
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w600),
+                                    )),
+                              ],
+                            ),
                             Wrap(
                               children:
                                   itineraryPlace[itineraryPlace.indexOf(day)]
@@ -186,6 +193,39 @@ class _ItineraryDetailsState extends State<ItineraryDetails> {
                           ],
                         );
                       }).toList(),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 14.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Want another itinerary?'),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            HapticFeedback.mediumImpact();
+                            setState(() {});
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                'Refresh',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.lightBlue[800]),
+                              ),
+                              Icon(
+                                MdiIcons.reload,
+                                size: 17,
+                                color: Colors.lightBlue[800],
+                              )
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   )
                 ],
