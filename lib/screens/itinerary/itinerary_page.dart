@@ -43,16 +43,40 @@ class _ItineraryPageState extends State<ItineraryPage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Itinerary'),
+          title: const Text(
+            'Itinerary Generator',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          centerTitle: true,
           backgroundColor: Colors.white,
           elevation: 0,
         ),
         body: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Text(
+                    'Welcome to our personalized itinerary generator!',
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.lightBlue[800]),
+                  ),
+                ),
+                const Text(
+                  'Plan your dream vacation effortlessly with our innovative machine learning technology. Simply select your desired categories, choose an island, and specify the number of days you have available. Our intelligent system will curate a tailor-made itinerary just for you, ensuring a seamless and unforgettable experience.',
+                  style: TextStyle(fontSize: 15),
+                ),
+                const SizedBox(
+                  height: 18,
+                ),
                 const Text(
                   'By category',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -139,7 +163,34 @@ class _ItineraryPageState extends State<ItineraryPage> {
                   height: 50,
                   onPressed: () {
                     HapticFeedback.mediumImpact();
-                    ItineraryModel model = ItineraryModel(days: days.toInt(), lat: currentLoc.latitude!, long: currentLoc.longitude!);
+                    //Navigator.pushNamed(context, LoginPage.routeName);
+                  },
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        width: 2,
+                        color: Colors.lightBlue[800]!,
+                      ),
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Text(
+                    "Reset",
+                    style: TextStyle(
+                        color: Colors.lightBlue[800],
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                MaterialButton(
+                  minWidth: double.infinity,
+                  height: 50,
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    ItineraryModel model = ItineraryModel(
+                        days: days.toInt(),
+                        lat: currentLoc.latitude!,
+                        long: currentLoc.longitude!);
                     APIService.itineraryAll(model).then((value) => {value});
                     //Navigator.pushNamed(context, SignupPage.routeName);
                   },
@@ -154,6 +205,9 @@ class _ItineraryPageState extends State<ItineraryPage> {
                         fontWeight: FontWeight.w600,
                         fontSize: 18),
                   ),
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
               ],
             ),
