@@ -32,17 +32,9 @@ class _ChatBotState extends State<ChatBot> {
 
   @override
   void dispose() {
-    _scrollController.dispose(); //keyboardSubscription.cancel();
+    _scrollController.dispose();
     super.dispose();
   }
-
-  // void scrollToLast() {
-  //   _scrollController.animateTo(
-  //     _scrollController.position.minScrollExtent,
-  //     duration: const Duration(milliseconds: 300),
-  //     curve: Curves.easeOut,
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +45,6 @@ class _ChatBotState extends State<ChatBot> {
         title: const Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            //randomAvatar('saytoonz', height: 32, width: 32),
             CircleAvatar(
               radius: 18,
               backgroundImage: AssetImage('assets/images/chatbot_profile.png'),
@@ -78,8 +69,6 @@ class _ChatBotState extends State<ChatBot> {
         elevation: 0,
       ),
       body: Column(
-        // mainAxisSize: MainAxisSize.min,
-        //mainAxisAlignment: MainAxisAlignment.end,
         children: [
           (chatList.isEmpty)
               ? Expanded(
@@ -89,7 +78,10 @@ class _ChatBotState extends State<ChatBot> {
                       children: <Widget>[
                         SizedBox(
                           height: 200,
-                          child: Lottie.asset('assets/lottie/chatbot.json'),
+                          child: Lottie.asset(
+                            'assets/lottie/chatbot.json',
+                            frameRate: FrameRate.max,
+                          ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

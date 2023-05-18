@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/models/itinerary_request_model.dart';
@@ -46,7 +47,15 @@ class _ItineraryDetailsState extends State<ItineraryDetails> {
           if (snapshot.connectionState == ConnectionState.done) {
             return SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    height: 250,
+                    child: Lottie.asset(
+                      'assets/lottie/itinerary_animation.json',
+                      frameRate: FrameRate.max,
+                    ),
+                  ),
                   Text(
                     'Your itinerary for ${itineraryPlace.length.toString()} days is here!',
                     textAlign: TextAlign.center,

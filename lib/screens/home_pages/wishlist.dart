@@ -65,6 +65,7 @@ class _WishlistState extends State<Wishlist> {
                               child: Lottie.asset(
                                 'assets/lottie/login_wishlist.json',
                                 animate: true,
+                                frameRate: FrameRate.max,
                               ),
                             ),
                             const SizedBox(height: 16),
@@ -154,6 +155,7 @@ class _WishlistState extends State<Wishlist> {
                                   child: Lottie.asset(
                                     'assets/lottie/empty_wishlist.json',
                                     animate: true,
+                                    frameRate: FrameRate.max,
                                   ),
                                 ),
                                 Text(
