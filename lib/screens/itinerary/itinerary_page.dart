@@ -5,7 +5,7 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/itinerary_request_model.dart';
-import 'package:tripify/services/api_service.dart';
+import 'package:tripify/screens/itinerary/itinerary_detail.dart';
 
 late List<String> _selectedCategoryChips;
 late List<String> _selectedIslandChips;
@@ -163,7 +163,13 @@ class _ItineraryPageState extends State<ItineraryPage> {
                   height: 50,
                   onPressed: () {
                     HapticFeedback.mediumImpact();
-                    //Navigator.pushNamed(context, LoginPage.routeName);
+                    setState(
+                      () {
+                        _selectedCategoryChips.clear();
+                        _selectedIslandChips = ['All'];
+                        days = 3;
+                      },
+                    );
                   },
                   shape: RoundedRectangleBorder(
                       side: BorderSide(
@@ -187,12 +193,13 @@ class _ItineraryPageState extends State<ItineraryPage> {
                   height: 50,
                   onPressed: () {
                     HapticFeedback.mediumImpact();
+
                     ItineraryModel model = ItineraryModel(
                         days: days.toInt(),
                         lat: currentLoc.latitude!,
                         long: currentLoc.longitude!);
-                    APIService.itineraryAll(model).then((value) => {value});
-                    //Navigator.pushNamed(context, SignupPage.routeName);
+                    
+                    Navigator.pushNamed(context, ItineraryDetails.routeName,arguments: [model,_selectedCategoryChips,_selectedIslandChips]);
                   },
                   color: Colors.lightBlue[800],
                   elevation: 0,

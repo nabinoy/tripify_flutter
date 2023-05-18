@@ -10,6 +10,7 @@ import 'package:tripify/screens/home_services/hotel_details.dart';
 import 'package:tripify/screens/home_services/restaurant.dart';
 import 'package:tripify/screens/home_services/restaurant_details.dart';
 import 'package:tripify/screens/home_services/tour_operator.dart';
+import 'package:tripify/screens/itinerary/itinerary_detail.dart';
 import 'package:tripify/screens/itinerary/itinerary_page.dart';
 import 'package:tripify/screens/otp_form.dart';
 import 'package:tripify/screens/category.dart';
@@ -226,6 +227,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const HospitalMapWebView(),
+      );
+
+    case ItineraryDetails.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const ItineraryDetails(),
       );
 
     case RestaurantScreen.routeName:

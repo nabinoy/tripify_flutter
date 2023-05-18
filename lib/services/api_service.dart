@@ -363,15 +363,31 @@ class APIService {
     }
   }
 
-  static Future<List<List<Places2>>> itineraryAll(ItineraryModel model) async {
+  static Future<List<List<Places2>>> itineraryAll(ItineraryModel model,
+      List<String> categories, List<String> island) async {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
 
-    var url = Uri.https(
-      Config.apiURL,
-      Config.itineraryAPI,
-    );
+    Map<String, dynamic> queryParameters = {};
+
+    if (!island.contains('All')) {
+      queryParameters['island'] = island;
+    }
+    if (categories.isNotEmpty) {
+      String categoriesString = categories.join(",");
+      queryParameters['categories'] = categoriesString;
+    }
+
+    Uri url;
+    if (queryParameters.isEmpty) {
+      url = Uri.https(
+        Config.apiURL,
+        Config.itineraryAPI,
+      );
+    } else {
+      url = Uri.https(Config.apiURL, Config.itineraryAPI, queryParameters);
+    }
 
     var response = await client.post(
       url,
