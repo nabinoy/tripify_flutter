@@ -2491,7 +2491,6 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
         ),
         MaterialButton(
           onPressed: () {
-            //Navigator.of(context).pop();
             isLoading = true;
             FocusScopeNode currentFocus = FocusScope.of(context);
             if (!currentFocus.hasPrimaryFocus) {
@@ -2606,7 +2605,6 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
                     width: 30,
                   ),
                   Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       RatingBar.builder(
                         initialRating: widget.ru.rating.toDouble(),
@@ -2633,7 +2631,6 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
                 height: 14,
               ),
               TextFormField(
-                //controller: _controller,
                 initialValue: widget.ru.comment,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -2677,7 +2674,6 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
         ),
         MaterialButton(
           onPressed: () {
-            //Navigator.of(context).pop();
             FocusScopeNode currentFocus = FocusScope.of(context);
             if (!currentFocus.hasPrimaryFocus) {
               currentFocus.unfocus();

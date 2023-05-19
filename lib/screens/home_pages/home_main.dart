@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:georange/georange.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -424,280 +425,320 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                       PlaceRecommendationByUser(pa),
                     ],
                   ),
-            Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: ListTile(
-                    title: Row(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2.0,
+                      blurRadius: 5.0,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                  color: Colors.white,
+                ),
+                child: Column(
+                  children: [
+                    const Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Icon(
-                            Icons.emoji_transportation,
-                            color: Colors.grey[800],
-                            size: 30,
+                        Text(
+                          'Itinerary Generator',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const Text('Itinerary'),
                       ],
                     ),
-                    onTap: () {
-                      HapticFeedback.mediumImpact();
-                      Navigator.pushNamed(context, ItineraryPage.routeName,
-                          arguments: [c, ia, currentLocation]);
-                    },
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: const Text(
-                    'Nearby places',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                    const SizedBox(
+                      height: 8,
                     ),
-                  ),
-                ),
-                FutureBuilder(
-                  future: dataNearby,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return (nearbyPd.isEmpty)
-                          ? Container(
-                              padding: const EdgeInsets.symmetric(vertical: 60),
-                              alignment: Alignment.center,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    MdiIcons.alertCircleOutline,
-                                    size: 58,
-                                    color: Theme.of(context).disabledColor,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Text(
-                                    'No places found!',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Theme.of(context).disabledColor,
-                                    ),
-                                  ),
-                                ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.38,
+                              child: const Text(
+                                  "Unlock your perfect holiday\nLet our Machine Learning algorithm curate your ultimate travel itinerary!"),
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            MaterialButton(
+                              minWidth:
+                                  MediaQuery.of(context).size.width * 0.38,
+                              height: 40,
+                              onPressed: () {
+                                HapticFeedback.mediumImpact();
+                                Navigator.pushNamed(
+                                    context, ItineraryPage.routeName,
+                                    arguments: [c, ia, currentLocation]);
+                              },
+                              color: Colors.lightBlue[800],
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: const Text(
+                                "Generate",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14),
                               ),
-                            )
-                          : Column(
-                              children: [
-                                Wrap(
-                                  children: nearbyPd.map((widget) {
-                                    Point point1 = Point(
-                                        latitude: currentLocation.latitude!,
-                                        longitude: currentLocation.longitude!);
-                                    Point point2 = Point(
-                                        latitude:
-                                            widget.location.coordinates[1],
-                                        longitude:
-                                            widget.location.coordinates[0]);
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.2,
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          child: Lottie.asset(
+                              'assets/lottie/itinerary_home.json',
+                              frameRate: FrameRate.max),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: const Text(
+                'Nearby places',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            FutureBuilder(
+              future: dataNearby,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return (nearbyPd.isEmpty)
+                      ? Container(
+                          padding: const EdgeInsets.symmetric(vertical: 60),
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                MdiIcons.alertCircleOutline,
+                                size: 58,
+                                color: Theme.of(context).disabledColor,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'No places found!',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).disabledColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Column(
+                          children: [
+                            Wrap(
+                              children: nearbyPd.map((widget) {
+                                Point point1 = Point(
+                                    latitude: currentLocation.latitude!,
+                                    longitude: currentLocation.longitude!);
+                                Point point2 = Point(
+                                    latitude: widget.location.coordinates[1],
+                                    longitude: widget.location.coordinates[0]);
 
-                                    var distance =
-                                        georange.distance(point1, point2);
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                            context, Place.routeName,
-                                            arguments: [
-                                              [widget],
-                                              (wishlistPlaceIdList
-                                                      .contains(widget.sId))
-                                                  ? true
-                                                  : false
-                                            ]);
-                                      },
-                                      child: Container(
-                                        margin: const EdgeInsets.only(
-                                          top: 8.0,
+                                var distance =
+                                    georange.distance(point1, point2);
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, Place.routeName,
+                                        arguments: [
+                                          [widget],
+                                          (wishlistPlaceIdList
+                                                  .contains(widget.sId))
+                                              ? true
+                                              : false
+                                        ]);
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.only(
+                                      top: 8.0,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.3),
+                                          spreadRadius: 2.0,
+                                          blurRadius: 5.0,
+                                          offset: const Offset(0, 3),
                                         ),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.3),
-                                              spreadRadius: 2.0,
-                                              blurRadius: 5.0,
-                                              offset: const Offset(0, 3),
+                                      ],
+                                      color: Colors.white,
+                                    ),
+                                    width: double.infinity,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.all(12),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            child: CachedNetworkImage(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .25,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .25,
+                                              imageUrl:
+                                                  widget.images.first.secureUrl,
+                                              placeholder: (context, url) =>
+                                                  Image.memory(
+                                                kTransparentImage,
+                                                fit: BoxFit.cover,
+                                              ),
+                                              fadeInDuration: const Duration(
+                                                  milliseconds: 200),
+                                              fit: BoxFit.cover,
                                             ),
-                                          ],
-                                          color: Colors.white,
+                                          ),
                                         ),
-                                        width: double.infinity,
-                                        child: Row(
+                                        const SizedBox(
+                                          width: 6,
+                                        ),
+                                        Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Container(
-                                              margin: const EdgeInsets.all(12),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                                child: CachedNetworkImage(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      .25,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      .25,
-                                                  imageUrl: widget
-                                                      .images.first.secureUrl,
-                                                  placeholder: (context, url) =>
-                                                      Image.memory(
-                                                    kTransparentImage,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                  fadeInDuration:
-                                                      const Duration(
-                                                          milliseconds: 200),
-                                                  fit: BoxFit.cover,
-                                                ),
+                                            const SizedBox(
+                                              height: 15,
+                                            ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .55,
+                                              child: Text(
+                                                widget.name,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w600),
                                               ),
                                             ),
-                                            const SizedBox(
-                                              width: 6,
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .55,
+                                              child: Text(widget.address.city,
+                                                  style: const TextStyle(
+                                                      fontSize: 12)),
                                             ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                            const SizedBox(
+                                              height: 3,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
                                               children: [
-                                                const SizedBox(
-                                                  height: 15,
-                                                ),
-                                                SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      .55,
-                                                  child: Text(
-                                                    widget.name,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      .55,
-                                                  child: Text(
-                                                      widget.address.city,
-                                                      style: const TextStyle(
-                                                          fontSize: 12)),
-                                                ),
-                                                const SizedBox(
-                                                  height: 3,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    RatingBar.builder(
-                                                      initialRating: widget
-                                                          .ratings
-                                                          .toDouble(),
-                                                      ignoreGestures: true,
-                                                      minRating: 1,
-                                                      direction:
-                                                          Axis.horizontal,
-                                                      allowHalfRating: true,
-                                                      itemCount: 5,
-                                                      itemSize: 16,
-                                                      itemBuilder:
-                                                          (context, _) =>
-                                                              const Icon(
-                                                        Icons.star,
-                                                        color: Colors.amber,
-                                                      ),
-                                                      onRatingUpdate:
-                                                          (rating) {},
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 4,
-                                                    ),
-                                                    Text(
-                                                      widget.ratings.toString(),
-                                                      style: const TextStyle(
-                                                          fontSize: 13),
-                                                    ),
-                                                    Text(
-                                                        ' (${widget.reviews.length})',
-                                                        style: const TextStyle(
-                                                            fontSize: 11,
-                                                            color: Colors
-                                                                .black54)),
-                                                    const SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  height: 5,
-                                                ),
-                                                Container(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: 3,
-                                                      horizontal: 8),
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        Colors.lightBlue[700],
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            40),
-                                                  ),
-                                                  child: Row(
-                                                    children: [
+                                                RatingBar.builder(
+                                                  initialRating:
+                                                      widget.ratings.toDouble(),
+                                                  ignoreGestures: true,
+                                                  minRating: 1,
+                                                  direction: Axis.horizontal,
+                                                  allowHalfRating: true,
+                                                  itemCount: 5,
+                                                  itemSize: 16,
+                                                  itemBuilder: (context, _) =>
                                                       const Icon(
-                                                        Icons.location_on,
-                                                        size: 15,
-                                                        color: Colors.white,
-                                                      ),
-                                                      const SizedBox(
-                                                        width: 4,
-                                                      ),
-                                                      Text(
-                                                        '${distance.toStringAsFixed(1)}km away',
-                                                        style: const TextStyle(
-                                                            fontSize: 12,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ],
+                                                    Icons.star,
+                                                    color: Colors.amber,
                                                   ),
-                                                )
+                                                  onRatingUpdate: (rating) {},
+                                                ),
+                                                const SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Text(
+                                                  widget.ratings.toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 13),
+                                                ),
+                                                Text(
+                                                    ' (${widget.reviews.length})',
+                                                    style: const TextStyle(
+                                                        fontSize: 11,
+                                                        color: Colors.black54)),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
                                               ],
                                             ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 3,
+                                                      horizontal: 8),
+                                              decoration: BoxDecoration(
+                                                color: Colors.lightBlue[700],
+                                                borderRadius:
+                                                    BorderRadius.circular(40),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  const Icon(
+                                                    Icons.location_on,
+                                                    size: 15,
+                                                    color: Colors.white,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 4,
+                                                  ),
+                                                  Text(
+                                                    '${distance.toStringAsFixed(1)}km away',
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
                                           ],
                                         ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
-                            );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-              ],
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
             ),
             Container(
               padding: const EdgeInsets.only(top: 16.0),
