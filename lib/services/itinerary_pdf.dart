@@ -15,7 +15,7 @@ Future<void> createPDF(List<List<Places2>> itineraryPlace) async {
           children: [
             pw.TableRow(
               children: [
-                pw.Text('Image',
+                pw.Text('Day',
                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                 pw.Text('Name',
                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
@@ -26,7 +26,7 @@ Future<void> createPDF(List<List<Places2>> itineraryPlace) async {
             ...itineraryPlace[i]
                 .map((item) => pw.TableRow(
                       children: [
-                        pw.Text(itineraryPlace[i].indexOf(item).toString()),
+                        pw.Text((i + 1).toString()),
                         pw.Text(item.name),
                         pw.Text(item.address.city),
                       ],
