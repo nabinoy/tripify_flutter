@@ -85,7 +85,7 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
           backgroundColor: Colors.white,
           title: const Text(
             'Tour Operator',
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
           elevation: 0,

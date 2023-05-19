@@ -96,7 +96,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
           centerTitle: true,
           title: const Text(
             "Restaurants",
-            style: TextStyle(color: Colors.black, fontSize: 18),
+            style: TextStyle(
+                color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
           ),
         ),
         body: ListView(

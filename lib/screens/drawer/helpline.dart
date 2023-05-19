@@ -47,7 +47,7 @@ class _HelplineState extends State<Helpline> {
           backgroundColor: bgColor,
           title: const Text(
             'Helpline',
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
           leading: IconButton(

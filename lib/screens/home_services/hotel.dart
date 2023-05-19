@@ -94,7 +94,8 @@ class _HotelScreenState extends State<HotelScreen> {
           centerTitle: true,
           title: const Text(
             "Hotel",
-            style: TextStyle(color: Colors.black, fontSize: 18),
+            style: TextStyle(
+                color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
           ),
         ),
         body: ListView(

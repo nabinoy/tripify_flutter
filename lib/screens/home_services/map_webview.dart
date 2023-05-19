@@ -32,8 +32,9 @@ class _MapWebViewState extends State<MapWebView> {
       appBar: AppBar(
         title: const Text(
           'Google Maps',
-          style: TextStyle(fontSize: 18),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
+        centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
       ),
@@ -74,8 +75,9 @@ class _ToiletMapWebViewState extends State<ToiletMapWebView> {
       appBar: AppBar(
         title: const Text(
           'Google Maps',
-          style: TextStyle(fontSize: 18),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
+        centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
       ),
@@ -116,8 +118,9 @@ class _HospitalMapWebViewState extends State<HospitalMapWebView> {
       appBar: AppBar(
         title: const Text(
           'Google Maps',
-          style: TextStyle(fontSize: 18),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
+        centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
       ),

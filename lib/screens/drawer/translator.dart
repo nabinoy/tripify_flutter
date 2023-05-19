@@ -30,8 +30,9 @@ class _TranslatorWebViewState extends State<TranslatorWebView> {
       appBar: AppBar(
         title: const Text(
           'Translator',
-          style: TextStyle(fontSize: 18),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
+        centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
       ),

@@ -125,10 +125,9 @@ class _ReviewAllState extends State<ReviewAll> {
         slivers: [
           SliverAppBar(
             title: const Text('Reviews',
-                style: TextStyle(
-                  fontSize: 18,
-                )),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
             backgroundColor: Colors.white,
+            centerTitle: true,
             expandedHeight: 0,
             pinned: true,
             elevation: 0,
@@ -149,22 +148,6 @@ class _ReviewAllState extends State<ReviewAll> {
                 ),
               ),
             ),
-            actions: [
-              GestureDetector(
-                onTap: () {},
-                child: const Padding(
-                  padding: EdgeInsets.only(right: 20),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      MdiIcons.share,
-                      color: Colors.black,
-                      size: 24,
-                    ),
-                  ),
-                ),
-              ),
-            ],
           ),
           SliverToBoxAdapter(
             child: Container(

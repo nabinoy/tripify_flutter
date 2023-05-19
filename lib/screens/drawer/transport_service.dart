@@ -32,8 +32,9 @@ class _TransportServiceState extends State<TransportService>
       appBar: AppBar(
         title: const Text(
           'Transport service',
-          style: TextStyle(fontSize: 18),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
+        centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
         bottom: TabBar(
@@ -66,8 +67,7 @@ class _TransportServiceState extends State<TransportService>
           WebViewWidget(
               controller: WebViewController()
                 ..loadRequest(
-                  Uri.parse(
-                      bySea),
+                  Uri.parse(bySea),
                 )
                 ..setJavaScriptMode(JavaScriptMode.unrestricted)),
           WebViewWidget(

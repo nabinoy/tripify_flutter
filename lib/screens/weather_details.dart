@@ -71,7 +71,8 @@ class _WeatherDetailsState extends State<WeatherDetails> {
           centerTitle: true,
           title: const Text(
             "Weather",
-            style: TextStyle(color: Colors.black, fontSize: 16),
+            style: TextStyle(
+                color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
           ),
         ),
         body: FutureBuilder(
