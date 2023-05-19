@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
@@ -138,8 +139,50 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
                           if (response) {
                             isLoading = false;
+                            final snackBar = SnackBar(
+                              width: double.infinity,
+                              dismissDirection: DismissDirection.down,
+                              elevation: 0,
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.transparent,
+                              content: DefaultTextStyle(
+                                style: const TextStyle(
+                                  fontFamily: fontRegular,
+                                ),
+                                child: AwesomeSnackbarContent(
+                                  title: 'Success!',
+                                  message:
+                                      ' Your password reset email has been sent to your inbox!',
+                                  contentType: ContentType.success,
+                                ),
+                              ),
+                            );
+                            ScaffoldMessenger.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(snackBar);
                           } else {
                             isLoading = false;
+                            final snackBar = SnackBar(
+                              width: double.infinity,
+                              dismissDirection: DismissDirection.down,
+                              elevation: 0,
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.transparent,
+                              content: DefaultTextStyle(
+                                style: const TextStyle(
+                                  fontFamily: fontRegular,
+                                ),
+                                child: AwesomeSnackbarContent(
+                                  title: 'Error!',
+                                  message:
+                                      'Something went wrong, please try again!',
+                                  contentType: ContentType.failure,
+                                ),
+                              ),
+                            );
+                            ScaffoldMessenger.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(snackBar);
                           }
                         },
                       );
@@ -149,13 +192,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50)),
-                  child: const Text(
-                    "Reset Password",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18),
-                  ),
+                  child: isLoading
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : const Text(
+                          "Reset Password",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18),
+                        ),
                 ),
               ],
             ),
