@@ -1,305 +1,304 @@
 {
     "numbers": [
-      {
-        "icon": "",
-        "name": "Air India City Office Port Blair (Reservation)",
-        "phone": "233108"
-      },
-      {
-        "icon": "",
-        "name": "Airport",
-        "phone": "234744"
-      },
-      {
-        "icon": "",
-        "name": "Ambulance, Amritha Health Centre, Port Blair",
-        "phone": "231344 / 220187"
-      },
-      {
-        "icon": "",
-        "name": "Ambulance, G.B. Pant Hospital, Port Blair",
-        "phone": "232102"
-      },
-      {
-        "icon": "",
-        "name": "Ambulance, Pillar Hospital, Port Blair",
-        "phone": "233193 / 240987"
-      },
-      {
-        "icon": "",
-        "name": "Anticorruption (Office)",
-        "phone": "244698, 232249"
-      },
-      {
-        "icon": "",
-        "name": "AYUSH Hospital, Port Blair",
-        "phone": "232427"
-      },
-      {
-        "icon": "",
-        "name": "Bambooflat PHC",
-        "phone": "258004"
-      },
-      {
-        "icon": "",
-        "name": "Baratang PHC",
-        "phone": "279533"
-      },
-      {
-        "icon": "",
-        "name": "Diglipur -Fire Stations",
-        "phone": "272333"
-      },
-      {
-        "icon": "",
-        "name": "Fire Control",
-        "phone": "101"
-      },
-      {
-        "icon": "",
-        "name": "Women Helpline",
-        "phone": "1091,1144 or 18003451144"
-      },
-      {
-        "icon": "",
-        "name": "PS Aberdeen Bazar",
-        "phone": "03192-232400"
-      },
-      {
-        "icon": "",
-        "name": "PS Chatham",
-        "phone": "03192-232232"
-      },
-      {
-        "icon": "",
-        "name": "PS Pahargaon",
-        "phone": "03192-250525"
-      },
-      {
-        "icon": "",
-        "name": "PS Swaraj dweep",
-        "phone": "03192-282405"
-      },
-      {
-        "icon": "",
-        "name": "PS Hut Bay",
-        "phone": "03192-284208"
-      },
-      {
-        "icon": "",
-        "name": "PS Bambooflat",
-        "phone": "03192-258411"
-      },
-      {
-        "icon": "",
-        "name": "PS Ograbraj",
-        "phone": "03192-224934, 09531856271"
-      },
-      {
-        "icon": "",
-        "name": "PS Kadamatala",
-        "phone": "03192-277005"
-      },
-      {
-        "icon": "",
-        "name": "PS Rangat",
-        "phone": "03192-274239"
-      },
-      {
-        "icon": "",
-        "name": "PS Mayabunder",
-        "phone": "03192-273203"
-      },
-      {
-        "icon": "",
-        "name": "PS Kalighat",
-        "phone": "03192-278149"
-      },
-      {
-        "icon": "",
-        "name": "PS Diglipur",
-        "phone": "03192-272223"
-      },
-      {
-        "icon": "",
-        "name": "PS Humphrygunj",
-        "phone": "03192-287590"
-      },
-      {
-        "icon": "",
-        "name": "PS Billiground",
-        "phone": "03192-270523"
-      },
-      {
-        "icon": "",
-        "name": "PS Baratang",
-        "phone": "03192-279503"
-      },
-      {
-        "icon": "",
-        "name": "PS Shaheed Dweep",
-        "phone": "03192-282602"
-      },
-      {
-        "icon": "",
-        "name": "PS Central Crime Station",
-        "phone": "03192-232586"
-      },
-      {
-        "icon": "",
-        "name": "Coastal Security",
-        "phone": "1093"
-      },
-      {
-        "icon": "",
-        "name": "Child Helpline",
-        "phone": "1098"
-      },
-      {
-        "icon": "",
-        "name": "POLICE CONTROL ROOM",
-        "phone": "100"
-      },
-      {
-        "icon": "",
-        "name": "FIRE SERVICE",
-        "phone": "101"
-      },
-      {
-        "icon": "",
-        "name": "AMBULANCE",
-        "phone": "232102 / 233473"
-      },
-      {
-        "icon": "",
-        "name": "SHIPPING",
-        "phone": "245555"
-      },
-      {
-        "icon": "",
-        "name": "POSTAL HELP LINE",
-        "phone": "232346 / 232890"
-      },
-      {
-        "icon": "",
-        "name": "WOMEN",
-        "phone": "1091"
-      },
-      {
-        "icon": "",
-        "name": "CHILDREN",
-        "phone": "1098"
-      },
-      {
-        "icon": "",
-        "name": "COAST GUARD",
-        "phone": "155211"
-      },
-      {
-        "icon": "",
-        "name": "DISASTER MANAGEMENT CONTROL",
-        "phone": "1070 / 238881"
-      },
-      {
-        "icon": "",
-        "name": "Fire Control Room",
-        "phone": "03192-232101, 232325, 232107"
-      },
-      {
-        "icon": "",
-        "name": "FS Aberdeen Bazar",
-        "phone": "03192-235484"
-      },
-      {
-        "icon": "",
-        "name": "FS Marine",
-        "phone": "03192-232227"
-      },
-      {
-        "icon": "",
-        "name": "FS Haddo Wharf",
-        "phone": "03192-233685"
-      },
-      {
-        "icon": "",
-        "name": "FS Chatham",
-        "phone": "03192-232295"
-      },
-      {
-        "icon": "",
-        "name": "FS Garacharma",
-        "phone": "03192-251604"
-      },
-      {
-        "icon": "",
-        "name": "FS Bambooflat",
-        "phone": "03192-258011"
-      },
-      {
-        "icon": "",
-        "name": "FS Ferrargunj",
-        "phone": "03192-266099"
-      },
-      {
-        "icon": "",
-        "name": "FS Swaraj Dweep",
-        "phone": "03192-282400"
-      },
-      {
-        "icon": "",
-        "name": "FS Shaheed Dweep",
-        "phone": "03192-282640"
-      },
-      {
-        "icon": "",
-        "name": "FS Hut Bay",
-        "phone": "03192-284258"
-      },
-      {
-        "icon": "",
-        "name": "FS R K Pur (Hut Bay)",
-        "phone": "03192-288344"
-      },
-      {
-        "icon": "",
-        "name": "FS Baratang",
-        "phone": "03192-279541"
-      },
-      {
-        "icon": "",
-        "name": "FS Kadamtala",
-        "phone": "03192-277188"
-      },
-      {
-        "icon": "",
-        "name": "FS Bakultala",
-        "phone": "03193-277515"
-      },
-      {
-        "icon": "",
-        "name": "FS Rangat",
-        "phone": "03192-274334"
-      },
-      {
-        "icon": "",
-        "name": "FS Billiground",
-        "phone": "03192-270818"
-      },
-      {
-        "icon": "",
-        "name": "FS Mayabunder",
-        "phone": "03192-273285"
-      },
-      {
-        "icon": "",
-        "name": "FS Diglipur",
-        "phone": "03192-272333"
-      },
-      {
-        "icon": "",
-        "name": "FS Kalighat",
-        "phone": "03192-278100"
-      }
+        {
+            "icon": "MdiIcons.bedKing",
+            "name": "Air India City Office Port Blair (Reservation)",
+            "phone": "233108"
+        },
+        {
+            "icon": "",
+            "name": "Airport",
+            "phone": "234744"
+        },
+        {
+            "icon": "",
+            "name": "Ambulance, Amritha Health Centre, Port Blair",
+            "phone": "231344"
+        },
+        {
+            "icon": "",
+            "name": "Ambulance, G.B. Pant Hospital, Port Blair",
+            "phone": "232102"
+        },
+        {
+            "icon": "",
+            "name": "Ambulance, Pillar Hospital, Port Blair",
+            "phone": "233193"
+        },
+        {
+            "icon": "",
+            "name": "Anticorruption (Office)",
+            "phone": "244698"
+        },
+        {
+            "icon": "",
+            "name": "AYUSH Hospital, Port Blair",
+            "phone": "232427"
+        },
+        {
+            "icon": "",
+            "name": "Bambooflat PHC",
+            "phone": "258004"
+        },
+        {
+            "icon": "",
+            "name": "Baratang PHC",
+            "phone": "279533"
+        },
+        {
+            "icon": "",
+            "name": "Diglipur -Fire Stations",
+            "phone": "272333"
+        },
+        {
+            "icon": "",
+            "name": "Fire Control",
+            "phone": "101"
+        },
+        {
+            "icon": "",
+            "name": "Women Helpline",
+            "phone": "1091"
+        },
+        {
+            "icon": "",
+            "name": "PS Aberdeen Bazar",
+            "phone": "03192-232400"
+        },
+        {
+            "icon": "",
+            "name": "PS Chatham",
+            "phone": "03192-232232"
+        },
+        {
+            "icon": "",
+            "name": "PS Pahargaon",
+            "phone": "03192-250525"
+        },
+        {
+            "icon": "",
+            "name": "PS Swaraj dweep",
+            "phone": "03192-282405"
+        },
+        {
+            "icon": "",
+            "name": "PS Hut Bay",
+            "phone": "03192-284208"
+        },
+        {
+            "icon": "",
+            "name": "PS Bambooflat",
+            "phone": "03192-258411"
+        },
+        {
+            "icon": "",
+            "name": "PS Ograbraj",
+            "phone": "03192-224934"
+        },
+        {
+            "icon": "",
+            "name": "PS Kadamatala",
+            "phone": "03192-277005"
+        },
+        {
+            "icon": "",
+            "name": "PS Rangat",
+            "phone": "03192-274239"
+        },
+        {
+            "icon": "",
+            "name": "PS Mayabunder",
+            "phone": "03192-273203"
+        },
+        {
+            "icon": "",
+            "name": "PS Kalighat",
+            "phone": "03192-278149"
+        },
+        {
+            "icon": "",
+            "name": "PS Diglipur",
+            "phone": "03192-272223"
+        },
+        {
+            "icon": "",
+            "name": "PS Humphrygunj",
+            "phone": "03192-287590"
+        },
+        {
+            "icon": "",
+            "name": "PS Billiground",
+            "phone": "03192-270523"
+        },
+        {
+            "icon": "",
+            "name": "PS Baratang",
+            "phone": "03192-279503"
+        },
+        {
+            "icon": "",
+            "name": "PS Shaheed Dweep",
+            "phone": "03192-282602"
+        },
+        {
+            "icon": "",
+            "name": "PS Central Crime Station",
+            "phone": "03192-232586"
+        },
+        {
+            "icon": "",
+            "name": "Coastal Security",
+            "phone": "1093"
+        },
+        {
+            "icon": "",
+            "name": "Child Helpline",
+            "phone": "1098"
+        },
+        {
+            "icon": "",
+            "name": "POLICE CONTROL ROOM",
+            "phone": "100"
+        },
+        {
+            "icon": "",
+            "name": "FIRE SERVICE",
+            "phone": "101"
+        },
+        {
+            "icon": "",
+            "name": "AMBULANCE",
+            "phone": "232102 / 233473"
+        },
+        {
+            "icon": "",
+            "name": "SHIPPING",
+            "phone": "245555"
+        },
+        {
+            "icon": "",
+            "name": "POSTAL HELP LINE",
+            "phone": "232346"
+        },
+        {
+            "icon": "",
+            "name": "WOMEN",
+            "phone": "1091"
+        },
+        {
+            "icon": "",
+            "name": "CHILDREN",
+            "phone": "1098"
+        },
+        {
+            "icon": "",
+            "name": "COAST GUARD",
+            "phone": "155211"
+        },
+        {
+            "icon": "",
+            "name": "DISASTER MANAGEMENT CONTROL",
+            "phone": "1070"
+        },
+        {
+            "icon": "",
+            "name": "Fire Control Room",
+            "phone": "03192-232101"
+        },
+        {
+            "icon": "",
+            "name": "FS Aberdeen Bazar",
+            "phone": "03192-235484"
+        },
+        {
+            "icon": "",
+            "name": "FS Marine",
+            "phone": "03192-232227"
+        },
+        {
+            "icon": "",
+            "name": "FS Haddo Wharf",
+            "phone": "03192-233685"
+        },
+        {
+            "icon": "",
+            "name": "FS Chatham",
+            "phone": "03192-232295"
+        },
+        {
+            "icon": "",
+            "name": "FS Garacharma",
+            "phone": "03192-251604"
+        },
+        {
+            "icon": "",
+            "name": "FS Bambooflat",
+            "phone": "03192-258011"
+        },
+        {
+            "icon": "",
+            "name": "FS Ferrargunj",
+            "phone": "03192-266099"
+        },
+        {
+            "icon": "",
+            "name": "FS Swaraj Dweep",
+            "phone": "03192-282400"
+        },
+        {
+            "icon": "",
+            "name": "FS Shaheed Dweep",
+            "phone": "03192-282640"
+        },
+        {
+            "icon": "",
+            "name": "FS Hut Bay",
+            "phone": "03192-284258"
+        },
+        {
+            "icon": "",
+            "name": "FS R K Pur (Hut Bay)",
+            "phone": "03192-288344"
+        },
+        {
+            "icon": "",
+            "name": "FS Baratang",
+            "phone": "03192-279541"
+        },
+        {
+            "icon": "",
+            "name": "FS Kadamtala",
+            "phone": "03192-277188"
+        },
+        {
+            "icon": "",
+            "name": "FS Bakultala",
+            "phone": "03193-277515"
+        },
+        {
+            "icon": "",
+            "name": "FS Rangat",
+            "phone": "03192-274334"
+        },
+        {
+            "icon": "",
+            "name": "FS Billiground",
+            "phone": "03192-270818"
+        },
+        {
+            "icon": "",
+            "name": "FS Mayabunder",
+            "phone": "03192-273285"
+        },
+        {
+            "icon": "",
+            "name": "FS Diglipur",
+            "phone": "03192-272333"
+        },
+        {
+            "icon": "",
+            "name": "FS Kalighat",
+            "phone": "03192-278100"
+        }
     ]
 }
-  
