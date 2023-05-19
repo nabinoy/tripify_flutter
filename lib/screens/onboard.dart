@@ -67,6 +67,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 child: Lottie.asset(
                                   screen.img,
                                   animate: true,
+                                  frameRate: FrameRate.max,
                                 ),
                               ),
                               Container(

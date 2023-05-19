@@ -267,9 +267,26 @@ class _ItineraryDetailsState extends State<ItineraryDetails> {
               ),
             );
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 250,
+                    child: Lottie.asset(
+                        'assets/lottie/itinerary_working.json',
+                        frameRate: FrameRate.max,
+                        repeat: false),
+                  ),
+                  Text(
+                    'Unlock the Power of Travel: Let Our ML algorithm Create Your Perfect Itinerary!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.lightBlue[800]),
+                  ),],
+              );
+            
           }
         },
       ),
