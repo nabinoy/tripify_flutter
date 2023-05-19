@@ -98,11 +98,11 @@ class _PlaceToImageState extends State<PlaceToImage> {
                   fontSize: 12),
             ),
             const SizedBox(height: 6),
-            const Text(
-              'Tripify',
+            Text(
+              appName,
               style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
+                color: Colors.lightBlue[800],
+                fontWeight: FontWeight.w600,
                 fontFamily: fontRegular,
               ),
             ),
@@ -202,11 +202,11 @@ class _HotelToImageState extends State<HotelToImage> {
                   fontSize: 12),
             ),
             const SizedBox(height: 6),
-            const Text(
-              'Tripify',
+            Text(
+              appName,
               style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
+                color: Colors.lightBlue[800],
+                fontWeight: FontWeight.w600,
                 fontFamily: fontRegular,
               ),
             ),
@@ -313,11 +313,11 @@ class _RestaurantToImageState extends State<RestaurantToImage> {
                   fontSize: 12),
             ),
             const SizedBox(height: 6),
-            const Text(
-              'Tripify',
+            Text(
+              appName,
               style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
+                color: Colors.lightBlue[800],
+                fontWeight: FontWeight.w600,
                 fontFamily: fontRegular,
               ),
             ),
