@@ -8,6 +8,7 @@ import 'package:tripify/models/itinerary_request_model.dart';
 import 'package:tripify/models/place_response_model.dart';
 import 'package:tripify/screens/place.dart';
 import 'package:tripify/services/api_service.dart';
+import 'package:tripify/services/itinerary_pdf.dart';
 
 class ItineraryDetails extends StatefulWidget {
   static const String routeName = '/itinerary_detail';
@@ -35,6 +36,13 @@ class _ItineraryDetailsState extends State<ItineraryDetails> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
+        actions: [
+          ElevatedButton(
+              onPressed: () {
+                createPDF(itineraryPlace);
+              },
+              child: const Text('pdf')),
+        ],
       ),
       body: FutureBuilder(
         future: Future.wait([
@@ -52,9 +60,9 @@ class _ItineraryDetailsState extends State<ItineraryDetails> {
                   SizedBox(
                     height: 250,
                     child: Lottie.asset(
-                      'assets/lottie/itinerary_animation.json',
-                      frameRate: FrameRate.max,
-                    ),
+                        'assets/lottie/itinerary_animation.json',
+                        frameRate: FrameRate.max,
+                        repeat: false),
                   ),
                   Text(
                     'Your itinerary for ${itineraryPlace.length.toString()} days is here!',
