@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:location/location.dart';
 
 late LocationData currentLocation;
@@ -25,7 +26,8 @@ Future<void> getCurrentLocation() async {
   permissionGranted = await location.hasPermission();
   if (permissionGranted == PermissionStatus.denied) {
     permissionGranted = await location.requestPermission();
-    if (permissionGranted != PermissionStatus.granted) {
+    if (permissionGranted == PermissionStatus.denied) {
+      AppSettings.openAppSettings();
       return;
     }
   }

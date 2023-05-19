@@ -19,6 +19,7 @@ class ItineraryDetails extends StatefulWidget {
 }
 
 class _ItineraryDetailsState extends State<ItineraryDetails> {
+  ValueNotifier<bool> isLoading = ValueNotifier<bool>(true);
   @override
   Widget build(BuildContext context) {
     final List<dynamic> arguments =
@@ -37,17 +38,32 @@ class _ItineraryDetailsState extends State<ItineraryDetails> {
         elevation: 0,
         backgroundColor: Colors.white,
         actions: [
-          ElevatedButton(
-              onPressed: () {
-                createPDF(itineraryPlace);
-              },
-              child: const Text('pdf')),
+          GestureDetector(
+            onTap: () {
+              createPDF(itineraryPlace);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: ValueListenableBuilder(
+                valueListenable: isLoading,
+                builder: (context, value, child) {
+                  if (!isLoading.value) {
+                    return const Row(
+                      children: [Text('Share'), Icon(MdiIcons.share)],
+                    );
+                  } else {
+                    return const Text('');
+                  }
+                },
+              ),
+            ),
+          ),
         ],
       ),
       body: FutureBuilder(
         future: Future.wait([
-          APIService.itineraryAll(model, categories, island)
-              .then((value) => {itineraryPlace = value}),
+          APIService.itineraryAll(model, categories, island).then(
+              (value) => {itineraryPlace = value, isLoading.value = false}),
           APIService.checkUserWishlist()
               .then((value) => {wishlistPlaceIdList.addAll(value)}),
         ]),
@@ -224,7 +240,9 @@ class _ItineraryDetailsState extends State<ItineraryDetails> {
                         GestureDetector(
                           onTap: () {
                             HapticFeedback.mediumImpact();
-                            setState(() {});
+                            setState(() {
+                              isLoading.value = true;
+                            });
                           },
                           child: Row(
                             children: [
