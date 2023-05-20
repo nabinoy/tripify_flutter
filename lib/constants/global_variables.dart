@@ -12,6 +12,7 @@ int tourOpPageSize = 6;
 double portBlairLat = 11.650475999232123;
 double portBlairLong = 92.73356876475748;
 double itineraryDayCount = 10.0;
+double maxRadius = 3000;
 
 
 

@@ -264,7 +264,8 @@ class _HotelScreenState extends State<HotelScreen> {
                       isEndLoading = 0;
                     }
                     return Container(
-                      margin: const EdgeInsets.only(left: 20, top: 20),
+                      margin:
+                          const EdgeInsets.only(left: 16, top: 20, right: 16),
                       height: 250,
                       child: ListView.builder(
                         controller: (isEndLoading == 0) ? null : controller,
@@ -423,7 +424,10 @@ class _HotelScreenState extends State<HotelScreen> {
                     );
                   }
                 } else {
-                  return const LoaderHotelCard();
+                  return const Padding(
+                    padding: EdgeInsets.only(right: 16.0),
+                    child: LoaderHotelCard(),
+                  );
                 }
               },
             ),

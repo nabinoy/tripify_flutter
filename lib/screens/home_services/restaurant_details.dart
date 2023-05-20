@@ -461,8 +461,8 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * .11,
+              const SizedBox(
+                height: 110,
               )
             ],
           ),

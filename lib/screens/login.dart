@@ -68,11 +68,11 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Expanded(
-            child: Column(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Column(
@@ -314,15 +314,15 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                 )
               ],
             ),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height / 3,
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/images/login_background.jpg'),
-                    fit: BoxFit.cover)),
-          )
-        ],
+            Container(
+              height: MediaQuery.of(context).size.height / 3,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/login_background.jpg'),
+                      fit: BoxFit.cover)),
+            )
+          ],
+        ),
       ),
     );
   }

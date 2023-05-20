@@ -146,7 +146,7 @@ class _PlaceState extends State<Place> {
     NearbyModel model = NearbyModel(
         lat: placeList.first.location.coordinates[1].toString(),
         long: placeList.first.location.coordinates[0].toString(),
-        maxRad: '3000');
+        maxRad: maxRadius.toString());
 
     for (var i = 0; i < placeList.first.timings.length; i++) {
       if (placeList.first.timings[i].openTime == "00:00" &&
@@ -1114,6 +1114,10 @@ class _PlaceState extends State<Place> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               RatingBar.builder(
+                                itemSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                10,
                                 initialRating: ru.rating.toDouble(),
                                 minRating: 1,
                                 direction: Axis.horizontal,
@@ -1210,9 +1214,13 @@ class _PlaceState extends State<Place> {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           RatingBar.builder(
+                                            itemSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                10,
                                             initialRating: ru.rating.toDouble(),
                                             minRating: 1,
                                             direction: Axis.horizontal,
@@ -1542,7 +1550,7 @@ class _PlaceState extends State<Place> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.32,
+                      height: 265,
                       child: PlaceRecommendationByPlace(placeList.first.sId))
                 ],
               ),

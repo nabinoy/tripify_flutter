@@ -128,52 +128,51 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, SearchRestaurant.routeName);
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * .65,
-                    margin: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.lightBlue.shade200.withOpacity(0.3),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(50),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, SearchRestaurant.routeName);
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.lightBlue.shade200.withOpacity(0.3),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(50),
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.search_outlined,
-                              color: Color.fromARGB(221, 55, 55, 55)),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical:
-                                    MediaQuery.of(context).size.height * .0145),
-                            height: MediaQuery.of(context).size.height * .06,
-                            child: const Text(
-                              'Search Restaurants',
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.black54),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.search_outlined,
+                                color: Color.fromARGB(221, 55, 55, 55)),
+                            const SizedBox(
+                              width: 5,
                             ),
-                          ),
-                        ],
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: MediaQuery.of(context).size.height *
+                                      .0145),
+                              width: MediaQuery.of(context).size.width * 0.48,
+                              child: const Text(
+                                'Search Restaurants',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black54),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(right: 16),
-                  child: MaterialButton(
+                  MaterialButton(
                     elevation: 0,
-                    height: 48,
                     minWidth: MediaQuery.of(context).size.width * .2,
                     onPressed: () {
                       Navigator.pushNamed(context, FilterRestaurant.routeName,
@@ -182,26 +181,32 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     color: Colors.lightBlue[600],
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50)),
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.filter_list_outlined,
                           size: 16,
                           color: Colors.white,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 4,
                         ),
-                        Text(
-                          'Filter',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w600),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical:
+                                  MediaQuery.of(context).size.height * .016),
+                          child: const Text(
+                            'Filter',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
+                          ),
                         )
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Container(
               margin: const EdgeInsets.only(left: 16, right: 16, top: 10),
@@ -307,7 +312,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       isEndLoading = 0;
                     }
                     return Container(
-                      margin: const EdgeInsets.only(left: 20, top: 20),
+                      margin:
+                          const EdgeInsets.only(left: 16, top: 20, right: 16),
                       height: 250,
                       child: ListView.builder(
                         controller: (isEndLoading == 0) ? null : controller,
@@ -458,7 +464,10 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     );
                   }
                 } else {
-                  return const LoaderHotelCard();
+                  return const Padding(
+                    padding: EdgeInsets.only(right: 16.0),
+                    child: LoaderHotelCard(),
+                  );
                 }
               },
             ),

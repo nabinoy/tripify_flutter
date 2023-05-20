@@ -716,6 +716,8 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               RatingBar.builder(
+                                itemSize:
+                                    MediaQuery.of(context).size.width / 10,
                                 initialRating: ru.rating.toDouble(),
                                 minRating: 1,
                                 direction: Axis.horizontal,
@@ -816,6 +818,10 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                                             MainAxisAlignment.spaceAround,
                                         children: [
                                           RatingBar.builder(
+                                            itemSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                10,
                                             initialRating: ru.rating.toDouble(),
                                             minRating: 1,
                                             direction: Axis.horizontal,
@@ -1142,8 +1148,8 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * .11,
+              const SizedBox(
+                height: 100,
               )
             ],
           ),

@@ -418,6 +418,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                   padding: const EdgeInsets.only(top: 16.0),
                   child: const Text(
                     'Recommendations for you',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -498,8 +499,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                         ),
                       )
                     : SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.32,
-                        child: PlaceRecommendationByUser(pa)),
+                        height: 265, child: PlaceRecommendationByUser(pa)),
               ],
             ),
             Padding(
