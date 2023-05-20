@@ -148,12 +148,12 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                     Icon(
                       Icons.location_pin,
                       size: 23,
-                      color: Colors.lightBlue[700],
+                      color: Colors.lightBlue[800],
                     ),
                     Text(
                       currentPlace,
                       style:
-                          TextStyle(color: Colors.lightBlue[700], fontSize: 14),
+                          TextStyle(color: Colors.lightBlue[800], fontSize: 14),
                     ),
                   ],
                 ),
@@ -239,7 +239,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                       Navigator.pushNamed(context, FilterPlace.routeName,
                           arguments: [c, ia, wishlistPlaceIdList]);
                     },
-                    color: Colors.lightBlue[600],
+                    color: Colors.lightBlue[700],
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50)),
                     child: const Row(
@@ -428,6 +428,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Container(
+                margin: const EdgeInsets.only(top: 16),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
