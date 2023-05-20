@@ -1,10 +1,8 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripify/screens/onboard.dart';
@@ -49,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Map<String, dynamic> decodedToken = JwtDecoder.decode(userValue);
       DateTime expiryTokenDate =
           DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] * 1000);
-      if (now.isAfter(expiryTokenDate)){
+      if (now.isAfter(expiryTokenDate)) {
         SharedService.setSharedLogOut();
         SharedService.setSessionExpire(true);
       }
@@ -79,31 +77,55 @@ class _SplashScreenState extends State<SplashScreen> {
               splashIconSize: 600,
               splash: Column(
                 children: [
-                  Container(
-                    height: 200,
-                    margin: const EdgeInsets.only(top: 100),
-                    child: Lottie.asset('assets/onboard/onboard_image1.json'),
-                  ),
-                  Container(
-                    width: 250.0,
-                    margin: const EdgeInsets.only(bottom: 120),
-                    child: TextLiquidFill(
-                      text: 'Tripify',
-                      waveColor: Colors.lightBlue,
-                      loadDuration: const Duration(seconds: 3),
-                      waveDuration: const Duration(seconds: 1),
-                      boxBackgroundColor: Colors.white,
-                      textStyle: const TextStyle(
-                        fontSize: 50.0,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                      ),
-                      boxHeight: 100.0,
+                  Animate(
+                    effects: [
+                      FadeEffect(duration: 1000.ms),
+                      ShimmerEffect(delay:800.ms,duration: 1500.ms),
+                      ScaleEffect(duration: 800.ms,curve: Curves.fastEaseInToSlowEaseOut)
+                    ],
+                    child: Container(
+                      height: 150,
+                      width: 250,
+                      margin: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.22),
+                      child: Image.asset('assets/images/tripify_logo.png'),
                     ),
                   ),
-                  const SpinKitThreeBounce(
-                    size: 25,
-                    color: Color(0xff01579b),
+                  Animate(
+                    effects: [
+                      FadeEffect(duration: 500.ms,delay: 1000.ms),
+                      SlideEffect(duration: 800.ms,curve: Curves.elasticOut)
+                    ],
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      child: Text(
+                        "Tripify\nAndaman",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          height: 1.2,
+                          color: Colors.lightBlue[800],
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Animate(
+                    effects: [
+                      FadeEffect(duration: 1000.ms,delay: 1000.ms),
+                      SlideEffect(duration: 800.ms,curve: Curves.decelerate)
+                    ],
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 7),
+                      child: const Text(
+                        "Dream it, Visit it",
+                        style: TextStyle(
+                          letterSpacing: 0.8,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

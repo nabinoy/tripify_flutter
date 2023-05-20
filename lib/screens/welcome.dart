@@ -99,7 +99,7 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height / 3,
-              child: Image.asset('assets/images/welcome_background.jpg'),),
+              child: Image.asset('assets/images/welcome_background.png'),),
             Column(
               children: <Widget>[
                 MaterialButton(
