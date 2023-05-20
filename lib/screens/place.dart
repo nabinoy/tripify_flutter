@@ -125,6 +125,9 @@ class _PlaceState extends State<Place> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     bool isTiming = true;
     GeoRange georange = GeoRange();
     ValueNotifier<bool> isListed = ValueNotifier<bool>(false);
@@ -2004,6 +2007,9 @@ class _PlaceCategoryState extends State<PlaceCategory> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(right: 8),
@@ -2115,6 +2121,9 @@ class ReviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     DateTime dateTime = DateTime.parse(review.date);
     return Column(
       children: [
@@ -2201,6 +2210,9 @@ class UserReviewWidget extends StatefulWidget {
 class _UserReviewWidgetState extends State<UserReviewWidget> {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     DateTime dateTime = DateTime.parse(widget.ru.date);
     return Column(
       children: [
@@ -2404,6 +2416,9 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return AlertDialog(
       title: const Text('Write a review'),
       shape: RoundedRectangleBorder(
@@ -2575,6 +2590,9 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     userRating = widget.ru.rating.toDouble();
     return AlertDialog(
       title: const Text('Edit review'),
@@ -2757,6 +2775,9 @@ class RatingErrorDialog extends StatefulWidget {
 class _RatingErrorDialogState extends State<RatingErrorDialog> {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return AlertDialog(
       title: const Text('Alert'),
       shape: RoundedRectangleBorder(

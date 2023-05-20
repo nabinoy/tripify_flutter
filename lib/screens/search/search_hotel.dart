@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:tripify/models/hotel_response_model.dart';
 import 'package:tripify/screens/home_services/hotel_details.dart';
@@ -55,6 +56,9 @@ class _SearchHotelState extends State<SearchHotel> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return Scaffold(
       appBar: AppBar(
         elevation: 1,

@@ -22,6 +22,9 @@ class _ItineraryDetailsState extends State<ItineraryDetails> {
   ValueNotifier<bool> isLoading = ValueNotifier<bool>(true);
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     final List<dynamic> arguments =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
 

@@ -27,6 +27,9 @@ class _WishlistState extends State<Wishlist> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     List<Places2> pd = [];
     List<String> wishlistPlaceIdList = [];
     String message = '';

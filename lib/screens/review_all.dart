@@ -61,6 +61,9 @@ class _ReviewAllState extends State<ReviewAll> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -491,6 +494,9 @@ class AllReviewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     DateTime dateTime = DateTime.parse(review[index].date);
     if (review.isEmpty) {
       return (const Text('data'));
@@ -599,6 +605,9 @@ class _FilterDialogState extends State<FilterDialog> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return AlertDialog(
       title: const Text('Filter'),
       shape: RoundedRectangleBorder(

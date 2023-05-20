@@ -18,6 +18,9 @@ class _IslandState extends State<Island> {
   List<CategoryAll> ca = [];
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     final List<dynamic> arguments =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
 

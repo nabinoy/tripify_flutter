@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -28,6 +29,9 @@ class _TransportServiceState extends State<TransportService>
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return Scaffold(
       appBar: AppBar(
         title: const Text(

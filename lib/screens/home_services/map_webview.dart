@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -71,6 +72,9 @@ class _ToiletMapWebViewState extends State<ToiletMapWebView> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return Scaffold(
       appBar: AppBar(
         title: const Text(

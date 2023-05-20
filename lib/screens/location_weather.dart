@@ -33,6 +33,9 @@ class _LocationWeatherState extends State<LocationWeather> {
       statusBarIconBrightness: Brightness.dark,
       statusBarBrightness: Brightness.light,
     ));
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return MaterialApp(
       title: appName,
       debugShowCheckedModeBanner: false,

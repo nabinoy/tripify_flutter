@@ -31,6 +31,9 @@ class _ItineraryPageState extends State<ItineraryPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     List<CategoryAll> c = [];
     List<IslandAll> ia = [];
     late LocationData currentLoc;

@@ -18,7 +18,7 @@ class OtpForm extends StatefulWidget {
 }
 
 class _OtpFormState extends State<OtpForm> {
-  int _seconds = 60; //600
+  int _seconds = 60;
   late Timer _timer;
   String otp = '';
   bool isTimeOut = false;
@@ -64,6 +64,9 @@ class _OtpFormState extends State<OtpForm> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     String email = ModalRoute.of(context)!.settings.arguments as String;
     final defaultPinTheme = PinTheme(
       width: 56,

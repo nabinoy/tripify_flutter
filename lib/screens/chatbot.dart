@@ -36,6 +36,9 @@ class _ChatBotState extends State<ChatBot> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     final nameNotifier = ValueNotifier<String>('');
 
     return Scaffold(

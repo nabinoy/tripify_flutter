@@ -62,6 +62,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
@@ -83,8 +86,10 @@ class _SplashScreenState extends State<SplashScreen> {
                       Animate(
                         effects: [
                           FadeEffect(duration: 1000.ms),
-                          ShimmerEffect(delay:800.ms,duration: 1500.ms),
-                          ScaleEffect(duration: 800.ms,curve: Curves.fastEaseInToSlowEaseOut)
+                          ShimmerEffect(delay: 800.ms, duration: 1500.ms),
+                          ScaleEffect(
+                              duration: 800.ms,
+                              curve: Curves.fastEaseInToSlowEaseOut)
                         ],
                         child: SizedBox(
                           height: 150,
@@ -94,8 +99,9 @@ class _SplashScreenState extends State<SplashScreen> {
                       ),
                       Animate(
                         effects: [
-                          FadeEffect(duration: 500.ms,delay: 1000.ms),
-                          SlideEffect(duration: 800.ms,curve: Curves.elasticOut)
+                          FadeEffect(duration: 500.ms, delay: 1000.ms),
+                          SlideEffect(
+                              duration: 800.ms, curve: Curves.elasticOut)
                         ],
                         child: Container(
                           margin: const EdgeInsets.only(top: 10),
@@ -113,8 +119,9 @@ class _SplashScreenState extends State<SplashScreen> {
                       ),
                       Animate(
                         effects: [
-                          FadeEffect(duration: 1000.ms,delay: 1000.ms),
-                          SlideEffect(duration: 800.ms,curve: Curves.decelerate)
+                          FadeEffect(duration: 1000.ms, delay: 1000.ms),
+                          SlideEffect(
+                              duration: 800.ms, curve: Curves.decelerate)
                         ],
                         child: Container(
                           margin: const EdgeInsets.only(top: 7),

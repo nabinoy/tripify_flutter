@@ -127,6 +127,9 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     double screenWidth = MediaQuery.of(context).size.width;
     double containerWidth = screenWidth / 2 - 25;
     double containerHeight = containerWidth * 0.60;
