@@ -79,7 +79,6 @@ class _PlaceRecommendationByUserState extends State<PlaceRecommendationByUser> {
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width / 1.4,
-                                height: MediaQuery.of(context).size.height * 0.32,
                                 margin: const EdgeInsets.fromLTRB(8, 8, 8, 16),
                                 decoration: BoxDecoration(
                                   boxShadow: [

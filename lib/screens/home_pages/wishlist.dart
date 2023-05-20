@@ -175,6 +175,8 @@ class _WishlistState extends State<Wishlist> {
                               itemCount: pd.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
                                   margin: const EdgeInsets.symmetric(
                                       vertical: 8.0, horizontal: 10),
                                   decoration: BoxDecoration(
@@ -191,11 +193,10 @@ class _WishlistState extends State<Wishlist> {
                                   ),
                                   width: double.infinity,
                                   child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin: const EdgeInsets.all(12),
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 12),
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(10.0),
@@ -230,9 +231,6 @@ class _WishlistState extends State<Wishlist> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          const SizedBox(
-                                            height: 15,
-                                          ),
                                           SizedBox(
                                             width: MediaQuery.of(context)
                                                     .size
