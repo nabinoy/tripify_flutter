@@ -267,16 +267,19 @@ class _HomepageState extends State<Homepage> {
           children: [
             Column(
               children: [
-                DrawerHeader(
-                  child: FutureBuilder(
-                    future: SharedService.getSharedLogin(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        return const DrawerItem();
-                      } else {
-                        return const LoadingScreen();
-                      }
-                    },
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  child: DrawerHeader(
+                    child: FutureBuilder(
+                      future: SharedService.getSharedLogin(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return const DrawerItem();
+                        } else {
+                          return const LoadingScreen();
+                        }
+                      },
+                    ),
                   ),
                 ),
                 Container(

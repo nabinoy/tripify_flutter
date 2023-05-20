@@ -92,7 +92,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(32, 20, 32, 0),
+                  padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -170,7 +170,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
@@ -200,7 +200,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),

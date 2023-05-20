@@ -35,41 +35,42 @@ class _EditPasswordState extends State<EditPassword> {
         ),
         body: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
             width: double.infinity,
             child: Column(
               children: <Widget>[
                 SizedBox(
-                  height: 90,
-                  width: 90,
-                  child: randomAvatar(SharedService.name, height: 70, width: 70)
-                ),
+                    height: 90,
+                    width: 90,
+                    child: randomAvatar(SharedService.name,
+                        height: 70, width: 70)),
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                      SharedService.name,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 18),
-                    ),
+                    SharedService.name,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 18),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                      SharedService.email,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 100, 100, 100)),
-                    ),
+                    SharedService.email,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 100, 100, 100)),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 const Column(
                   children: <Widget>[
                     Text(
-                          "Change password",
-                          style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold),
-                        ),
+                      "Change password",
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
                     SizedBox(
                       height: 14,
                     ),
@@ -82,90 +83,88 @@ class _EditPasswordState extends State<EditPassword> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16),
                         child: TextFormField(
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter password';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.text,
-                            obscureText: !_isVisible,
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isVisible = !_isVisible;
-                                  });
-                                },
-                                icon: _isVisible
-                                    ? const Icon(Icons.visibility)
-                                    : const Icon(Icons.visibility_off),
-                              ),
-                              hintText: 'Old password',
-                              hintStyle: const TextStyle(fontSize: 16),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(50),
-                                borderSide: const BorderSide(
-                                  width: 3,
-                                  color: Colors.black,
-                                  style: BorderStyle.solid,
-                                ),
-                              ),
-                              filled: true,
-                              contentPadding: const EdgeInsets.all(16),
-                              fillColor: Colors.white,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter password';
+                            }
+                            return null;
+                          },
+                          keyboardType: TextInputType.text,
+                          obscureText: !_isVisible,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isVisible = !_isVisible;
+                                });
+                              },
+                              icon: _isVisible
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off),
                             ),
-                            onChanged: (value) => setState(() {
-                              oldPassword = value;
-                            }),
+                            hintText: 'Old password',
+                            hintStyle: const TextStyle(fontSize: 16),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: const BorderSide(
+                                width: 3,
+                                color: Colors.black,
+                                style: BorderStyle.solid,
+                              ),
+                            ),
+                            filled: true,
+                            contentPadding: const EdgeInsets.all(16),
+                            fillColor: Colors.white,
                           ),
-                        
+                          onChanged: (value) => setState(() {
+                            oldPassword = value;
+                          }),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16),
                         child: TextFormField(
-                            onTap: () {
-                              isVisiblepw = true;
-                            },
-                            controller: pass,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter password';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.text,
-                            obscureText: !_isVisible,
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isVisible = !_isVisible;
-                                  });
-                                },
-                                icon: _isVisible
-                                    ? const Icon(Icons.visibility)
-                                    : const Icon(Icons.visibility_off),
-                              ),
-                              hintText: 'New password',
-                              hintStyle: const TextStyle(fontSize: 16),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(50),
-                                borderSide: const BorderSide(
-                                  width: 3,
-                                  color: Colors.black,
-                                  style: BorderStyle.solid,
-                                ),
-                              ),
-                              filled: true,
-                              contentPadding: const EdgeInsets.all(16),
-                              fillColor: Colors.white,
+                          onTap: () {
+                            isVisiblepw = true;
+                          },
+                          controller: pass,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter password';
+                            }
+                            return null;
+                          },
+                          keyboardType: TextInputType.text,
+                          obscureText: !_isVisible,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isVisible = !_isVisible;
+                                });
+                              },
+                              icon: _isVisible
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off),
                             ),
-                            onChanged: (value) => setState(() {
-                              password = value;
-                            }),
+                            hintText: 'New password',
+                            hintStyle: const TextStyle(fontSize: 16),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: const BorderSide(
+                                width: 3,
+                                color: Colors.black,
+                                style: BorderStyle.solid,
+                              ),
+                            ),
+                            filled: true,
+                            contentPadding: const EdgeInsets.all(16),
+                            fillColor: Colors.white,
                           ),
-                        
+                          onChanged: (value) => setState(() {
+                            password = value;
+                          }),
+                        ),
                       ),
                       Visibility(
                         visible: isVisiblepw,
@@ -178,7 +177,9 @@ class _EditPasswordState extends State<EditPassword> {
                             numericCharCount: 3,
                             specialCharCount: 1,
                             width: 400,
-                            height: 140,
+                            height: MediaQuery.of(context).size.height *
+                                0.17 *
+                                MediaQuery.of(context).textScaleFactor,
                             onSuccess: () {
                               isVisiblepw = false;
                             },
@@ -188,156 +189,151 @@ class _EditPasswordState extends State<EditPassword> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 32),
                         child: TextFormField(
-                            controller: confirmPass,
-                            onTap: () {
-                              isVisiblepw = false;
-                            },
-                            validator: (value) {
-                              if (value != pass.text &&
-                                  value != null &&
-                                  value.isNotEmpty) {
-                                return 'Password not matched';
-                              }
-                              if (value == null || value.isEmpty) {
-                                return 'Please confirm password';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.text,
-                            obscureText: !_isVisible,
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isVisible = !_isVisible;
-                                  });
-                                },
-                                icon: _isVisible
-                                    ? const Icon(Icons.visibility)
-                                    : const Icon(Icons.visibility_off),
-                              ),
-                              hintText: 'Confirm Password',
-                              hintStyle: const TextStyle(fontSize: 16),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(50),
-                                borderSide: const BorderSide(
-                                  width: 3,
-                                  color: Colors.black,
-                                  style: BorderStyle.solid,
-                                ),
-                              ),
-                              filled: true,
-                              contentPadding: const EdgeInsets.all(16),
-                              fillColor: Colors.white,
+                          controller: confirmPass,
+                          onTap: () {
+                            isVisiblepw = false;
+                          },
+                          validator: (value) {
+                            if (value != pass.text &&
+                                value != null &&
+                                value.isNotEmpty) {
+                              return 'Password not matched';
+                            }
+                            if (value == null || value.isEmpty) {
+                              return 'Please confirm password';
+                            }
+                            return null;
+                          },
+                          keyboardType: TextInputType.text,
+                          obscureText: !_isVisible,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isVisible = !_isVisible;
+                                });
+                              },
+                              icon: _isVisible
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off),
                             ),
+                            hintText: 'Confirm Password',
+                            hintStyle: const TextStyle(fontSize: 16),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: const BorderSide(
+                                width: 3,
+                                color: Colors.black,
+                                style: BorderStyle.solid,
+                              ),
+                            ),
+                            filled: true,
+                            contentPadding: const EdgeInsets.all(16),
+                            fillColor: Colors.white,
                           ),
-                        
+                        ),
                       ),
                       Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: MaterialButton(
-                              minWidth: double.infinity,
-                              height: 60,
-                              onPressed: () {
-                                FocusScopeNode currentFocus =
-                                    FocusScope.of(context);
-                                if (!currentFocus.hasPrimaryFocus) {
-                                  currentFocus.unfocus();
-                                }
-                                if (_formKey.currentState!.validate()) {
-                                  isLoading = true;
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: MaterialButton(
+                          minWidth: double.infinity,
+                          height: 60,
+                          onPressed: () {
+                            FocusScopeNode currentFocus =
+                                FocusScope.of(context);
+                            if (!currentFocus.hasPrimaryFocus) {
+                              currentFocus.unfocus();
+                            }
+                            if (_formKey.currentState!.validate()) {
+                              isLoading = true;
+                              setState(() {
+                                isApiCallProcess = true;
+                              });
+
+                              UpdatePasswordModel model = UpdatePasswordModel(
+                                  oldPassword: oldPassword, password: password);
+
+                              APIService.updatePassword(model).then(
+                                (response) {
                                   setState(() {
-                                    isApiCallProcess = true;
+                                    isApiCallProcess = false;
                                   });
 
-                                  UpdatePasswordModel model =
-                                      UpdatePasswordModel(
-                                          oldPassword: oldPassword,
-                                          password: password);
-
-                                  APIService.updatePassword(model).then(
-                                    (response) {
-                                      setState(() {
-                                        isApiCallProcess = false;
-                                      });
-
-                                      if (response['success'].toString() ==
-                                          'true') {
-                                        //SharedService.setUserName(name);
-                                        isLoading = false;
-                                        final snackBar = SnackBar(
-                                          width: double.infinity,
-                                          dismissDirection:
-                                              DismissDirection.down,
-                                          elevation: 0,
-                                          behavior: SnackBarBehavior.floating,
-                                          backgroundColor: Colors.transparent,
-                                          content: DefaultTextStyle(
-                                            style: const TextStyle(
-                                              fontFamily: fontRegular,
-                                            ),
-                                            child: AwesomeSnackbarContent(
-                                              title: 'Successful!',
-                                              message:
-                                                  'Successfully updated password.',
-                                              contentType: ContentType.success,
-                                            ),
-                                          ),
-                                        );
-                                        // ignore: use_build_context_synchronously
-                                        ScaffoldMessenger.of(context)
-                                          ..hideCurrentSnackBar()
-                                          ..showSnackBar(snackBar);
-                                        setState(() {});
-                                        Navigator.pop(context);
-                                      } else {
-                                        isLoading = false;
-                                        final snackBar = SnackBar(
-                                          width: double.infinity,
-                                          dismissDirection:
-                                              DismissDirection.down,
-                                          elevation: 0,
-                                          behavior: SnackBarBehavior.floating,
-                                          backgroundColor: Colors.transparent,
-                                          content: DefaultTextStyle(
-                                            style: const TextStyle(
-                                              fontFamily: fontRegular,
-                                            ),
-                                            child: AwesomeSnackbarContent(
-                                              title: 'Warning!',
-                                              message: response['message'],
-                                              contentType: ContentType.warning,
-                                            ),
-                                          ),
-                                        );
-                                        // ignore: use_build_context_synchronously
-                                        ScaffoldMessenger.of(context)
-                                          ..hideCurrentSnackBar()
-                                          ..showSnackBar(snackBar);
-                                      }
-                                    },
-                                  );
-                                }
-                              },
-                              color: Colors.lightBlue[800],
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: isLoading
-                                  ? const CircularProgressIndicator(
+                                  if (response['success'].toString() ==
+                                      'true') {
+                                    //SharedService.setUserName(name);
+                                    isLoading = false;
+                                    final snackBar = SnackBar(
+                                      width: double.infinity,
+                                      dismissDirection: DismissDirection.down,
+                                      elevation: 0,
+                                      behavior: SnackBarBehavior.floating,
+                                      backgroundColor: Colors.transparent,
+                                      content: DefaultTextStyle(
+                                        style: const TextStyle(
+                                          fontFamily: fontRegular,
+                                        ),
+                                        child: AwesomeSnackbarContent(
+                                          title: 'Successful!',
+                                          message:
+                                              'Successfully updated password.',
+                                          contentType: ContentType.success,
+                                        ),
+                                      ),
+                                    );
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(snackBar);
+                                    setState(() {});
+                                    Navigator.pop(context);
+                                  } else {
+                                    isLoading = false;
+                                    final snackBar = SnackBar(
+                                      width: double.infinity,
+                                      dismissDirection: DismissDirection.down,
+                                      elevation: 0,
+                                      behavior: SnackBarBehavior.floating,
+                                      backgroundColor: Colors.transparent,
+                                      content: DefaultTextStyle(
+                                        style: const TextStyle(
+                                          fontFamily: fontRegular,
+                                        ),
+                                        child: AwesomeSnackbarContent(
+                                          title: 'Warning!',
+                                          message: response['message'],
+                                          contentType: ContentType.warning,
+                                        ),
+                                      ),
+                                    );
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(snackBar);
+                                  }
+                                },
+                              );
+                            }
+                          },
+                          color: Colors.lightBlue[800],
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50)),
+                          child: isLoading
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : const Text(
+                                  "Change password",
+                                  style: TextStyle(
                                       color: Colors.white,
-                                    )
-                                  : const Text(
-                                      "Change password",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18),
-                                    ),
-                            ),
-                          )
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18),
+                                ),
+                        ),
+                      )
                     ],
                   ),
                 ),

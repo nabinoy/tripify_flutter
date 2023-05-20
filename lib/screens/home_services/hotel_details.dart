@@ -87,7 +87,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
         centerTitle: true,
         title: Text(
           hotel.name,
-          style: const TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         actions: [
           GestureDetector(
@@ -642,47 +642,50 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Column(
                             children: [
-                              Column(
-                                children: [
-                                  const Text(
-                                    'Check-in Time',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                child: const Text(
+                                  'Check-in Time',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    hotel.checkinTime,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                              const SizedBox(width: 30),
-                              Column(
-                                children: [
-                                  const Text(
-                                    'Check-out Time',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                              const SizedBox(height: 4),
+                              Text(
+                                hotel.checkinTime,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                child: const Text(
+                                  'Check-out Time',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    hotel.checkoutTime,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                hotel.checkoutTime,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
                               ),
                             ],
                           ),

@@ -649,6 +649,9 @@ class _HotelScreenState extends State<HotelScreen> {
                 }
               },
             ),
+            const SizedBox(
+              height: 10,
+            )
           ],
         ));
   }
