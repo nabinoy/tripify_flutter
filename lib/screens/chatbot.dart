@@ -55,7 +55,7 @@ class _ChatBotState extends State<ChatBot> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Tripy',
+                  'Tripmate',
                   style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
                 ),
                 Text(
