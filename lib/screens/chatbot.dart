@@ -55,7 +55,7 @@ class _ChatBotState extends State<ChatBot> {
               children: [
                 Text(
                   'Tripy',
-                  style: TextStyle(fontSize: 16.0),
+                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
                 ),
                 Text(
                   'Personalized ML assistant',

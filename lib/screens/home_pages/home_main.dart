@@ -22,8 +22,10 @@ import 'package:tripify/screens/island.dart';
 import 'package:tripify/screens/itinerary/itinerary_page.dart';
 import 'package:tripify/screens/location_weather.dart';
 import 'package:tripify/screens/home_services/map_webview.dart';
+import 'package:tripify/screens/login.dart';
 import 'package:tripify/screens/place.dart';
 import 'package:tripify/screens/search/search_place.dart';
+import 'package:tripify/screens/signup.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:tripify/services/current_location.dart';
 import 'package:tripify/services/geocoding.dart';
@@ -406,27 +408,96 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                   ),
               ],
             ),
-            (SharedService.id == '')
-                ? const SizedBox(
-                    height: 2,
-                  )
-                : Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: const Text(
-                          'Recommendations for you',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      PlaceRecommendationByUser(pa),
-                    ],
+            Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: const Text(
+                    'Recommendations for you',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+                ),
+                (SharedService.id == '')
+                    ? Container(
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.2,
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              child: Lottie.asset(
+                                  'assets/lottie/login_wishlist.json',
+                                  frameRate: FrameRate.max),
+                            ),
+                            const SizedBox(height: 16),
+                            const Text(
+                              "Unlock your dream destinations! Sign up or log in now to discover personalized place recommendations based on your interests!",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                MaterialButton(
+                                  minWidth:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  height: 40,
+                                  onPressed: () {
+                                    HapticFeedback.mediumImpact();
+                                    Navigator.pushNamed(
+                                        context, LoginPage.routeName);
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
+                                          width: 2,
+                                          color:
+                                              Color.fromRGBO(2, 119, 189, 1)),
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: const Text(
+                                    "Login",
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(2, 119, 189, 1),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16),
+                                  ),
+                                ),
+                                MaterialButton(
+                                  minWidth:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  height: 40,
+                                  onPressed: () {
+                                    HapticFeedback.mediumImpact();
+                                    Navigator.pushNamed(
+                                        context, SignupPage.routeName);
+                                  },
+                                  color: Colors.lightBlue[800],
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: const Text(
+                                    "Sign up",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    : PlaceRecommendationByUser(pa),
+              ],
+            ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Container(
                 margin: const EdgeInsets.only(top: 16),
                 padding: const EdgeInsets.all(16),
