@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:app_settings/app_settings.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -65,34 +66,50 @@ class _HomepageState extends State<Homepage> {
     });
   }
 
+  Future showDialogLocationAccess() {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(
+          'Alert',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        content: const Text(
+          "Please enable location access for this app from your device settings. This will allow us to provide you with personalized location-based features and services.",
+          textAlign: TextAlign.center,
+        ),
+        actions: <Widget>[
+          MaterialButton(
+            minWidth: double.infinity,
+            elevation: 0,
+            color: Colors.lightBlue[800],
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+            onPressed: () {
+              AppSettings.openAppSettings();
+              Navigator.of(context).pop();
+            },
+            child: const Text(
+              'Open settings',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void checkLocationAccess() async {
     PermissionStatus permissionGranted;
     Location loc = Location();
 
     permissionGranted = await loc.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
-      final snackBar = SnackBar(
-        width: double.infinity,
-        dismissDirection: DismissDirection.down,
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: DefaultTextStyle(
-          style: const TextStyle(
-            fontFamily: fontRegular,
-          ),
-          child: AwesomeSnackbarContent(
-            title: 'Alert!',
-            message:
-                'Please enable location access for this app from your device settings. This will allow us to provide you with personalized location-based features and services.',
-            contentType: ContentType.warning,
-          ),
-        ),
-      );
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(snackBar);
+      showDialogLocationAccess();
     }
   }
 
