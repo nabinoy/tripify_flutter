@@ -144,12 +144,6 @@ class _HelplineState extends State<Helpline> {
                     ],
                   ),
                 );
-                // return ListTile(
-                //   title: Text(helpline[index].name),
-                //   leading: const Icon(Icons.call),
-                //   subtitle: Text(helpline[index].phone),
-                //   trailing: const Icon(Icons.arrow_forward_ios),
-                // );
               },
             );
           },

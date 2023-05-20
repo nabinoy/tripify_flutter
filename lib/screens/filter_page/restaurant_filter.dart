@@ -273,7 +273,6 @@ class _FilterRestaurantState extends State<FilterRestaurant> {
 
                                         // ignore: use_build_context_synchronously
                                         Navigator.pop(context);
-                                        // HapticFeedback.mediumImpact();
                                       },
                                       color: Colors.lightBlue[800],
                                       elevation: 0,

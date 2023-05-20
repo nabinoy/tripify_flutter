@@ -204,7 +204,6 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                 ),
               ),
 
-              // description
               Container(
                 margin: const EdgeInsets.only(
                     left: 20, right: 20, top: 25, bottom: 10),
@@ -1160,7 +1159,6 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
             child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                // height: 50,
                 decoration: const BoxDecoration(
                   boxShadow: [
                     BoxShadow(

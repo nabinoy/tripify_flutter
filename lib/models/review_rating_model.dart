@@ -29,7 +29,6 @@ class ReviewRatings {
       reviews: (json['reviews'] as List<dynamic>)
           .map((e) => Reviews2.fromJson(e))
           .toList(),
-// reviews : (json['reviews'] != null ? Reviews2.fromJson(json['reviews']) : null)!,
       oneCount: json['oneCount'],
       twoCount: json['twoCount'],
       threeCount: json['threeCount'],

@@ -246,9 +246,6 @@ class _SearchPlaceState extends State<SearchPlace> {
                         ),
                       ),
                     );
-                    // return ListTile(
-                    //   title: Text(pd[index].name),
-                    // );
                   },
                 ),
     );

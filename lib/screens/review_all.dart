@@ -403,7 +403,7 @@ class ReviewCategories extends SliverPersistentHeaderDelegate {
                 ),
               ),
             ),
-            SizedBox(width: screenWidth * 0.03), // add a spacer
+            SizedBox(width: screenWidth * 0.03),
             MaterialButton(
               onPressed: () {
                 onButtonPressed(1);
@@ -423,7 +423,7 @@ class ReviewCategories extends SliverPersistentHeaderDelegate {
                 ),
               ),
             ),
-            SizedBox(width: screenWidth * 0.03), // add a spacer
+            SizedBox(width: screenWidth * 0.03),
             MaterialButton(
               enableFeedback: false,
               onPressed: () {
@@ -444,7 +444,7 @@ class ReviewCategories extends SliverPersistentHeaderDelegate {
                 ),
               ),
             ),
-            SizedBox(width: screenWidth * 0.03), // add a spacer
+            SizedBox(width: screenWidth * 0.03),
             MaterialButton(
               onPressed: () {
                 onButtonPressed(3);

@@ -420,7 +420,6 @@ class _PlaceState extends State<Place> {
                         color: Color(
                                 (math.Random().nextDouble() * 0xCCCCCC).toInt())
                             .withOpacity(0.2),
-                        //color: const Color.fromARGB(255, 233, 238, 240),
                         child: ListTile(
                           title: Text(
                             item,

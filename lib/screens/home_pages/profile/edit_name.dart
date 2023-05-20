@@ -33,7 +33,6 @@ class _EditNameState extends State<EditName> {
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-            //height: MediaQuery.of(context).size.height - 20,
             width: double.infinity,
             child: Column(
               children: <Widget>[

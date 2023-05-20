@@ -1013,7 +1013,6 @@ class APIService {
 
       url = Uri.https(Config.apiURL, Config.restaurantAllAPI, queryParameters);
     }
-    //final queryParameters = {'island': sId,'isVeg':isVeg};
     var response = await client.get(
       url,
       headers: requestHeaders,
@@ -1032,7 +1031,6 @@ class APIService {
       'Accept': 'application/json',
     };
 
-    //final queryParameters = {'category': categoryId, 'island': islandID};
     var url = Uri.https(Config.apiURL, Config.placeAllAPI);
 
     var response = await client.get(

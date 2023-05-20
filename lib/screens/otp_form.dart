@@ -178,9 +178,7 @@ class _OtpFormState extends State<OtpForm> {
                           content: Text(
                             response['message'],
                             style: const TextStyle(
-                              fontSize: 14,
-                              fontFamily: fontRegular
-                            ),
+                                fontSize: 14, fontFamily: fontRegular),
                             textAlign: TextAlign.center,
                           ),
                           padding: const EdgeInsets.symmetric(
@@ -226,9 +224,6 @@ class _OtpFormState extends State<OtpForm> {
 
                           APIService.regenerateOTP(model).then(
                             (response) {
-                              // setState(() {
-                              //   isApiCallProcess = false;
-                              // });
                               if (response
                                   .contains('Successfully Resend OTP')) {
                                 ScaffoldMessenger.of(context)

@@ -7,8 +7,6 @@ import 'package:lottie/lottie.dart';
 import 'package:tripify/services/api_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-//late StreamSubscription<bool> keyboardSubscription;
-
 Duration duration = const Duration();
 Duration position = const Duration();
 bool isPlaying = false;

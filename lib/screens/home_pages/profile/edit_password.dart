@@ -263,7 +263,6 @@ class _EditPasswordState extends State<EditPassword> {
 
                                   if (response['success'].toString() ==
                                       'true') {
-                                    //SharedService.setUserName(name);
                                     isLoading = false;
                                     final snackBar = SnackBar(
                                       width: double.infinity,

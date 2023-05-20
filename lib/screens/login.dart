@@ -26,7 +26,6 @@ class LoginPage extends StatelessWidget {
           onPressed: () {
             HapticFeedback.mediumImpact();
             Navigator.pop(context);
-            //SystemNavigator.pop();
           },
           icon: const Icon(
             Icons.arrow_back_ios,

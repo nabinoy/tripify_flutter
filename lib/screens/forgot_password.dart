@@ -49,7 +49,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             width: double.infinity,
             height: MediaQuery.of(context).size.height - 90,
             padding: const EdgeInsets.fromLTRB(32, 40, 32, 80),
-            //padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[

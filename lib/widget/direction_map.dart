@@ -61,7 +61,7 @@ class _DirectionMapState extends State<DirectionMap> {
 
   bool isWithinRadius(double currentLat, double currentLng, double centerLat,
       double centerLng) {
-    const int earthRadius = 6371; // in kilometers
+    const int earthRadius = 6371;
     double latDistance = math.pi / 180 * (centerLat - currentLat);
     double lngDistance = math.pi / 180 * (centerLng - currentLng);
     double a = math.sin(latDistance / 2) * math.sin(latDistance / 2) +
