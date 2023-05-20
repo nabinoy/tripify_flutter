@@ -87,7 +87,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
         centerTitle: true,
         title: Text(
           hotel.name,
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
         ),
         actions: [
           GestureDetector(

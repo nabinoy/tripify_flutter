@@ -65,7 +65,7 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
         centerTitle: true,
         title: Text(
           restaurant.name,
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         actions: [
           GestureDetector(

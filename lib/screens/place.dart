@@ -758,7 +758,7 @@ class _PlaceState extends State<Place> {
                                   children: [
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
-                                          0.7,
+                                          0.5,
                                       child: Text(
                                         entryCost.category,
                                         style: const TextStyle(

@@ -98,13 +98,27 @@ class _PlaceToImageState extends State<PlaceToImage> {
                   fontSize: 12),
             ),
             const SizedBox(height: 6),
-            Text(
-              appName,
-              style: TextStyle(
-                color: Colors.lightBlue[800],
-                fontWeight: FontWeight.w600,
-                fontFamily: fontRegular,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 20,
+                  width: 27,
+                  child: Image.asset('assets/images/tripify_logo.png'),
+                ),
+                const SizedBox(
+                  width: 4,
+                ),
+                Text(
+                  appName,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: Colors.lightBlue[800],
+                    fontWeight: FontWeight.w600,
+                    fontFamily: fontRegular,
+                  ),
+                ),
+              ],
             ),
           ],
         ));
@@ -202,13 +216,27 @@ class _HotelToImageState extends State<HotelToImage> {
                   fontSize: 12),
             ),
             const SizedBox(height: 6),
-            Text(
-              appName,
-              style: TextStyle(
-                color: Colors.lightBlue[800],
-                fontWeight: FontWeight.w600,
-                fontFamily: fontRegular,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 20,
+                  width: 27,
+                  child: Image.asset('assets/images/tripify_logo.png'),
+                ),
+                const SizedBox(
+                  width: 4,
+                ),
+                Text(
+                  appName,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: Colors.lightBlue[800],
+                    fontWeight: FontWeight.w600,
+                    fontFamily: fontRegular,
+                  ),
+                ),
+              ],
             ),
           ],
         ));
@@ -313,13 +341,27 @@ class _RestaurantToImageState extends State<RestaurantToImage> {
                   fontSize: 12),
             ),
             const SizedBox(height: 6),
-            Text(
-              appName,
-              style: TextStyle(
-                color: Colors.lightBlue[800],
-                fontWeight: FontWeight.w600,
-                fontFamily: fontRegular,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 20,
+                  width: 27,
+                  child: Image.asset('assets/images/tripify_logo.png'),
+                ),
+                const SizedBox(
+                  width: 4,
+                ),
+                Text(
+                  appName,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: Colors.lightBlue[800],
+                    fontWeight: FontWeight.w600,
+                    fontFamily: fontRegular,
+                  ),
+                ),
+              ],
             ),
           ],
         ));
