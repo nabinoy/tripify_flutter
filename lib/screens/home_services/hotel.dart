@@ -43,7 +43,7 @@ class _HotelScreenState extends State<HotelScreen> {
     NearbyModel model = NearbyModel(
         lat: currentLocation.latitude!.toString(),
         long: currentLocation.longitude!.toString(),
-        maxRad: '3000');
+        maxRad: maxRadius.toString());
     dataFuture = APIService.hotelCount().then((value) async => {
           hotelCount = value,
           await APIService.hotelAll().then((value) => {hd = value})

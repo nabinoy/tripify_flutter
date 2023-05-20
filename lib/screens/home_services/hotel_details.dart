@@ -1456,13 +1456,10 @@ class WriteReviewDialog extends StatefulWidget {
   const WriteReviewDialog(this.rating, {Key? key}) : super(key: key);
 
   @override
-  // ignore: no_logic_in_create_state
-  State<WriteReviewDialog> createState() => _WriteReviewDialogState(rating);
+  State<WriteReviewDialog> createState() => _WriteReviewDialogState();
 }
 
 class _WriteReviewDialogState extends State<WriteReviewDialog> {
-  final double rating;
-  _WriteReviewDialogState(this.rating);
   final TextEditingController _controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -1482,26 +1479,26 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
                     'Your rating: ',
                     style: TextStyle(fontSize: 14),
                   ),
                   const SizedBox(
-                    width: 30,
+                    width: 50,
                   ),
                   Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       RatingBar.builder(
-                        initialRating: rating,
+                        initialRating: widget.rating,
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: false,
                         itemCount: 5,
                         itemSize: 18.0,
                         itemPadding:
-                            const EdgeInsets.symmetric(horizontal: 6.0),
+                            const EdgeInsets.symmetric(horizontal: 2.0),
                         itemBuilder: (context, _) => const Icon(
                           Icons.star,
                           color: Colors.blue,
@@ -1556,7 +1553,6 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
         ),
         MaterialButton(
           onPressed: () {
-            //Navigator.of(context).pop();
             isLoading = true;
             FocusScopeNode currentFocus = FocusScope.of(context);
             if (!currentFocus.hasPrimaryFocus) {
@@ -1565,7 +1561,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
             if (_formKey.currentState!.validate()) {
               UserHotelReviewModel model = UserHotelReviewModel(
                   hotelId: currentHotel.sId,
-                  rating: rating.toInt(),
+                  rating: widget.rating.toInt(),
                   comment: _controller.text);
               APIService.userHotelReview(model).then(
                 (response) {
@@ -1662,16 +1658,16 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
                     'Give rating: ',
                     style: TextStyle(fontSize: 14),
                   ),
                   const SizedBox(
-                    width: 30,
+                    width: 50,
                   ),
                   Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       RatingBar.builder(
                         initialRating: widget.ru.rating.toDouble(),
@@ -1681,7 +1677,7 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
                         itemCount: 5,
                         itemSize: 18.0,
                         itemPadding:
-                            const EdgeInsets.symmetric(horizontal: 6.0),
+                            const EdgeInsets.symmetric(horizontal: 2.0),
                         itemBuilder: (context, _) => const Icon(
                           Icons.star,
                           color: Colors.blue,
@@ -1698,7 +1694,6 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
                 height: 14,
               ),
               TextFormField(
-                //controller: _controller,
                 initialValue: widget.ru.comment,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -1742,7 +1737,6 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
         ),
         MaterialButton(
           onPressed: () {
-            //Navigator.of(context).pop();
             FocusScopeNode currentFocus = FocusScope.of(context);
             if (!currentFocus.hasPrimaryFocus) {
               currentFocus.unfocus();

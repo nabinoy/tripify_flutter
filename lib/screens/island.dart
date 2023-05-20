@@ -114,7 +114,7 @@ class _IslandState extends State<Island> {
                             height: 5,
                           ),
                           SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.32,
+                              height: 265,
                               child:
                                   PlaceHorizontal(item.sId, islandDetails.sId)),
                         ],

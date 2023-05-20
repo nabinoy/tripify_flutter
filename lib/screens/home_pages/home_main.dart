@@ -9,6 +9,7 @@ import 'package:lottie/lottie.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/loader/loader_home_main.dart';
 import 'package:tripify/models/home_main_model.dart';
 import 'package:tripify/models/nearby_request_model.dart';
@@ -105,7 +106,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
     NearbyModel model = NearbyModel(
         lat: currentLocation.latitude!.toString(),
         long: currentLocation.longitude!.toString(),
-        maxRad: '5000');
+        maxRad: maxRadius.toString());
     dataNearby =
         APIService.nearbyPlace(model).then((value) => {nearbyPd = value});
     locationSubscription = location.onLocationChanged.listen((value) {

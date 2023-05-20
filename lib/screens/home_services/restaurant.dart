@@ -43,7 +43,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     NearbyModel model = NearbyModel(
         lat: currentLocation.latitude!.toString(),
         long: currentLocation.longitude!.toString(),
-        maxRad: '3000');
+        maxRad: maxRadius.toString());
 
     dataFuture = APIService.restaurantCount().then((value) async => {
           restaurantCount = value,

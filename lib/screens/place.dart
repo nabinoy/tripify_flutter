@@ -1114,10 +1114,8 @@ class _PlaceState extends State<Place> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               RatingBar.builder(
-                                itemSize: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                10,
+                                itemSize:
+                                    MediaQuery.of(context).size.width / 10,
                                 initialRating: ru.rating.toDouble(),
                                 minRating: 1,
                                 direction: Axis.horizontal,
@@ -2420,33 +2418,26 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
                     'Your rating: ',
                     style: TextStyle(fontSize: 14),
                   ),
-                  const SizedBox(
-                    width: 30,
-                  ),
-                  Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      RatingBar.builder(
-                        initialRating: widget.rating,
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: false,
-                        itemCount: 5,
-                        itemSize: 18.0,
-                        itemPadding:
-                            const EdgeInsets.symmetric(horizontal: 6.0),
-                        itemBuilder: (context, _) => const Icon(
-                          Icons.star,
-                          color: Colors.blue,
-                        ),
-                        onRatingUpdate: (rating) {},
-                      ),
-                    ],
+                  const SizedBox(width: 50),
+                  RatingBar.builder(
+                    initialRating: widget.rating,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: false,
+                    itemCount: 5,
+                    itemSize: 18.0,
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                    itemBuilder: (context, _) => const Icon(
+                      Icons.star,
+                      color: Colors.blue,
+                    ),
+                    onRatingUpdate: (rating) {},
                   ),
                 ],
               ),
@@ -2599,13 +2590,14 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
                     'Give rating: ',
                     style: TextStyle(fontSize: 14),
                   ),
                   const SizedBox(
-                    width: 30,
+                    width: 50,
                   ),
                   Row(
                     children: [
@@ -2617,7 +2609,7 @@ class _EditReviewDialogState extends State<EditReviewDialog> {
                         itemCount: 5,
                         itemSize: 18.0,
                         itemPadding:
-                            const EdgeInsets.symmetric(horizontal: 6.0),
+                            const EdgeInsets.symmetric(horizontal: 2.0),
                         itemBuilder: (context, _) => const Icon(
                           Icons.star,
                           color: Colors.blue,
