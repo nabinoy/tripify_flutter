@@ -218,8 +218,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                             padding: EdgeInsets.symmetric(
                                 vertical:
                                     MediaQuery.of(context).size.height * .0143),
-                            height: 50,
-                            width: MediaQuery.of(context).size.width * .5,
+                            width: MediaQuery.of(context).size.width * .48,
                             child: const Text(
                               'Search Places',
                               style: TextStyle(
@@ -235,7 +234,6 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                   margin: const EdgeInsets.only(bottom: 30),
                   child: MaterialButton(
                     elevation: 0,
-                    height: 48,
                     minWidth: MediaQuery.of(context).size.width * .2,
                     onPressed: () {
                       Navigator.pushNamed(context, FilterPlace.routeName,
@@ -244,20 +242,26 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                     color: Colors.lightBlue[700],
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50)),
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.filter_list_outlined,
                           size: 16,
                           color: Colors.white,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 4,
                         ),
-                        Text(
-                          'Filter',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w600),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical:
+                                  MediaQuery.of(context).size.height * .0165),
+                          child: const Text(
+                            'Filter',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
+                          ),
                         )
                       ],
                     ),
