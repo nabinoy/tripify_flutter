@@ -3,6 +3,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:random_avatar/random_avatar.dart';
 import 'package:tripify/constants/global_variables.dart';
@@ -64,11 +65,44 @@ class _HomepageState extends State<Homepage> {
     });
   }
 
+  void checkLocationAccess() async {
+    PermissionStatus permissionGranted;
+    Location loc = Location();
+
+    permissionGranted = await loc.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      final snackBar = SnackBar(
+        width: double.infinity,
+        dismissDirection: DismissDirection.down,
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: DefaultTextStyle(
+          style: const TextStyle(
+            fontFamily: fontRegular,
+          ),
+          child: AwesomeSnackbarContent(
+            title: 'Alert!',
+            message:
+                'Please enable location access for this app from your device settings. This will allow us to provide you with personalized location-based features and services.',
+            contentType: ContentType.warning,
+          ),
+        ),
+      );
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     SharedService.getSharedLogin();
     bool flag = false;
+
+    checkLocationAccess();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (await SharedService.getSessionExpire() == true) {
         SharedService.setSessionExpire(false);

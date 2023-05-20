@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
+import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/models/otp_request_model.dart';
 import 'package:tripify/screens/home.dart';
 import 'package:tripify/services/api_service.dart';
@@ -168,15 +169,18 @@ class _OtpFormState extends State<OtpForm> {
                         isLoading = false;
                         SharedService.setSharedHomeAfter(true);
                         Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      Home.routeName,
-                                      (route) => false,
-                                    );
+                          context,
+                          Home.routeName,
+                          (route) => false,
+                        );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
                             response['message'],
-                            style: const TextStyle(fontSize: 14),
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontFamily: fontRegular
+                            ),
                             textAlign: TextAlign.center,
                           ),
                           padding: const EdgeInsets.symmetric(

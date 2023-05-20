@@ -338,7 +338,6 @@ class _FilterPlaceState extends State<FilterPlace> {
 
                                             // ignore: use_build_context_synchronously
                                             Navigator.pop(context);
-                                            // HapticFeedback.mediumImpact();
                                           },
                                           color: Colors.lightBlue[800],
                                           elevation: 0,
@@ -448,7 +447,6 @@ class _FilterPlaceState extends State<FilterPlace> {
                                 ]);
                           },
                           child: Container(
-                            //width: MediaQuery.of(context).size.width / 1.4,
                             margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                             decoration: BoxDecoration(
                               boxShadow: [
