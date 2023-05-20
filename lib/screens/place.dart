@@ -56,17 +56,16 @@ class PlaceCategoryTop extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-      height: 45,
       color: Colors.white,
       child: PlaceCategory(ratingsAverage),
     );
   }
 
   @override
-  double get maxExtent => 45;
+  double get maxExtent => 55;
 
   @override
-  double get minExtent => 45;
+  double get minExtent => 55;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
@@ -1614,6 +1613,8 @@ class _PlaceState extends State<Place> {
                                       arguments: [widget]);
                                 },
                                 child: Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
                                   margin: const EdgeInsets.symmetric(
                                       vertical: 8.0, horizontal: 16),
                                   decoration: BoxDecoration(
@@ -1630,11 +1631,10 @@ class _PlaceState extends State<Place> {
                                   ),
                                   width: double.infinity,
                                   child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin: const EdgeInsets.all(12),
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 12),
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(10.0),
@@ -1667,9 +1667,6 @@ class _PlaceState extends State<Place> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          const SizedBox(
-                                            height: 15,
-                                          ),
                                           SizedBox(
                                             width: MediaQuery.of(context)
                                                     .size
@@ -1841,6 +1838,8 @@ class _PlaceState extends State<Place> {
                                       arguments: [widget]);
                                 },
                                 child: Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
                                   margin: const EdgeInsets.symmetric(
                                       vertical: 8.0, horizontal: 16),
                                   decoration: BoxDecoration(
@@ -1857,11 +1856,10 @@ class _PlaceState extends State<Place> {
                                   ),
                                   width: double.infinity,
                                   child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin: const EdgeInsets.all(12),
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 12),
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(10.0),
@@ -1894,9 +1892,6 @@ class _PlaceState extends State<Place> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          const SizedBox(
-                                            height: 15,
-                                          ),
                                           SizedBox(
                                             width: MediaQuery.of(context)
                                                     .size

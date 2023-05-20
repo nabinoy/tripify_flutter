@@ -255,7 +255,7 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                         Container(
                           padding: EdgeInsets.symmetric(
                               vertical:
-                                  MediaQuery.of(context).size.height * .0165),
+                                  MediaQuery.of(context).size.height * .016),
                           child: const Text(
                             'Filter',
                             style: TextStyle(
@@ -648,6 +648,8 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                                         ]);
                                   },
                                   child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12),
                                     margin: const EdgeInsets.only(
                                       top: 8.0,
                                     ),
@@ -665,11 +667,10 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                                     ),
                                     width: double.infinity,
                                     child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
                                       children: [
                                         Container(
-                                          margin: const EdgeInsets.all(12),
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 12),
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
@@ -702,9 +703,6 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            const SizedBox(
-                                              height: 15,
-                                            ),
                                             SizedBox(
                                               width: MediaQuery.of(context)
                                                       .size

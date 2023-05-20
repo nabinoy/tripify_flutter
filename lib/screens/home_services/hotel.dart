@@ -151,7 +151,6 @@ class _HotelScreenState extends State<HotelScreen> {
                         padding: EdgeInsets.symmetric(
                             vertical:
                                 MediaQuery.of(context).size.height * .0145),
-                        height: MediaQuery.of(context).size.height * .06,
                         child: const Text(
                           'Search Hotels',
                           style: TextStyle(fontSize: 16, color: Colors.black54),
@@ -487,6 +486,8 @@ class _HotelScreenState extends State<HotelScreen> {
                                     arguments: [widget]);
                               },
                               child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
                                 margin: const EdgeInsets.symmetric(
                                     vertical: 8.0, horizontal: 16),
                                 decoration: BoxDecoration(
@@ -503,10 +504,10 @@ class _HotelScreenState extends State<HotelScreen> {
                                 ),
                                 width: double.infinity,
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      margin: const EdgeInsets.all(12),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 12),
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
@@ -539,9 +540,6 @@ class _HotelScreenState extends State<HotelScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
                                         SizedBox(
                                           width: MediaQuery.of(context)
                                                   .size
