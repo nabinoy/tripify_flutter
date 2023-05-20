@@ -142,7 +142,6 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                         padding: EdgeInsets.symmetric(
                             vertical:
                                 MediaQuery.of(context).size.height * .0145),
-                        height: MediaQuery.of(context).size.height * .06,
                         child: const Text(
                           'Search Tour operators',
                           style: TextStyle(fontSize: 16, color: Colors.black54),
@@ -266,8 +265,6 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                         ),
                                         const SizedBox(height: 10),
                                         Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
                                           children: [
                                             const Icon(Icons.location_on,
                                                 color: Colors.blue, size: 18),
@@ -294,120 +291,157 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                         ),
                                         const SizedBox(height: 10),
                                         Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             const Icon(Icons.person,
                                                 color: Colors.lightBlue,
                                                 size: 18),
-                                            const SizedBox(width: 5),
-                                            Text(
-                                              tourOp[index].contact.name,
-                                              style: TextStyle(
-                                                color: Colors.grey[800],
-                                                fontSize: 14,
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.76,
+                                              child: Text(
+                                                tourOp[index].contact.name,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  color: Colors.grey[800],
+                                                  fontSize: 14,
+                                                ),
                                               ),
                                             ),
                                           ],
                                         ),
                                         const SizedBox(height: 5),
                                         Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             const Icon(Icons.phone,
                                                 color: Colors.green, size: 18),
-                                            const SizedBox(width: 5),
-                                            Text(
-                                              tourOp[index].contact.phone,
-                                              style: TextStyle(
-                                                color: Colors.grey[800],
-                                                fontSize: 14,
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.76,
+                                              child: Text(
+                                                tourOp[index].contact.phone,
+                                                style: TextStyle(
+                                                  color: Colors.grey[800],
+                                                  fontSize: 14,
+                                                ),
                                               ),
                                             ),
                                           ],
                                         ),
                                         const SizedBox(height: 5),
                                         Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             const Icon(Icons.email,
                                                 color: Colors.redAccent,
                                                 size: 18),
-                                            const SizedBox(width: 5),
-                                            Text(
-                                              tourOp[index].contact.email,
-                                              style: TextStyle(
-                                                color: Colors.grey[800],
-                                                fontSize: 14,
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.76,
+                                              child: Text(
+                                                tourOp[index].contact.email,
+                                                style: TextStyle(
+                                                  color: Colors.grey[800],
+                                                  fontSize: 14,
+                                                ),
                                               ),
                                             ),
                                           ],
                                         ),
                                         const SizedBox(height: 10),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                        Wrap(
+                                          alignment: WrapAlignment.spaceBetween,
                                           children: [
-                                            MaterialButton(
-                                              elevation: 0,
-                                              onPressed: () {
-                                                _makePhoneCall(tourOp[index]
-                                                    .contact
-                                                    .phone);
-                                              },
-                                              color: Colors.green[600],
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          50)),
-                                              child: const Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.call,
-                                                    size: 20,
-                                                    color: Colors.white,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 4,
-                                                  ),
-                                                  Text(
-                                                    'Call',
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  )
-                                                ],
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4,
+                                              child: MaterialButton(
+                                                elevation: 0,
+                                                onPressed: () {
+                                                  _makePhoneCall(tourOp[index]
+                                                      .contact
+                                                      .phone);
+                                                },
+                                                color: Colors.green[600],
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50)),
+                                                child: const Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.call,
+                                                      size: 20,
+                                                      color: Colors.white,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 4,
+                                                    ),
+                                                    Text(
+                                                      'Call',
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                            MaterialButton(
-                                              elevation: 0,
-                                              onPressed: () {
-                                                _launchEmail(tourOp[index]
-                                                    .contact
-                                                    .email);
-                                              },
-                                              color: Colors.deepOrange[400],
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          50)),
-                                              child: const Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.mail,
-                                                    size: 20,
-                                                    color: Colors.white,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 4,
-                                                  ),
-                                                  Text(
-                                                    'Mail',
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  )
-                                                ],
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4,
+                                              child: MaterialButton(
+                                                elevation: 0,
+                                                onPressed: () {
+                                                  _launchEmail(tourOp[index]
+                                                      .contact
+                                                      .email);
+                                                },
+                                                color: Colors.deepOrange[400],
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50)),
+                                                child: const Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.mail,
+                                                      size: 20,
+                                                      color: Colors.white,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 4,
+                                                    ),
+                                                    Text(
+                                                      'Mail',
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                             MaterialButton(
@@ -428,6 +462,8 @@ class _TourOperatorSceenState extends State<TourOperatorSceen> {
                                                       BorderRadius.circular(
                                                           50)),
                                               child: const Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
                                                 children: [
                                                   Icon(
                                                     Icons.picture_as_pdf,

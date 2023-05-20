@@ -29,10 +29,11 @@ class _PdfViewPageState extends State<PdfViewPage> {
       appBar: AppBar(
         title: Text(
           appBarName,
-          style: const TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
         elevation: 0,
         backgroundColor: Colors.white,
+        centerTitle: true,
       ),
       body: Column(
         children: [
