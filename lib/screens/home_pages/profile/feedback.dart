@@ -141,7 +141,6 @@ class _FeedBackState extends State<FeedBack> {
 
                                   if (response['success'].toString() ==
                                       'true') {
-                                    SharedService.setUserName(description);
                                     isLoading = false;
                                     final snackBar = SnackBar(
                                       width: double.infinity,
