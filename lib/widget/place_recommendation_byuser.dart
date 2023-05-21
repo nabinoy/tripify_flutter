@@ -102,14 +102,8 @@ class _PlaceRecommendationByUserState extends State<PlaceRecommendationByUser> {
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                           child: CachedNetworkImage(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                2.5,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                1.4,
+                                            height: 155,
+                                            width: 300,
                                             imageUrl: widget.pd[index].images
                                                 .first.secureUrl,
                                             placeholder: (context, url) =>
@@ -144,7 +138,8 @@ class _PlaceRecommendationByUserState extends State<PlaceRecommendationByUser> {
                                               ),
                                               const SizedBox(width: 4),
                                               Text(
-                                                widget.pd[index].ratings.toStringAsFixed(1),
+                                                widget.pd[index].ratings
+                                                    .toStringAsFixed(1),
                                                 style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 12,

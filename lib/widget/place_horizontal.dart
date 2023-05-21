@@ -140,10 +140,8 @@ class _PlaceHorizontalState extends State<PlaceHorizontal> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
                                   child: CachedNetworkImage(
-                                    height:
-                                        MediaQuery.of(context).size.width / 2.5,
-                                    width:
-                                        MediaQuery.of(context).size.width / 1.4,
+                                    height: 155,
+                                    width: 300,
                                     imageUrl: pd[index].images.first.secureUrl,
                                     placeholder: (context, url) => Image.memory(
                                       kTransparentImage,
