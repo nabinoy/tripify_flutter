@@ -413,6 +413,41 @@ class APIService {
     }
   }
 
+  static Future<int> checkItineraryAll(ItineraryModel model,
+      List<String> categories, List<String> island) async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+
+    Map<String, dynamic> queryParameters = {};
+
+    if (!island.contains('All')) {
+      queryParameters['island'] = island;
+    }
+    if (categories.isNotEmpty) {
+      String categoriesString = categories.join(",");
+      queryParameters['categories'] = categoriesString;
+    }
+
+    Uri url;
+    if (queryParameters.isEmpty) {
+      url = Uri.https(
+        Config.apiURL,
+        Config.itineraryAPI,
+      );
+    } else {
+      url = Uri.https(Config.apiURL, Config.itineraryAPI, queryParameters);
+    }
+
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+
+    return response.statusCode;
+  }
+
   static Future<List<Places2>> nearbyPlace(NearbyModel model) async {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
