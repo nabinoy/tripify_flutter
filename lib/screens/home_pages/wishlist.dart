@@ -35,36 +35,36 @@ class _WishlistState extends State<Wishlist> {
     String message = '';
 
     return Scaffold(
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left: 16),
-                child: const Text(
-                  'Your wishlist',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 16),
+                  child: const Text(
+                    'Your wishlist',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          FutureBuilder(
-            future: Future.wait([
-              APIService.userWishlist().then((value) => {pd.addAll(value)}),
-              APIService.checkUserWishlist()
-                  .then((value) => {wishlistPlaceIdList.addAll(value)}),
-            ]),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return (SharedService.id == '')
-                    ? Expanded(
-                        child: Column(
+              ],
+            ),
+            FutureBuilder(
+              future: Future.wait([
+                APIService.userWishlist().then((value) => {pd.addAll(value)}),
+                APIService.checkUserWishlist()
+                    .then((value) => {wishlistPlaceIdList.addAll(value)}),
+              ]),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return (SharedService.id == '')
+                      ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Container(
                               margin: const EdgeInsets.all(40),
-                              height: 250,
+                              height: MediaQuery.of(context).size.height * 0.3,
                               child: Lottie.asset(
                                 'assets/lottie/login_wishlist.json',
                                 animate: true,
@@ -145,228 +145,240 @@ class _WishlistState extends State<Wishlist> {
                               ],
                             )
                           ],
-                        ),
-                      )
-                    : (pd.isEmpty)
-                        ? Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 250,
-                                  child: Lottie.asset(
-                                    'assets/lottie/empty_wishlist.json',
-                                    animate: true,
-                                    frameRate: FrameRate.max,
+                        )
+                      : (pd.isEmpty)
+                          ? SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.65,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 250,
+                                    child: Lottie.asset(
+                                      'assets/lottie/empty_wishlist.json',
+                                      animate: true,
+                                      frameRate: FrameRate.max,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  'Your wishlist is empty!',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Theme.of(context).disabledColor,
+                                  Text(
+                                    'Your wishlist is empty!',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Theme.of(context).disabledColor,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : Expanded(
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: pd.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 12),
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 8.0, horizontal: 10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 2.0,
-                                        blurRadius: 5.0,
-                                        offset: const Offset(0, 3),
-                                      ),
-                                    ],
-                                    color: Colors.white,
-                                  ),
-                                  width: double.infinity,
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 12),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          child: CachedNetworkImage(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                .25,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                .25,
-                                            imageUrl: pd[index]
-                                                .images
-                                                .first
-                                                .secureUrl,
-                                            placeholder: (context, url) =>
-                                                Image.memory(
-                                              kTransparentImage,
+                                ],
+                              ),
+                            )
+                          : Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 1),
+                              child: ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: pd.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.3),
+                                          spreadRadius: 2.0,
+                                          blurRadius: 5.0,
+                                          offset: const Offset(0, 3),
+                                        ),
+                                      ],
+                                      color: Colors.white,
+                                    ),
+                                    width: double.infinity,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 12),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            child: CachedNetworkImage(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .25,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .25,
+                                              imageUrl: pd[index]
+                                                  .images
+                                                  .first
+                                                  .secureUrl,
+                                              placeholder: (context, url) =>
+                                                  Image.memory(
+                                                kTransparentImage,
+                                                fit: BoxFit.cover,
+                                              ),
+                                              fadeInDuration: const Duration(
+                                                  milliseconds: 200),
                                               fit: BoxFit.cover,
                                             ),
-                                            fadeInDuration: const Duration(
-                                                milliseconds: 200),
-                                            fit: BoxFit.cover,
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        width: 6,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                .55,
-                                            child: Text(
-                                              pd[index].name,
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                .55,
-                                            child: Text(pd[index].address.city,
+                                        const SizedBox(
+                                          width: 6,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .55,
+                                              child: Text(
+                                                pd[index].name,
                                                 style: const TextStyle(
-                                                    fontSize: 12)),
-                                          ),
-                                          const SizedBox(
-                                            height: 3,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              MaterialButton(
-                                                elevation: 0,
-                                                onPressed: () {
-                                                  Navigator.pushNamed(
-                                                      context, Place.routeName,
-                                                      arguments: [
-                                                        [pd[index]],
-                                                        (wishlistPlaceIdList
-                                                                .contains(
-                                                                    pd[index]
-                                                                        .sId))
-                                                            ? true
-                                                            : false
-                                                      ]);
-                                                },
-                                                color: Colors.lightBlue[600],
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50)),
-                                                child: const Row(
-                                                  children: [
-                                                    Text(
-                                                      'Visit',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 4,
-                                                    ),
-                                                    Icon(
-                                                      Icons.arrow_forward_sharp,
-                                                      size: 16,
-                                                      color: Colors.white,
-                                                    )
-                                                  ],
-                                                ),
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w600),
                                               ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              MaterialButton(
-                                                elevation: 0,
-                                                onPressed: () {
-                                                  APIService.deleteFromWishlist(
-                                                          pd[index].sId)
-                                                      .then((value) {
-                                                    message = value;
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                        message,
-                                                        style: const TextStyle(
-                                                            fontFamily:
-                                                                fontRegular,
-                                                            fontSize: 12),
-                                                        textAlign:
-                                                            TextAlign.center,
+                                            ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .55,
+                                              child: Text(
+                                                  pd[index].address.city,
+                                                  style: const TextStyle(
+                                                      fontSize: 12)),
+                                            ),
+                                            const SizedBox(
+                                              height: 3,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                MaterialButton(
+                                                  elevation: 0,
+                                                  onPressed: () {
+                                                    Navigator.pushNamed(context,
+                                                        Place.routeName,
+                                                        arguments: [
+                                                          [pd[index]],
+                                                          (wishlistPlaceIdList
+                                                                  .contains(
+                                                                      pd[index]
+                                                                          .sId))
+                                                              ? true
+                                                              : false
+                                                        ]);
+                                                  },
+                                                  color: Colors.lightBlue[600],
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50)),
+                                                  child: const Row(
+                                                    children: [
+                                                      Text(
+                                                        'Visit',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
                                                       ),
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        vertical: 3,
+                                                      SizedBox(
+                                                        width: 4,
                                                       ),
-                                                      backgroundColor:
-                                                          Colors.blue,
-                                                    ));
-                                                    setState(() {});
-                                                  });
-                                                },
-                                                color: Colors.red[400],
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50)),
-                                                child: const Text(
-                                                  'Delete',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w600),
+                                                      Icon(
+                                                        Icons
+                                                            .arrow_forward_sharp,
+                                                        size: 16,
+                                                        color: Colors.white,
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-              } else {
-                return const Expanded(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              }
-            },
-          ),
-        ],
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                MaterialButton(
+                                                  elevation: 0,
+                                                  onPressed: () {
+                                                    APIService
+                                                            .deleteFromWishlist(
+                                                                pd[index].sId)
+                                                        .then((value) {
+                                                      message = value;
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                              SnackBar(
+                                                        content: Text(
+                                                          message,
+                                                          style: const TextStyle(
+                                                              fontFamily:
+                                                                  fontRegular,
+                                                              fontSize: 12),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          vertical: 3,
+                                                        ),
+                                                        backgroundColor:
+                                                            Colors.blue,
+                                                      ));
+                                                      setState(() {});
+                                                    });
+                                                  },
+                                                  color: Colors.red[400],
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50)),
+                                                  child: const Text(
+                                                    'Delete',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                } else {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
