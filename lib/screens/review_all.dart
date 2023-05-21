@@ -155,8 +155,7 @@ class _ReviewAllState extends State<ReviewAll> {
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.all(16),
-              height: screenHeight * 0.22,
-              alignment: Alignment.bottomLeft,
+              height: 160,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

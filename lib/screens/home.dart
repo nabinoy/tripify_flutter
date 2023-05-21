@@ -128,7 +128,6 @@ class _HomepageState extends State<Homepage> {
     bool firstValue = false;
     await readForFirstTime().then((value) => firstValue = value);
     await prefs.setBool('is_home_first_open', false);
-    print(firstValue);
     if (!firstValue) {
       checkLocationAccess();
     }
