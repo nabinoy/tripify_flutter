@@ -229,7 +229,7 @@ class _SearchPlaceState extends State<SearchPlace> {
                                     Row(
                                       children: [
                                         Text(
-                                          pd[index].ratings.toString(),
+                                          pd[index].ratings.toStringAsFixed(1),
                                           style: const TextStyle(
                                               fontSize: 12,
                                               color: Colors.black54),

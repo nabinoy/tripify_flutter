@@ -32,7 +32,7 @@ class Hotels {
   String island;
   List<Rooms> rooms;
   List<String> facilities;
-  int ratings;
+  double ratings;
   int numberOfReviews;
   bool isApproved;
   String serviceProvider;
@@ -81,7 +81,7 @@ class Hotels {
       facilities: (json['facilities'] as List<dynamic>)
           .map((e) => e.toString())
           .toList(),
-      ratings: json['ratings'],
+      ratings: json['ratings'].toDouble(),
       numberOfReviews: json['numberOfReviews'],
       isApproved: json['isApproved'],
       serviceProvider: json['serviceProvider'],

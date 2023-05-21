@@ -25,10 +25,12 @@ class _PlaceRecommendationByPlaceState
   @override
   void initState() {
     super.initState();
-    dataFuture = 
-      APIService.placeRecommendationByPlace(widget.placeId)
-          .then((value) async => {pd = value,await APIService.checkUserWishlist()
-          .then((value) => {wishlistPlaceIdList.addAll(value)})});
+    dataFuture = APIService.placeRecommendationByPlace(widget.placeId)
+        .then((value) async => {
+              pd = value,
+              await APIService.checkUserWishlist()
+                  .then((value) => {wishlistPlaceIdList.addAll(value)})
+            });
   }
 
   @override
@@ -136,7 +138,7 @@ class _PlaceRecommendationByPlaceState
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
-                                        pd[index].ratings.toString(),
+                                        pd[index].ratings.toStringAsFixed(1),
                                         style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 12,

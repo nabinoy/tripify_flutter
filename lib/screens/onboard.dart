@@ -55,15 +55,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       .map(
                         (screen) => Container(
                           color: screen.bg,
-                          padding: const EdgeInsets.all(28),
+                          padding: const EdgeInsets.all(20),
                           width: double.infinity,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
                                 margin: const EdgeInsets.all(40),
-                                width: 384,
-                                height: 300,
+                                width: 220,
+                                height: 250,
                                 child: Lottie.asset(
                                   screen.img,
                                   animate: true,

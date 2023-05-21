@@ -349,7 +349,9 @@ class _HotelScreenState extends State<HotelScreen> {
                                               width: 5,
                                             ),
                                             Text(
-                                              hd[index].ratings.toString(),
+                                              hd[index]
+                                                  .ratings
+                                                  .toStringAsFixed(1),
                                               style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
@@ -597,7 +599,7 @@ class _HotelScreenState extends State<HotelScreen> {
                                               width: 4,
                                             ),
                                             Text(
-                                              widget.ratings.toString(),
+                                              widget.ratings.toStringAsFixed(1),
                                               style:
                                                   const TextStyle(fontSize: 13),
                                             ),

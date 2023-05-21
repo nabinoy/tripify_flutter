@@ -144,8 +144,7 @@ class _PlaceRecommendationByUserState extends State<PlaceRecommendationByUser> {
                                               ),
                                               const SizedBox(width: 4),
                                               Text(
-                                                widget.pd[index].ratings
-                                                    .toString(),
+                                                widget.pd[index].ratings.toStringAsFixed(1),
                                                 style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 12,

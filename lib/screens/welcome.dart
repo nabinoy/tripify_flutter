@@ -67,22 +67,21 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-
   @override
   void initState() {
     super.initState();
     SharedService.setNoFirstTime();
   }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    return SafeArea(
+    return SingleChildScrollView(
       child: Container(
         color: bgColor,
         width: double.infinity,
-        height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.fromLTRB(40, 10, 40, 80),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,9 +103,11 @@ class _WelcomePageState extends State<WelcomePage> {
                 )
               ],
             ),
-            SizedBox(
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 30),
               height: MediaQuery.of(context).size.height / 3,
-              child: Image.asset('assets/images/welcome_background.png'),),
+              child: Image.asset('assets/images/welcome_background.png'),
+            ),
             Column(
               children: <Widget>[
                 MaterialButton(

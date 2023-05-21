@@ -91,7 +91,6 @@ class _FilterPlaceState extends State<FilterPlace> {
 
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -511,7 +510,9 @@ class _FilterPlaceState extends State<FilterPlace> {
                                           ),
                                           const SizedBox(width: 4),
                                           Text(
-                                            pd[index].ratings.toString(),
+                                            pd[index]
+                                                .ratings
+                                                .toStringAsFixed(1),
                                             style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 12,

@@ -222,7 +222,7 @@ class _SearchHotelState extends State<SearchHotel> {
                                     Row(
                                       children: [
                                         Text(
-                                          hotel[index].ratings.toString(),
+                                          hotel[index].ratings.toStringAsFixed(1),
                                           style: const TextStyle(
                                               fontSize: 12,
                                               color: Colors.black54),

@@ -1724,7 +1724,8 @@ class _PlaceState extends State<Place> {
                                                 width: 4,
                                               ),
                                               Text(
-                                                widget.ratings.toString(),
+                                                widget.ratings
+                                                    .toStringAsFixed(1),
                                                 style: const TextStyle(
                                                     fontSize: 13),
                                               ),
