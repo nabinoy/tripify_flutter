@@ -5,6 +5,7 @@ import 'package:tripify/router.dart';
 import 'package:tripify/screens/home.dart';
 import 'package:tripify/screens/login.dart';
 import 'package:tripify/screens/signup.dart';
+import 'package:tripify/services/shared_service.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({super.key});
@@ -66,6 +67,12 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+
+  @override
+  void initState() {
+    super.initState();
+    SharedService.setNoFirstTime();
+  }
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([

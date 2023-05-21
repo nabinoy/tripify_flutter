@@ -15,6 +15,11 @@ class SharedService {
     }
   }
 
+  static Future<void> setNoFirstTime() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('is_first_time_open', false);
+  }
+
   static Future<void> setSharedLogOut() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     const storage = FlutterSecureStorage();
@@ -24,6 +29,7 @@ class SharedService {
     await prefs.remove('name');
     await prefs.remove('email');
     await prefs.remove('id');
+    await prefs.remove('is_session_expired');
     await storage.delete(key: 'token');
     await prefs.remove('is_home_after_login');
   }

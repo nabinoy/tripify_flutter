@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:random_avatar/random_avatar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/router.dart';
 import 'package:tripify/screens/chatbot.dart';
@@ -116,13 +117,30 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
+  Future<bool> readForFirstTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    const key = 'is_home_first_open';
+    return prefs.getBool(key)??true;
+  }
+
+  Future<void> checkForFirst() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool firstValue = false;
+    await readForFirstTime().then((value) => firstValue = value);
+    await prefs.setBool('is_home_first_open', false);
+    print(firstValue);
+    if (!firstValue) {
+      checkLocationAccess();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     SharedService.getSharedLogin();
     bool flag = false;
+    checkForFirst();
 
-    checkLocationAccess();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (await SharedService.getSessionExpire() == true) {
         SharedService.setSessionExpire(false);
@@ -249,6 +267,9 @@ class _HomepageState extends State<Homepage> {
       statusBarIconBrightness: Brightness.dark,
       statusBarBrightness: Brightness.light,
     ));
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
