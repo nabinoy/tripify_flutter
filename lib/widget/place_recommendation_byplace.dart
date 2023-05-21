@@ -105,7 +105,8 @@ class _PlaceRecommendationByPlaceState
                                   borderRadius: BorderRadius.circular(10.0),
                                   child: CachedNetworkImage(
                                     height: 155,
-                                            width: 300,
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.4,
                                     imageUrl: pd[index].images.first.secureUrl,
                                     placeholder: (context, url) => Image.memory(
                                       kTransparentImage,

@@ -103,7 +103,7 @@ class _PlaceRecommendationByUserState extends State<PlaceRecommendationByUser> {
                                               BorderRadius.circular(10.0),
                                           child: CachedNetworkImage(
                                             height: 155,
-                                            width: 300,
+                                            width: MediaQuery.of(context).size.width / 1.4,
                                             imageUrl: widget.pd[index].images
                                                 .first.secureUrl,
                                             placeholder: (context, url) =>

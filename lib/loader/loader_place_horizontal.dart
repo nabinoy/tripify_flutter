@@ -45,7 +45,7 @@ class LoaderPlaceHorizontalInside extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
                   child: Container(
-                    height: MediaQuery.of(context).size.width / 2.5,
+                    height: 155,
                     width: MediaQuery.of(context).size.width / 1.4,
                     color: Colors.amber,
                   ),
