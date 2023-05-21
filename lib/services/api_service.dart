@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 import 'package:tripify/constants/config.dart';
 import 'package:tripify/models/tour_operator_response_model.dart';
 import 'package:tripify/models/update_user_model.dart';
+import 'package:tripify/models/user_dashboard_model.dart';
 import 'package:tripify/models/user_hotel_review_model.dart';
 import 'package:tripify/models/user_review_model.dart';
 import 'shared_service.dart';
@@ -90,6 +91,40 @@ class APIService {
     );
 
     var response = await client.put(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+
+    var data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return data;
+    } else {
+      throw Exception('Failed to load details');
+    }
+  }
+
+  static Future<dynamic> submitFeedback(
+    FeedBackModel model,
+  ) async {
+    var userToken = '';
+    await SharedService.getSecureUserToken().then((String? data) {
+      String? token = data.toString();
+      userToken = token;
+    });
+
+    Map<String, String> requestHeaders = {
+      'Authorization': 'Bearer $userToken',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+
+    var url = Uri.https(
+      Config.apiURL,
+      Config.feedbackAPI,
+    );
+
+    var response = await client.post(
       url,
       headers: requestHeaders,
       body: jsonEncode(model.toJson()),

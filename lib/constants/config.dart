@@ -31,6 +31,7 @@ class Config {
   static const addToWishlistAPI = '/api/v1/wishlist/addplace';
   static const deleteFromWishlistAPI = '/api/v1/wishlist/removeplace';
   static const userDashboardAPI = "/api/v1/userdashboard";
+  static const feedbackAPI = "/api/v1/feedback/add";
   static const String gmapAPI = 'AIzaSyBqJ1Tw86J77TZamEAl2crSnXCSJX_xde0';
   static const String weatherAPI = 'ebe059455ee33a095b1e6f4dfe7f964b';
 }

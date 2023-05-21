@@ -1,11 +1,13 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:random_avatar/random_avatar.dart';
 import 'package:tripify/constants/global_variables.dart';
 import 'package:tripify/screens/home.dart';
 import 'package:tripify/screens/home_pages/profile/edit_name.dart';
 import 'package:tripify/screens/home_pages/profile/edit_password.dart';
+import 'package:tripify/screens/home_pages/profile/feedback.dart';
 import 'package:tripify/screens/login.dart';
 import 'package:tripify/screens/signup.dart';
 import 'package:tripify/services/shared_service.dart';
@@ -178,6 +180,35 @@ class _ProfileState extends State<Profile> {
                             Icon(Icons.lock_reset_outlined),
                             SizedBox(width: 20),
                             Expanded(child: Text('Change password')),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                            padding: const EdgeInsets.all(18),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                            backgroundColor:
+                                const Color.fromARGB(255, 240, 240, 240),
+                            foregroundColor:
+                                const Color.fromARGB(194, 0, 0, 0)),
+                        onPressed: () {
+                          HapticFeedback.mediumImpact();
+                          Navigator.pushNamed(context, FeedBack.routeName);
+                        },
+                        child: const Row(
+                          children: [
+                            Icon(MdiIcons.commentOutline),
+                            SizedBox(width: 20),
+                            Expanded(child: Text('Feedback')),
                             Icon(
                               Icons.arrow_forward_ios,
                               size: 20,
